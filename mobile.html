@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<meta name="theme-color" content="#0b0d12">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Tender Briefing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="config.js"></script>
+<style>
+:root{--bg:#0b0d12;--panel:#13161f;--p2:#1a1e2b;--p3:#20253a;
+  --bd:rgba(255,255,255,0.08);--bd2:rgba(255,255,255,0.14);
+  --tx:#e4e8f0;--mu:#7a84a0;--y:#aaff00;--y2:rgba(170,255,0,0.1);
+  --cy:#33ccff;--mg:#ff33cc;--or:#ff8833;--rd:#ff4455;--am:#ffcc00;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;}
+/* HEADER */
+#hdr{background:var(--panel);border-bottom:2px solid rgba(170,255,0,0.2);
+  padding:10px 14px;flex-shrink:0;}
+.hdr-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.hdr-jkr{display:flex;align-items:center;gap:8px;flex:1;min-width:0;}
+.hdr-jkr img{width:38px;height:auto;filter:drop-shadow(0 1px 3px rgba(0,0,0,0.4));}
+.hdr-jkr-t .t1{font-size:13px;font-weight:700;color:#fff;line-height:1.1;}
+.hdr-jkr-t .t2{font-size:9px;color:rgba(255,255,255,0.5);}
+.hdr-jkr-t a{font-size:8px;color:var(--mu);text-decoration:none;}
+.hdr-dpi{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.hdr-dpi img{height:24px;width:auto;}
+.hdr-dpi-t .d1{font-size:9px;font-weight:700;color:#fff;text-align:right;}
+.hdr-dpi-t .d2{font-size:7.5px;color:var(--mu);text-align:right;}
+.proj-title{font-size:11px;font-weight:600;color:#fff;line-height:1.4;margin-bottom:5px;}
+/* Date strip */
+.date-strip{display:flex;gap:0;background:var(--p2);border-radius:6px;overflow:hidden;}
+.ds-item{flex:1;padding:5px 6px;text-align:center;border-right:1px solid var(--bd);}
+.ds-item:last-child{border-right:none;}
+.ds-item.active{background:rgba(170,255,0,0.1);}
+.ds-l{font-size:7px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--mu);margin-bottom:2px;}
+.ds-v{font-size:9px;font-weight:700;color:var(--tx);line-height:1.2;}
+.ds-item.active .ds-v{color:var(--y);}
+.ds-n{font-size:7px;color:var(--mu);}
+/* NAV TABS bottom */
+#nav{position:fixed;bottom:0;left:0;right:0;background:var(--panel);
+  border-top:1px solid var(--bd2);display:flex;z-index:1000;
+  padding-bottom:env(safe-area-inset-bottom);}
+.ntab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:8px 4px;cursor:pointer;transition:all .15s;color:var(--mu);border-top:2px solid transparent;}
+.ntab.active{color:var(--y);border-top-color:var(--y);}
+.ntab-ic{font-size:18px;line-height:1;margin-bottom:2px;}
+.ntab-lb{font-size:8.5px;font-weight:600;}
+/* CONTENT AREA */
+#content{flex:1;overflow:hidden;display:flex;flex-direction:column;}
+.screen{display:none;flex:1;overflow-y:auto;flex-direction:column;}
+.screen.active{display:flex;}
+#map-screen{display:none;flex:1;position:relative;}
+#map-screen.active{display:flex;}
+#map{position:absolute;inset:0;}
+/* MAP CONTROLS */
+.map-btns{position:absolute;top:10px;right:10px;z-index:500;display:flex;flex-direction:column;gap:5px;}
+.mbtn{background:var(--panel);border:1px solid var(--bd2);color:var(--tx);
+  font-family:'Inter',sans-serif;font-size:11px;font-weight:600;
+  padding:6px 10px;border-radius:6px;cursor:pointer;white-space:nowrap;
+  box-shadow:0 2px 8px rgba(0,0,0,0.4);}
+.mbtn.active{background:var(--y);color:#000;border-color:var(--y);}
+/* SCROLL CONTENT */
+.pg{padding:12px;display:flex;flex-direction:column;gap:10px;}
+::-webkit-scrollbar{display:none;}
+/* Cards */
+.card{background:var(--p2);border:1px solid var(--bd);border-radius:10px;overflow:hidden;}
+.card-hd{padding:10px 12px;border-bottom:1px solid var(--bd);}
+.card-hd-t{font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:var(--mu);}
+.card-body{padding:10px 12px;}
+.row{display:flex;justify-content:space-between;align-items:baseline;
+  padding:5px 0;border-bottom:1px solid var(--bd);}
+.row:last-child{border-bottom:none;padding-bottom:0;}
+.rk{font-size:11px;color:var(--mu);}
+.rv{font-size:12px;font-weight:600;color:var(--tx);text-align:right;flex:1;margin-left:8px;}
+.rv.hl{color:var(--y);}
+/* Stat grid */
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.spill{background:var(--p2);border:1px solid var(--bd);border-radius:8px;padding:10px;text-align:center;}
+.snum{font-size:22px;font-weight:700;color:var(--y);line-height:1;}
+.sunit{font-size:9px;color:var(--mu);margin-top:2px;}
+.slbl{font-size:10px;color:var(--mu);margin-top:4px;font-weight:500;}
+/* CP cards */
+.cpcard{background:var(--p2);border:1px solid var(--bd);border-radius:10px;padding:12px;}
+.cp-hd{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.cp-badge{width:32px;height:32px;border-radius:7px;background:var(--y);color:#000;
+  font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cp-name{font-size:13px;font-weight:600;}
+.cp-coord{font-size:10px;color:var(--mu);margin-top:2px;}
+.cp-qr{background:#fff;border-radius:6px;padding:8px;display:flex;justify-content:center;margin-bottom:8px;}
+.cp-btns{display:flex;gap:6px;}
+.cp-btn{flex:1;padding:10px;border-radius:7px;font-size:12px;font-weight:700;
+  font-family:'Inter',sans-serif;cursor:pointer;border:none;text-align:center;}
+.cp-btn.waze{background:#05c8f7;color:#000;}
+.cp-btn.gmaps{background:#4285f4;color:#fff;}
+/* Scope list */
+.si{display:flex;align-items:flex-start;gap:9px;padding:8px 0;border-bottom:1px solid var(--bd);}
+.si:last-child{border-bottom:none;}
+.si-dot{width:22px;height:22px;border-radius:5px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;}
+.si-txt{font-size:12px;line-height:1.5;}
+/* Feature list */
+.fi{padding:10px 12px;border-bottom:1px solid var(--bd);cursor:pointer;}
+.fi:last-child{border-bottom:none;}
+.fi:active{background:var(--p3);}
+.fi-ch{font-size:9px;font-weight:700;letter-spacing:.8px;margin-bottom:2px;}
+.fi-nm{font-size:13px;font-weight:500;}
+.fi-sb{font-size:10px;color:var(--mu);margin-top:1px;}
+/* Contact */
+.cg-hd{font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;
+  color:var(--y);padding:10px 12px;background:var(--y2);cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;}
+.cg-body{display:none;}
+.cmem{padding:8px 12px;border-bottom:1px solid var(--bd);}
+.cmem:last-child{border-bottom:none;}
+.cm-n{font-size:12px;font-weight:500;}
+.cm-t{font-size:10px;color:var(--mu);margin-top:1px;}
+.cm-e{font-size:10px;color:var(--cy);margin-top:2px;}
+/* Modal */
+#pmodal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);
+  z-index:9999;flex-direction:column;align-items:center;justify-content:center;}
+#pmodal.show{display:flex;}
+.mc{background:var(--panel);border-radius:12px;overflow:hidden;width:94%;max-width:460px;}
+.mc-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--bd);}
+.mc-ch{font-size:9px;color:var(--y);font-weight:700;letter-spacing:.8px;}
+.mc-tl{font-size:13px;font-weight:600;margin-top:2px;}
+.mc-cl{background:none;border:none;color:var(--mu);font-size:20px;cursor:pointer;padding:3px;}
+.mc-img{width:100%;height:220px;object-fit:cover;display:block;}
+.mc-ft{padding:10px 14px;display:flex;justify-content:space-between;align-items:center;}
+.mc-note{font-size:10px;color:var(--mu);flex:1;}
+.mc-nav{display:flex;gap:6px;}
+.mc-navb{background:var(--p2);border:1px solid var(--bd2);color:var(--tx);
+  font-size:14px;padding:5px 12px;border-radius:6px;cursor:pointer;}
+/* Popup */
+.leaflet-popup-content-wrapper{background:var(--panel)!important;border:1px solid var(--bd2)!important;border-radius:9px!important;box-shadow:0 8px 32px rgba(0,0,0,0.6)!important;color:var(--tx)!important;font-family:'Inter',sans-serif!important;}
+.leaflet-popup-tip{background:var(--panel)!important;}
+.leaflet-popup-content{margin:0!important;padding:0!important;}
+.pw{padding:10px;min-width:180px;}
+.pch{font-size:8px;color:var(--y);font-weight:700;letter-spacing:.8px;margin-bottom:2px;}
+.ptl{font-size:12px;font-weight:600;}
+.pthumb{width:100%;height:90px;object-fit:cover;border-radius:5px;margin:6px 0;display:block;cursor:pointer;}
+.popen{display:block;width:100%;padding:6px;text-align:center;background:var(--y);color:#000;font-weight:700;font-size:10px;border-radius:5px;border:none;cursor:pointer;font-family:'Inter',sans-serif;}
+/* Legend badge */
+#map-legend{position:absolute;bottom:10px;left:10px;z-index:500;
+  background:rgba(19,22,31,0.92);border:1px solid var(--bd2);border-radius:8px;padding:7px 10px;}
+.llr{display:flex;align-items:center;gap:5px;font-size:9px;margin-bottom:3px;}
+.llr:last-child{margin-bottom:0;}
+.lld{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.lll{height:2px;width:18px;border-radius:1px;flex-shrink:0;}
+</style>
+</head>
+<body style="display:flex;flex-direction:column;">
+<!-- HEADER -->
+<div id="hdr">
+  <div class="hdr-top">
+    <div class="hdr-jkr">
+      <img src="" id="m-client-logo" alt="Client Logo">
+      <div class="hdr-jkr-t">
+        <div class="t1" id="m-client-name"></div>
+        <div class="t2" id="m-client-subname"></div>
+        <a href="" id="m-client-url" target="_blank"></a>
+      </div>
+    </div>
+    <div class="hdr-dpi">
+      <div>
+        <div class="hdr-dpi-t"><div class="d2">Disediakan oleh:</div><div class="d1" id="m-consultant-name"></div></div>
+      </div>
+      <img src="" id="m-consultant-logo" alt="Consultant Logo">
+    </div>
+  </div>
+  <div class="proj-title" id="m-project-title"></div>
+  <div class="date-strip" id="m-date-strip"></div>
+</div>
+
+<!-- CONTENT -->
+<div id="content">
+  <!-- MAP -->
+  <div class="screen active" id="map-screen">
+    <div id="map"></div>
+    <div class="map-btns">
+      <button class="mbtn active" id="base-osm" onclick="setBase('osm')">Peta</button>
+      <button class="mbtn" id="base-sat" onclick="setBase('sat')">Satelit</button>
+      <button class="mbtn" onclick="flyFull()">↔</button>
+      <button class="mbtn" style="background:rgba(255,51,204,0.2);color:#ff33cc;border-color:#ff33cc40;" onclick="flyFlyover()">BR2</button>
+    </div>
+    <div id="map-legend">
+      <div class="llr"><div class="lll" style="background:#aaff00;"></div>Pelan Menaik Taraf</div>
+      <div class="llr"><div class="lld" style="background:#ff4455;"></div>Persimpangan</div>
+      <div class="llr"><div class="lld" style="background:#33ccff;"></div>Gambar Tapak</div>
+      <div class="llr"><div class="lld" style="background:#aaff00;border:1.5px solid #000;"></div>Lokasi Lawatan</div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="screen" id="feat-screen">
+    <div class="pg">
+      <div class="card"><div id="feat-list"></div></div>
+    </div>
+  </div>
+
+  <!-- CP/QR -->
+  <div class="screen" id="cp-screen">
+    <div class="pg">
+      <div style="font-size:11px;color:var(--mu);background:var(--p2);padding:10px 12px;border-radius:8px;border:1px solid var(--bd);line-height:1.6;" id="cp-info"></div>
+      <div id="cp-cards"></div>
+    </div>
+  </div>
+
+  <!-- PROJECT INFO -->
+  <div class="screen" id="proj-screen">
+    <div class="pg" id="m-project-panel"></div>
+  </div>
+
+  <!-- CONTACTS -->
+  <div class="screen" id="contacts-screen">
+    <div class="pg">
+      <div class="card" id="contact-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div id="nav">
+  <div class="ntab active" onclick="showScreen('map-screen',this)">
+    <div class="ntab-ic">🗺</div><div class="ntab-lb">Peta</div>
+  </div>
+  <div class="ntab" onclick="showScreen('feat-screen',this)">
+    <div class="ntab-ic">📋</div><div class="ntab-lb">Ciri</div>
+  </div>
+  <div class="ntab" onclick="showScreen('cp-screen',this)">
+    <div class="ntab-ic">📍</div><div class="ntab-lb">CP/QR</div>
+  </div>
+  <div class="ntab" onclick="showScreen('proj-screen',this)">
+    <div class="ntab-ic">📊</div><div class="ntab-lb">Projek</div>
+  </div>
+  <div class="ntab" onclick="showScreen('contacts-screen',this)">
+    <div class="ntab-ic">👥</div><div class="ntab-lb">Pasukan</div>
+  </div>
+</div>
+
+<!-- PHOTO MODAL -->
+<div id="pmodal">
+  <div class="mc">
+    <div class="mc-hd">
+      <div><div class="mc-ch" id="mch"></div><div class="mc-tl" id="mtl"></div></div>
+      <button class="mc-cl" onclick="closeM()">✕</button>
+    </div>
+    <img class="mc-img" id="mimg" src="" alt="">
+    <div class="mc-ft">
+      <span class="mc-note" id="mnote"></span>
+      <div class="mc-nav">
+        <button class="mc-navb" onclick="mnav(-1)">‹</button>
+        <button class="mc-navb" onclick="mnav(1)">›</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const {POLY, CH_PTS, SPOS, JUNC, PROP, CPS} = APP_CONFIG;
+const PHOTOS = APP_CONFIG.photos.map(p => ({...p, src: `assets/photos/${p.img}`}));
+
+// Set title
+document.title = APP_CONFIG.project.title;
+
+// Header
+document.getElementById('m-client-logo').src = APP_CONFIG.client.logo;
+document.getElementById('m-client-name').textContent = APP_CONFIG.client.name;
+document.getElementById('m-client-subname').textContent = APP_CONFIG.client.subname;
+document.getElementById('m-client-url').href = APP_CONFIG.client.url;
+document.getElementById('m-client-url').textContent = APP_CONFIG.client.url.replace('https://','');
+document.getElementById('m-consultant-logo').src = APP_CONFIG.consultant.logo;
+document.getElementById('m-consultant-name').textContent = APP_CONFIG.consultant.name;
+document.getElementById('m-project-title').textContent = APP_CONFIG.project.title;
+
+// Date strip
+const mDateStrip = document.getElementById('m-date-strip');
+const mDateDefs = [
+  {key:'advertisement', label:'Iklan'},
+  {key:'download', label:'Muat Turun', sub:APP_CONFIG.dates.download.price},
+  {key:'briefing', label:'Taklimat', sub:'HARI INI'},
+  {key:'closing', label:'Tutup', sub:APP_CONFIG.dates.closing.time},
+];
+mDateDefs.forEach(d => {
+  const info = APP_CONFIG.dates[d.key];
+  const div = document.createElement('div'); div.className = 'ds-item' + (APP_CONFIG.dates.active === d.key ? ' active' : '');
+  const v = typeof info === 'string' ? info : `${info.start}–${info.end || info.date}`;
+  div.innerHTML = `<div class="ds-l">${d.label}</div><div class="ds-v">${v}</div>${d.sub ? `<div class="ds-n">${d.sub}</div>` : ''}`;
+  mDateStrip.appendChild(div);
+});
+
+// Map
+const map = L.map('map', {center: APP_CONFIG.map.center, zoom: APP_CONFIG.map.zoom, zoomControl: false});
+L.control.zoom({position: 'bottomleft'}).addTo(map);
+const OSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '© OpenStreetMap', maxZoom: 19});
+const SAT = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {attribution: '© Esri', maxZoom: 19});
+OSM.addTo(map);
+
+const lgA = L.layerGroup().addTo(map), lgC = L.layerGroup().addTo(map), lgJ = L.layerGroup().addTo(map), lgP = L.layerGroup().addTo(map), lgS = L.layerGroup().addTo(map), lgCP = L.layerGroup().addTo(map);
+
+// Alignment
+L.polyline(POLY, {color: 'rgba(170,255,0,0.11)', weight: 16, lineJoin: 'round'}).addTo(lgA);
+L.polyline(POLY, {color: '#aaff00', weight: 4, opacity: 0.88, lineJoin: 'round'}).addTo(lgA);
+const flyPts = POLY.filter(c => c[0] >= 2.200 && c[0] <= 2.210);
+L.polyline(flyPts, {color: '#ff33cc', weight: 9, opacity: 0.82, dashArray: '13,6', lineJoin: 'round'}).addTo(lgA);
+
+// Chainage
+CH_PTS.forEach(([ch, lat, lon]) => {
+  if (ch === 0 || ch === 4500) return;
+  if (ch % 500 === 0) {
+    const km = Math.floor(ch / 1000), m = String(ch % 1000).padStart(3, '0'), lbl = ch >= 1000 ? `${km}+${m}` : `0+${m}`;
+    L.marker([lat, lon], {icon: L.divIcon({className: '', html: `<div style="background:#ffcc00;color:#000;font-family:Inter,sans-serif;font-size:9px;font-weight:800;padding:2px 6px;border-radius:3px;white-space:nowrap;box-shadow:0 1px 5px rgba(0,0,0,0.5);border:1px solid rgba(0,0,0,0.25);">${lbl}</div>`, iconAnchor: [0, 8]}), zIndexOffset: 50}).addTo(lgC);
+  } else {
+    L.circleMarker([lat, lon], {radius: 3.5, color: 'rgba(255,255,255,0.7)', fillColor: 'rgba(255,255,255,0.45)', fillOpacity: 1, weight: 1.2}).addTo(lgC);
+  }
+});
+
+// Interp
+function interp(d) { let cum = 0; for (let i = 0; i < POLY.length - 1; i++) { const [la1, lo1] = POLY[i], [la2, lo2] = POLY[i + 1], R = 6371000, p1 = la1 * Math.PI / 180, p2 = la2 * Math.PI / 180, dp = (la2 - la1) * Math.PI / 180, dl = (lo2 - lo1) * Math.PI / 180, a = Math.sin(dp / 2) ** 2 + Math.cos(p1) * Math.cos(p2) * Math.sin(dl / 2) ** 2, seg = 2 * R * Math.asin(Math.sqrt(a)); if (cum + seg >= d) { const f = (d - cum) / seg; return [la1 + f * (la2 - la1), lo1 + f * (lo2 - lo1)]; } cum += seg; } return POLY[POLY.length - 1]; }
+
+// Junctions
+JUNC.forEach(([ch, num, name, desc, lon, lat]) => {
+  const isS = ch === 0, isE = ch === 4500, bg = isS ? '#aaff00' : '#ff4455', tc = isS ? '#000' : '#fff', lbl = isS ? 'S' : isE ? 'E' : num;
+  const m = L.marker([lat, lon], {icon: L.divIcon({className: '', html: `<div style="width:30px;height:30px;border-radius:50%;background:${bg};color:${tc};display:flex;align-items:center;justify-content:center;font-family:Inter,sans-serif;font-size:13px;font-weight:800;border:2.5px solid rgba(255,255,255,0.9);box-shadow:0 3px 12px rgba(0,0,0,0.6);cursor:pointer;">${lbl}</div>`, iconSize: [30, 30], iconAnchor: [15, 15]}), zIndexOffset: 300}).addTo(lgJ);
+});
+
+// Proposed
+const pnames = {jejantas: '🚶 Jejantas', bridge: '🌉 BR1 Jambatan', flyover: '🛣 BR2 Flyover'};
+PROP.forEach(([ch, name, desc, type]) => {
+  const [lat, lon] = interp(ch), fly = type === 'flyover', bg = fly ? '#ff33cc' : '#ff8833', tc = fly ? '#fff' : '#000', short = fly ? 'BR2' : type === 'bridge' ? 'BR1' : 'JEJANTAS';
+  L.marker([lat, lon], {icon: L.divIcon({className: '', html: `<div style="background:${bg};color:${tc};font-family:Inter,sans-serif;font-size:9px;font-weight:800;padding:3px 8px;border-radius:4px;white-space:nowrap;box-shadow:0 2px 10px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);cursor:pointer;">${short}</div>`, iconAnchor: [40, 10]}), zIndexOffset: 250}).addTo(lgP);
+});
+
+// Site photos
+let curP = 0; const PM = {};
+PHOTOS.forEach(p => PM[p.img] = p);
+SPOS.forEach((pos, idx) => {
+  const p = PM[pos.img]; if (!p) return;
+  const mk = L.marker([pos.lat, pos.lon], {icon: L.divIcon({className: '', html: `<div style="width:24px;height:24px;border-radius:50%;background:#33ccff;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,0.8);box-shadow:0 2px 8px rgba(0,0,0,0.5);cursor:pointer;font-size:11px;">📷</div>`, iconSize: [24, 24], iconAnchor: [12, 12]}), zIndexOffset: 100}).addTo(lgS);
+  mk.bindPopup(`<div style="padding:0;width:220px;"><img src="${p.src}" style="width:100%;height:90px;object-fit:cover;border-radius:5px;margin:6px 0;display:block;cursor:pointer;" onclick="openM(${idx})"><div style="padding:9px 11px;"><div style="font-size:8px;color:var(--y);font-weight:700;letter-spacing:.8px;margin-bottom:2px;">GAMBAR TAPAK</div><div style="font-size:12px;font-weight:600;">${pos.label}</div><button style="display:block;width:100%;padding:6px;text-align:center;background:var(--y);color:#000;font-weight:700;font-size:10px;border-radius:5px;border:none;cursor:pointer;font-family:Inter,sans-serif;" onclick="openM(${idx})">Lihat Gambar Penuh</button></div></div>`, {maxWidth: 240, minWidth: 220});
+});
+
+// CPs
+CPS.forEach((cp, i) => {
+  const mk = L.marker([cp.lat, cp.lon], {icon: L.divIcon({className: '', html: `<div style="background:#aaff00;color:#000;font-family:Inter,sans-serif;font-size:11px;font-weight:800;padding:4px 8px;border-radius:5px;border:2px solid rgba(0,0,0,0.4);box-shadow:0 3px 12px rgba(0,0,0,0.6);white-space:nowrap;cursor:pointer;">${cp.id}</div>`, iconAnchor: [20, 15]}), zIndexOffset: 400}).addTo(lgCP);
+});
+
+// CP cards
+document.getElementById('cp-info').innerHTML = `<strong style="color:var(--tx);">Pendaftaran & Taklimat:</strong> Kompleks JAPERUN Bukit Katil, Dewan Dato' Demang Husin, Km 9, Jalan Bukit Katil, 75450 Melaka. <strong style="color:var(--tx);">Imbas QR → buka Waze.</strong>`;
+const mCpc = document.getElementById('cp-cards');
+CPS.forEach((cp, i) => {
+  const d = document.createElement('div'); d.className = 'cpcard';
+  d.innerHTML = `<div class="cp-hd"><div class="cp-badge">${cp.id}</div><div><div class="cp-name">${cp.name}</div><div class="cp-coord">${cp.lat.toFixed(6)}, ${cp.lon.toFixed(6)}</div></div></div><div class="cp-qr" id="mcqr-${i}"></div><div class="cp-btns"><button class="cp-btn waze" onclick="window.open('https://waze.com/ul?ll=${cp.lat},${cp.lon}&navigate=yes','_blank')">Waze</button><button class="cp-btn gmaps" onclick="window.open('https://www.google.com/maps?q=${cp.lat},${cp.lon}','_blank')">Google Maps</button></div>`;
+  mCpc.appendChild(d);
+  setTimeout(() => new QRCode(document.getElementById(`mcqr-${i}`), {text: `https://waze.com/ul?ll=${cp.lat},${cp.lon}&navigate=yes`, width: 100, height: 100, colorDark: '#000', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.M}), 200 + i * 100);
+});
+
+// Feature list
+const mFl = document.getElementById('feat-list');
+const mAf = [];
+JUNC.forEach(([ch, num, name, desc, lon, lat]) => mAf.push({ch, label: name, sub: 'Persimpangan J' + num, color: '#ff4455', lat, lon}));
+PROP.forEach(([ch, name, desc, type]) => { const [lat, lon] = interp(ch); mAf.push({ch, label: pnames[type] || name, sub: 'Cadangan Struktur', color: '#ff8833', lat, lon}); });
+SPOS.forEach((pos, i) => mAf.push({ch: pos.ch, label: pos.label, sub: pos.note + ' · Gambar Tapak', color: '#33ccff', lat: pos.lat, lon: pos.lon, pi: i}));
+CPS.forEach(cp => mAf.push({ch: 0, label: cp.id + ': ' + cp.name, sub: 'Lokasi Lawatan Tapak', color: '#aaff00', lat: cp.lat, lon: cp.lon}));
+mAf.sort((a, b) => a.ch - b.ch);
+mAf.forEach(f => {
+  const cs = f.ch ? `CH ${Math.floor(f.ch / 1000)}+${String(f.ch % 1000).padStart(3, '0')}` : '—';
+  const d = document.createElement('div'); d.className = 'fi';
+  d.innerHTML = `<div class="fi-ch" style="color:${f.color}">${cs}</div><div class="fi-nm">${f.label}</div><div class="fi-sb">${f.sub}</div>`;
+  d.onclick = () => { map.flyTo([f.lat, f.lon], 17, {animate: true, duration: 1.2}); if (f.pi !== undefined) setTimeout(() => openM(f.pi), 700); };
+  mFl.appendChild(d);
+});
+
+// Project panel
+const mProjPanel = document.getElementById('m-project-panel');
+mProjPanel.innerHTML = `
+  <div class="card">
+    <div class="card-hd"><div class="card-hd-t">Maklumat Tender</div></div>
+    <div class="card-body">
+      <div class="row"><span class="rk">No. Tender</span><span class="rv hl">${APP_CONFIG.project.tenderNumber}</span></div>
+      <div class="row"><span class="rk">Harga Indikatif</span><span class="rv hl">${APP_CONFIG.project.indicativePrice}</span></div>
+      <div class="row"><span class="rk">Tempoh Pembinaan</span><span class="rv">${APP_CONFIG.project.durationMonths} Bulan (Maks)</span></div>
+      <div class="row"><span class="rk">Kelas CIDB</span><span class="rv">${APP_CONFIG.project.cidbClass}</span></div>
+      <div class="row"><span class="rk">Kaedah</span><span class="rv">${APP_CONFIG.project.procurementMethod}</span></div>
+      <div class="row"><span class="rk">Piawaian</span><span class="rv">${APP_CONFIG.project.designStandard}</span></div>
+      <div class="row"><span class="rk">Harga Dokumen</span><span class="rv">${APP_CONFIG.project.documentPrice}</span></div>
+    </div>
+  </div>
+  <div class="sgrid">
+    <div class="spill"><div class="snum">${APP_CONFIG.stats.lengthKm}</div><div class="sunit">km</div><div class="slbl">Panjang Projek</div></div>
+    <div class="spill"><div class="snum">${APP_CONFIG.stats.landAcquisitionLots}</div><div class="sunit">lot</div><div class="slbl">Pengambilan Tanah</div></div>
+    <div class="spill"><div class="snum">${APP_CONFIG.stats.landAreaEkar}</div><div class="sunit">ekar</div><div class="slbl">Luas (${APP_CONFIG.stats.landAreaSqm} m²)</div></div>
+    <div class="spill"><div class="snum">${APP_CONFIG.stats.constructionDurationMonths}</div><div class="sunit">bulan</div><div class="slbl">Tempoh Pembinaan</div></div>
+  </div>
+  <div class="card">
+    <div class="card-hd"><div class="card-hd-t">Skop Kerja</div></div>
+    <div class="card-body" id="m-scope-list" style="padding:6px 12px;"></div>
+  </div>
+  <div style="background:rgba(255,170,0,0.06);border:1px solid rgba(255,170,0,0.25);border-radius:8px;padding:10px 12px;">
+    <div style="font-size:10px;font-weight:700;color:#ffaa00;margin-bottom:4px;">${APP_CONFIG.alerts[0].title}</div>
+    <div style="font-size:11px;color:var(--mu);line-height:1.6;">${APP_CONFIG.alerts[0].body}</div>
+  </div>
+`;
+const mScopeList = document.getElementById('m-scope-list');
+APP_CONFIG.scope.forEach((s, i) => {
+  const d = document.createElement('div'); d.style.cssText = 'display:flex;align-items:flex-start;gap:9px;padding:8px 0;border-bottom:1px solid var(--bd);';
+  d.innerHTML = `<div style="width:22px;height:22px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;background:${s.color}1a;color:${s.color};border:1px solid ${s.color}40;">${i+1}</div><span style="font-size:12px;line-height:1.5;">${s.text}</span>`;
+  mScopeList.appendChild(d);
+});
+
+// Contacts
+const mCl = document.getElementById('contact-list');
+APP_CONFIG.contacts.forEach(t => {
+  const g = document.createElement('div'); g.style.marginBottom = '3px';
+  const hd = document.createElement('div'); hd.style.cssText = 'font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:var(--y);padding:10px 12px;background:var(--y2);cursor:pointer;display:flex;justify-content:space-between;align-items:center;';
+  hd.innerHTML = `${t.label}<span>▾</span>`;
+  const bd = document.createElement('div'); bd.style.cssText = 'display:none;background:var(--p2);border:1px solid var(--bd);border-radius:0 0 5px 5px;overflow:hidden;';
+  t.members.forEach(m => {
+    const r = document.createElement('div'); r.style.cssText = 'padding:8px 12px;border-bottom:1px solid var(--bd);';
+    r.innerHTML = `<span style="font-size:12px;font-weight:500;">${m.name}</span><div style="font-size:10px;color:var(--mu);margin-top:1px;">${m.title}</div><div style="font-size:10px;color:var(--cy);margin-top:2px;">${m.email}</div>`;
+    bd.appendChild(r);
+  });
+  let open = false; hd.onclick = () => { open = !open; bd.style.display = open ? 'block' : 'none'; hd.querySelector('span').textContent = open ? '▴' : '▾'; };
+  g.appendChild(hd); g.appendChild(bd); mCl.appendChild(g);
+});
+
+// Modal
+function openM(idx) { curP = idx; const pos = SPOS[idx]; const p = PM[pos.img]; if (!p) return; document.getElementById('mch').textContent = pos.note; document.getElementById('mtl').textContent = pos.label; document.getElementById('mimg').src = p.src; document.getElementById('mnote').textContent = 'Keadaan tapak sedia ada'; document.getElementById('pmodal').classList.add('show'); }
+function closeM() { document.getElementById('pmodal').classList.remove('show'); }
+function mnav(d) { curP = (curP + d + SPOS.length) % SPOS.length; openM(curP); }
+
+// Nav
+function showScreen(id, el) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); document.querySelectorAll('.ntab').forEach(t => t.classList.remove('active')); el.classList.add('active'); }
+function setBase(v) { document.getElementById('base-osm').classList.toggle('active', v === 'osm'); document.getElementById('base-sat').classList.toggle('active', v === 'sat'); if (v === 'osm') { SAT.remove(); OSM.addTo(map); } else { OSM.remove(); SAT.addTo(map); } }
+function flyFull() { map.flyToBounds(APP_CONFIG.map.bounds, {padding: [40, 40], duration: 1.5}); }
+function flyFlyover() { map.flyTo([2.204, 102.293], 17, {duration: 1.5}); }
+</script>
+</body>
+</html>
