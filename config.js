@@ -4,28 +4,32 @@
  * @role     adapter / rules-config
  * @contract APP_CONFIG → consumed by index.html + mobile.html + qr.html
  *
- * This is the ONLY file that changes between tender briefing deployments.
- * Base engine files must contain zero hardcoded project-specific values.
+ * Project : Hospital Serdang & HSIS Cardiology Block Water Supply Pipeline
+ * Tender  : Air Selangor PN0000023850
+ * Prepared: DPI Konsult Sdn Bhd
+ *
+ * NOTE: Map coordinates are approximate (field survey pending).
+ * Update POLY, CH_PTS, SPOS, JUNC, PROP, CPS with verified survey data.
  */
 
 const APP_CONFIG = {
   "project": {
-    "title": "Menaik Taraf Jalan Tun Hamzah (FT264) dari Persimpangan JPJ ke Persimpangan Semabok Lebuh AMJ (FT019), Daerah Melaka Tengah, Melaka",
-    "subtitle": "4.5 km · T1-1 -> K2-2 · Piawaian JKR U5 · Tender Terbuka · CIDB G7 CE  · Tempoh: 36 Bulan",
-    "tenderNumber": "JKR/CKUB/23313/2026",
-    "programme": "RMKe-12 RP3",
-    "indicativePrice": "RM 178,940,000.00",
-    "durationMonths": 36,
-    "cidbClass": "G7 — Kategori CE",
-    "cidbSpecialization": "CE01 & CE02",
+    "title": "Proposed Pipe Laying and Improvement Works for Hospital Serdang and Hospital Sultan Idris Shah (Blok Pusat Kardiologi)",
+    "subtitle": "Route 1: IOI Conezion → HSIS (400mm MSCL, ~1.45km) · Route 2: HSIS → HVet (200mm MSCL/HDPE, ~0.80km) · Tender Terbuka",
+    "tenderNumber": "PN0000023850",
+    "programme": "Air Selangor Emergency and Ad-Hoc Water Improvement Program",
+    "indicativePrice": "TBA",
+    "durationMonths": 24,
+    "cidbClass": "G7 — Kategori ME",
+    "cidbSpecialization": "ME01",
     "procurementMethod": "Tender Terbuka",
-    "designStandard": "JKR U5",
-    "documentPrice": "RM 1,500"
+    "designStandard": "SYABAS Standard Specification 2007 / JKR Standard Specification 2014",
+    "documentPrice": "TBA"
   },
   "client": {
-    "name": "JABATAN KERJA RAYA",
-    "subname": "MALAYSIA",
-    "url": "https://www.jkr.gov.my",
+    "name": "PENGURUSAN AIR SELANGOR",
+    "subname": "SDN BHD",
+    "url": "https://www.airselangor.com",
     "logo": "assets/logos/client-logo.png"
   },
   "consultant": {
@@ -34,439 +38,224 @@ const APP_CONFIG = {
     "logo": "assets/logos/consultant-logo.png"
   },
   "dates": {
-    "advertisement": "12 Mac 2026",
+    "advertisement": "TBA",
     "download": {
-      "start": "6 Apr 2026",
-      "end": "13 Apr 2026",
-      "price": "RM 1,500"
+      "start": "TBA",
+      "end": "TBA",
+      "price": "TBA"
     },
-    "briefing": "31 Mac 2026",
+    "briefing": "TBA",
     "closing": {
-      "date": "28 Apr 2026",
+      "date": "TBA",
       "time": "12.00 tgh"
     },
     "active": "briefing"
   },
   "stats": {
-    "lengthKm": 4.5,
-    "landAcquisitionLots": 245,
-    "landAreaEkar": "~20",
-    "landAreaSqm": "80,560",
-    "constructionDurationMonths": 36
+    "lengthKm": 2.25,
+    "landAcquisitionLots": 0,
+    "landAreaEkar": "—",
+    "landAreaSqm": "—",
+    "constructionDurationMonths": 24
   },
   "map": {
-    "center": [
-      2.212,
-      102.294
-    ],
+    "center": [2.9830, 101.7175],
     "zoom": 14,
     "bounds": [
-      [
-        2.193,
-        102.282
-      ],
-      [
-        2.232,
-        102.302
-      ]
+      [2.9620, 101.7030],
+      [3.0060, 101.7380]
     ]
   },
-  "photos": [
-    {
-      "ch": 200,
-      "img": "ch200_simpang_jpj.jpg",
-      "label": "Simpang JPJ Bukit Katil",
-      "note": "CH 0+200"
-    },
-    {
-      "ch": 550,
-      "img": "ch550_sk_demang.jpg",
-      "label": "SK Dato Demang Hussin",
-      "note": "CH 0+550 RHS"
-    },
-    {
-      "ch": 730,
-      "img": "ch730_perkuburan_islam_lama.jpg",
-      "label": "Perkuburan Islam Lama Bukit Katil",
-      "note": "CH 0+730 LHS"
-    },
-    {
-      "ch": 790,
-      "img": "ch790_klinik_desa.jpg",
-      "label": "Klinik Desa Bukit Katil",
-      "note": "CH 0+790 LHS"
-    },
-    {
-      "ch": 900,
-      "img": "ch900_masjid_raudhatul.jpg",
-      "label": "Masjid Raudhatul Jannah Bukit Bayan",
-      "note": "CH 0+900 LHS"
-    },
-    {
-      "ch": 960,
-      "img": "ch960_simpang_demang.jpg",
-      "label": "Simpang Demang Hussin",
-      "note": "CH 0+960"
-    },
-    {
-      "ch": 1550,
-      "img": "ch1550_monsoon_drain.jpg",
-      "label": "Monsoon Drain",
-      "note": "CH 1+550–1+750 RHS"
-    },
-    {
-      "ch": 1775,
-      "img": "ch1775_roundabout_tebing_tinggi.jpg",
-      "label": "Roundabout Jalan Tebing Tinggi",
-      "note": "CH 1+775"
-    },
-    {
-      "ch": 1815,
-      "img": "ch1815_arch_culvert.jpg",
-      "label": "Arch Culvert",
-      "note": "CH 1+815"
-    },
-    {
-      "ch": 2200,
-      "img": "ch2200_culvert_crossing.jpg",
-      "label": "Culvert Crossing",
-      "note": "CH 2+200"
-    },
-    {
-      "ch": 2700,
-      "img": "ch2700_perkuburan_cina.jpg",
-      "label": "Perkuburan Cina",
-      "note": "CH 2+700 LHS"
-    },
-    {
-      "ch": 2775,
-      "img": "ch2775_perkuburan_islam_duyong.jpg",
-      "label": "Perkuburan Islam Bukit Duyong",
-      "note": "CH 2+775 LHS"
-    },
-    {
-      "ch": 3125,
-      "img": "ch3125_overhead_gantry.jpg",
-      "label": "Overhead Gantry Sign Board",
-      "note": "CH 3+125"
-    },
-    {
-      "ch": 3330,
-      "img": "ch3330_persimpangan_duyong.jpg",
-      "label": "Persimpangan Duyong",
-      "note": "CH 3+330"
-    },
-    {
-      "ch": 3330,
-      "img": "ch3330_rs_wall_duyong.jpg",
-      "label": "RS Wall Persimpangan Duyong",
-      "note": "CH 3+330 RHS"
-    },
-    {
-      "ch": 3675,
-      "img": "ch3675_simpang_perigi_hang_tuah.jpg",
-      "label": "Persimpangan Perigi Hang Tuah",
-      "note": "CH 3+675"
-    },
-    {
-      "ch": 3900,
-      "img": "ch3900_crossing_culvert.jpg",
-      "label": "Crossing Culvert",
-      "note": "CH 3+900"
-    },
-    {
-      "ch": 3600,
-      "img": "ch3330_pokok_warisan.jpg",
-      "label": "Pokok Warisan (Heritage Trees)",
-      "note": "CH 3+330–4+300"
-    }
-  ],
+  "photos": [],
   "scope": [
     {
-      "color": "#ff8833",
-      "text": "Menaik taraf jalan T1-1 kepada K2-2, 4.5 km (U5)"
-    },
-    {
-      "color": "#ff33cc",
-      "text": "Menggantikan 1 jambatan & membina 1 flyover (Duyong/Hang Tuah)"
+      "color": "#00aaff",
+      "text": "Route 1 — Pasang 400mm ND MSCL (IOI Conezion → Hospital Serdang, ~1.45km)"
     },
     {
       "color": "#33ccff",
-      "text": "Membina U-Turn"
-    },
-    {
-      "color": "#ff4455",
-      "text": "Menaiktaraf 6 persimpangan"
-    },
-    {
-      "color": "#aaff00",
-      "text": "Membina 1 jejantas pejalan kaki & motosikal"
-    },
-    {
-      "color": "#ffaa00",
-      "text": "Membina 5 hentian bas"
-    },
-    {
-      "color": "#22cc77",
-      "text": "Membina 2 motorcycle shelter"
-    },
-    {
-      "color": "#7a84a0",
-      "text": "Pembentung & perparitan"
-    },
-    {
-      "color": "#7a84a0",
-      "text": "Kerja-kerja geoteknik"
-    },
-    {
-      "color": "#7a84a0",
-      "text": "Perabot jalan baharu"
-    },
-    {
-      "color": "#ffcc00",
-      "text": "Pemasangan lampu jalan LED (NSC)"
-    },
-    {
-      "color": "#ff4455",
-      "text": "Pengambilan tanah (245 lot, ~20 ekar)"
+      "text": "Route 2 — Pasang 200mm ND MSCL / HDPE (HSIS → Hospital Veterinar, ~0.80km)"
     },
     {
       "color": "#ff8833",
-      "text": "Pengalihan utiliti"
+      "text": "Twin Pipe Jacking di bawah SKVE (~150m alignment, 300m paip)"
+    },
+    {
+      "color": "#ff33cc",
+      "text": "Horizontal Directional Drilling (HDD) — koridor utiliti FT 345"
+    },
+    {
+      "color": "#aaff00",
+      "text": "Bekalan & pasang injap (butterfly, sluice, air, scour) + bilik injap"
+    },
+    {
+      "color": "#ffaa00",
+      "text": "Pasang electromagnetic flowmeter, RTU panel & sistem SCADA telemetri"
+    },
+    {
+      "color": "#22cc77",
+      "text": "Hot tapping — sambungan ke paip sedia 900mm (IOI City Reservoir) & 200mm (HVet)"
+    },
+    {
+      "color": "#ff4455",
+      "text": "Pipe bridge / overcrossing di lokasi berkenaan"
+    },
+    {
+      "color": "#7a84a0",
+      "text": "Ujian tekanan & kebocoran, sterilisasi, dan pembebasan (commissioning)"
+    },
+    {
+      "color": "#7a84a0",
+      "text": "Kerja-kerja reinstatement jalan (sementara & kekal, kaedah mill & pave)"
     }
   ],
   "designStandards": [
     {
       "parameter": "Design Standard",
       "unit": "—",
-      "value": "U5"
+      "value": "SYABAS SS 2007 / JKR SS 2014"
     },
     {
-      "parameter": "Design Speed",
-      "unit": "km/h",
-      "value": "60"
+      "parameter": "Route 1 Pipe Diameter",
+      "unit": "mm ND",
+      "value": "400 (MSCL)"
     },
     {
-      "parameter": "Lane Width",
+      "parameter": "Route 2 Pipe Diameter",
+      "unit": "mm ND",
+      "value": "200 (MSCL / HDPE)"
+    },
+    {
+      "parameter": "Min. Pipe Cover",
       "unit": "m",
-      "value": "3.50"
+      "value": "1.2"
     },
     {
-      "parameter": "Paved Shoulder",
+      "parameter": "HDD Min. Depth",
       "unit": "m",
-      "value": "2.50"
+      "value": "3.0"
     },
     {
-      "parameter": "Min. Median Width",
-      "unit": "m",
-      "value": "1.60"
+      "parameter": "HDD Entry / Exit Angle",
+      "unit": "°",
+      "value": "10 – 18"
     },
     {
-      "parameter": "Min. Reserve Width",
-      "unit": "m",
-      "value": "40"
+      "parameter": "Pipe Jacking Tolerance (H)",
+      "unit": "mm",
+      "value": "±75"
     },
     {
-      "parameter": "Min. SSD",
-      "unit": "m",
-      "value": "85"
+      "parameter": "Pipe Jacking Tolerance (V)",
+      "unit": "mm",
+      "value": "±25"
     },
     {
-      "parameter": "Min. Radius",
-      "unit": "m",
-      "value": "135"
+      "parameter": "Field Pressure Test",
+      "unit": "bar",
+      "value": "15 (10 min)"
     },
     {
-      "parameter": "Max Superelevation",
-      "unit": "ratio",
-      "value": "0.06"
+      "parameter": "Leakage Test Pressure",
+      "unit": "bar",
+      "value": "12 (24 jam)"
     },
     {
-      "parameter": "Max Grade",
-      "unit": "%",
-      "value": "8"
+      "parameter": "Chlorination Concentration",
+      "unit": "mg/L",
+      "value": "40 (min. 24 jam)"
     }
   ],
   "landAcquisition": [
     {
-      "area": "Mukim Bukit Katil",
-      "lots": "65"
+      "area": "Pengambilan Tanah",
+      "lots": "Tiada (ROW sedia ada)"
     },
     {
-      "area": "Mukim Duyong",
-      "lots": "180"
+      "area": "Koridor Utiliti (KUSEL)",
+      "lots": "Kebenaran diperlukan"
     },
     {
-      "area": "Jumlah Lot",
-      "lots": "245"
+      "area": "Permit Jalan (JKR / LLM)",
+      "lots": "Road Opening Permit"
     },
     {
-      "area": "Jumlah Luas",
-      "lots": "80,560 m² (≈20 ekar)"
+      "area": "Permit SKVE (LLM / PLUS)",
+      "lots": "Works Under Highway Permit"
     }
   ],
   "alerts": [
     {
       "type": "warning",
-      "title": "⚠ GP Utiliti PK berkuatkuasa 1 Jan 2026",
-      "body": "GP Utiliti RMKe-12 tamat 31 Dis 2025. GP Utiliti PK (RMKe-13) kini berkuatkuasa. Kontraktor Utama layak untuk <strong>Yuran Attendance</strong> bagi setiap kerja utiliti."
+      "title": "⚠ Twin Pipe Jacking Under SKVE",
+      "body": "Kerja pipe jacking di bawah SKVE memerlukan permit LLM/PLUS dan pemantauan enapan berterusan. Tiada penutupan SKVE dijangka — operasi dari jacking pit sahaja."
+    },
+    {
+      "type": "info",
+      "title": "ℹ Bekalan Sedia Dikekalkan",
+      "body": "Bekalan asal dari Semenyih Balancing Reservoir dikekalkan sepanjang pembinaan. Sambungan baru melalui <strong>hot tapping</strong> atau scheduled shut-down yang dikoordinasikan bersama Air Selangor Operations."
     }
   ],
   "contacts": [
     {
-      "label": "HOPT — Pengurusan Projek (BPPS)",
+      "label": "Pemilik Projek — Air Selangor",
       "members": [
         {
-          "name": "En. Ir. Ahmad Paridz bin Abdullah",
-          "title": "JA Penguasa Kanan",
-          "email": "paridz@jkr.gov.my"
-        },
-        {
-          "name": "En. Mohd Imran bin Ismail",
-          "title": "JA Kanan",
-          "email": "imrani@jkr.gov.my"
-        },
-        {
-          "name": "En. Ir. Ts. Ali Amran bin Kamaruzaman",
-          "title": "JA",
-          "email": "aliamran@jkr.gov.my"
-        },
-        {
-          "name": "Pn. Nur Farhana binti Muhaiyadin",
-          "title": "PJA",
-          "email": "nfarhanam@jkr.gov.my"
+          "name": "Pengurusan Air Selangor Sdn Bhd",
+          "title": "Superintending Officer (S.O.)",
+          "email": "—"
         }
       ]
     },
     {
-      "label": "HODT — Rekabentuk Jalan (BRJZS)",
+      "label": "Perunding — DPI Konsult Sdn Bhd",
       "members": [
         {
-          "name": "Pn. Hasniah binti Mat Ali",
-          "title": "JA Penguasa Kanan",
-          "email": "hasniah@jkr.gov.my"
-        },
-        {
-          "name": "En. Mohd Azlan bin Nobiran",
-          "title": "JA Kanan",
-          "email": "mohdazlann@jkr.gov.my"
-        },
-        {
-          "name": "Ir. Ts. Mohammad Hafizi bin Ghazali",
-          "title": "JA",
-          "email": "hafizighazali@jkr.gov.my"
+          "name": "DPI Konsult Sdn Bhd",
+          "title": "Perunding Sivil & Struktur",
+          "email": "—"
         }
       ]
     },
     {
-      "label": "HODT — Ukur Bahan (CKUB)",
+      "label": "Pihak Berkuasa — Kelulusan & Permit",
       "members": [
         {
-          "name": "Sr Roslan bin Ahmad",
-          "title": "JUBPK J14",
-          "email": "roslan@jkr.gov.my"
-        },
-        {
-          "name": "Irma Azreen binti Mazri",
-          "title": "JUBK J12",
-          "email": "irma@jkr.gov.my"
-        },
-        {
-          "name": "Nur Nadia binti Mazlan",
-          "title": "JUB J9",
+          "name": "SPAN",
+          "title": "Pematuhan bahan & pendaftaran kontraktor",
           "email": "—"
         },
         {
-          "name": "Aeisya Syafiqa binti Sanusi",
-          "title": "PJUB JA5",
-          "email": "syafiqasanusi@jkr.gov.my"
-        }
-      ]
-    },
-    {
-      "label": "HODT — Geoteknik (CKG)",
-      "members": [
-        {
-          "name": "Ir. Nor Fardzilah binti Abdul Rahman",
-          "title": "JA Penguasa Kanan",
-          "email": "fardzilah@jkr.gov.my"
+          "name": "JKR",
+          "title": "Road opening permit, standard reinstatement",
+          "email": "—"
         },
         {
-          "name": "Ir. Zuraikha binti Samsuddin",
-          "title": "JA Kanan",
-          "email": "zuraikha@jkr.gov.my"
+          "name": "LLM / PLUS",
+          "title": "Permit kerja bawah SKVE",
+          "email": "—"
         },
         {
-          "name": "Ir. Nursyuhadah binti Mohd Isa",
-          "title": "JA",
-          "email": "nursyuhadah@jkr.gov.my"
-        }
-      ]
-    },
-    {
-      "label": "HODT — Elektrik (CKE)",
-      "members": [
-        {
-          "name": "Ir. Saiful Zuhaimi bin Ahmad",
-          "title": "JE Penguasa Kanan",
-          "email": "szuhaimi@jkr.gov.my"
-        },
-        {
-          "name": "Ir. Hasrudin bin Md. Fadzali",
-          "title": "JE Penguasa",
-          "email": "hasrudin@jkr.gov.my"
-        },
-        {
-          "name": "Nadirah binti Mohd Nasir",
-          "title": "JE",
-          "email": "nadirahnasir@jkr.gov.my"
-        },
-        {
-          "name": "Mohamad Akmal Hafiz bin Suliman",
-          "title": "PJE",
-          "email": "akmalhafiz@jkr.gov.my"
-        }
-      ]
-    },
-    {
-      "label": "HODT — Alam Sekitar (CASKT)",
-      "members": [
-        {
-          "name": "Ir. Hj. Mohd Zaini bin Abu Hassan",
-          "title": "JE Penguasa Kanan",
-          "email": "zainiah@jkr.gov.my"
-        },
-        {
-          "name": "Ir. Lee Jin Ai",
-          "title": "JA Kanan",
-          "email": "jalee@jkr.gov.my"
-        },
-        {
-          "name": "Nur Izzati binti Abdul Aziz",
-          "title": "JE",
-          "email": "nurizzati.aziz@jkr.gov.my"
-        },
-        {
-          "name": "Norasma binti Hj Mohd Noor",
-          "title": "PJA Kanan",
-          "email": "norasma@jkr.gov.my"
+          "name": "KUSEL",
+          "title": "Permit koridor utiliti, watermain crossing",
+          "email": "—"
         }
       ]
     }
   ],
   "theme": {
-    "bg": "#0b0d12",
-    "panel": "#13161f",
-    "panel2": "#1a1e2b",
-    "panel3": "#20253a",
+    "bg": "#060d18",
+    "panel": "#0d1a2e",
+    "panel2": "#112239",
+    "panel3": "#162b47",
     "border": "rgba(255,255,255,0.07)",
     "border2": "rgba(255,255,255,0.13)",
-    "text": "#e4e8f0",
-    "muted": "#7a84a0",
-    "faint": "#3a4060",
-    "accent": "#aaff00",
-    "accent2": "rgba(170,255,0,0.12)",
-    "accent3": "rgba(170,255,0,0.06)",
+    "text": "#ddeeff",
+    "muted": "#6a88a8",
+    "faint": "#1e3a58",
+    "accent": "#00aaff",
+    "accent2": "rgba(0,170,255,0.12)",
+    "accent3": "rgba(0,170,255,0.06)",
     "amber": "#ffaa00",
     "red": "#ff4455",
     "cyan": "#33ccff",
@@ -474,21 +263,124 @@ const APP_CONFIG = {
     "orange": "#ff7733"
   },
   "qrPage": {
-    "badge": "JABATAN KERJA RAYA MALAYSIA",
-    "title": "FT264 Jalan Tun Hamzah Peta Interaktif",
-    "subtitle": "Imbas kod QR untuk akses peta projek, gambar tapak, lokasi lawatan CP1–CP4 dan navigasi Waze",
+    "badge": "PENGURUSAN AIR SELANGOR SDN BHD",
+    "title": "Hospital Serdang Water Supply — Peta Interaktif",
+    "subtitle": "Imbas kod QR untuk akses peta laluan paip, kaedah pembinaan (pipe jacking & HDD), dan lokasi tapak kerja",
     "chips": [
-      "📱 Mobile Friendly"
+      "📱 Mobile Friendly",
+      "🔵 Air Selangor PN0000023850"
     ],
-    "note": "Selepas imbas → peta projek dibuka secara terus.<br>Klik CP1–CP4 → Navigasi Waze ke lokasi lawatan tapak.",
+    "note": "Selepas imbas → peta projek dibuka secara terus.<br>Klik setiap node → butiran teknikal laluan dan kaedah pembinaan.",
     "url": ""
   }
 };
 
-// Raw geospatial arrays (kept as JS for performance)
-APP_CONFIG.POLY = [[2.231017546, 102.29918949], [2.230429658, 102.298805432], [2.229585371, 102.29859515], [2.228690699, 102.298878044], [2.227548969, 102.299599938], [2.226161744, 102.300061748], [2.225671579, 102.30001739], [2.223179258, 102.298844845], [2.222192635, 102.298482004], [2.221516255, 102.298336851], [2.220548919, 102.298251962], [2.2196621, 102.298316321], [2.217708853, 102.298907089], [2.216416717, 102.298568365], [2.215178585, 102.298170428], [2.21245102, 102.297336982], [2.210853116, 102.295989853], [2.209144834, 102.295390872], [2.207048682, 102.294466181], [2.20495304, 102.293712489], [2.203225971, 102.293217572], [2.201115759, 102.29265852], [2.200302968, 102.292365886], [2.199416546, 102.291978295], [2.196603162, 102.290168613], [2.193814046, 102.288262734]];
-APP_CONFIG.CH_PTS = [[0, 2.231017546, 102.29918949], [100, 2.230238236396261, 102.29875775565573], [200, 2.2293693559993404, 102.29866345363261], [300, 2.2285321054922287, 102.29897831963584], [400, 2.2277718159050823, 102.29945903617234], [500, 2.2269457454739583, 102.2998007523283], [600, 2.226088960380299, 102.30005516136937], [700, 2.2252369711180964, 102.29981292303972], [800, 2.224423097766029, 102.29943002568037], [900, 2.2236092244139614, 102.29904712832099], [1000, 2.222781079561832, 102.29869841068549], [1100, 2.2219262883377633, 102.298424845277], [1200, 2.2210381232508754, 102.29829489233614], [1300, 2.220141748134435, 102.29828151155829], [1400, 2.2192615785531467, 102.29843746044325], [1500, 2.2184007142703, 102.29869783256754], [1600, 2.2175380624020615, 102.29886231749414], [1700, 2.2166680925512523, 102.29863426126187], [1800, 2.215807880634982, 102.29837268431605], [1900, 2.2149506072593566, 102.29810076618222], [2000, 2.2140904868845808, 102.29783794425649], [2100, 2.2132303665098045, 102.29757512233074], [2200, 2.212386429633136, 102.29728252844315], [2300, 2.211698639212639, 102.29670267982809], [2400, 2.2110108487921414, 102.29612283121304], [2500, 2.210199024778339, 102.29576050666606], [2600, 2.2093502912589575, 102.29546291221024], [2700, 2.2085211249258494, 102.29511573061355], [2800, 2.207698208194514, 102.29475271128327], [2900, 2.2068703588060097, 102.29440204754366], [3000, 2.2060240315345805, 102.29409766822035], [3100, 2.2051777042631513, 102.29379328889704], [3200, 2.2043179745056447, 102.29353050165076], [3300, 2.2034534011920326, 102.29328274546346], [3400, 2.202585290451237, 102.2930478384651], [3500, 2.201715917014955, 102.29281751802417], [3600, 2.2008537127072336, 102.29256417390754], [3700, 2.2000152176654337, 102.29224006619869], [3800, 2.1992096087971205, 102.2918451846492], [3900, 2.1984530878172865, 102.29135855985862], [4000, 2.1976965668374526, 102.29087193506804], [4100, 2.1969400458576187, 102.29038531027746], [4200, 2.196191193715752, 102.28988710384026], [4300, 2.1954484981019453, 102.28937959967989], [4400, 2.1947058024881385, 102.28887209551951], [4500, 2.1939631068743317, 102.28836459135914]];
-APP_CONFIG.SPOS = [{"ch": 200, "img": "ch200_simpang_jpj.jpg", "label": "Simpang JPJ Bukit Katil", "note": "CH 0+200", "lat": 2.2293693559993404, "lon": 102.29866345363261}, {"ch": 550, "img": "ch550_sk_demang.jpg", "label": "SK Dato Demang Hussin", "note": "CH 0+550 RHS", "lat": 2.2265190724715374, "lon": 102.29994279263123}, {"ch": 730, "img": "ch730_perkuburan_islam_lama.jpg", "label": "Perkuburan Islam Lama Bukit Katil", "note": "CH 0+730 LHS", "lat": 2.2249928091124764, "lon": 102.29969805383192}, {"ch": 790, "img": "ch790_klinik_desa.jpg", "label": "Klinik Desa Bukit Katil", "note": "CH 0+790 LHS", "lat": 2.2245044851012357, "lon": 102.29946831541629}, {"ch": 900, "img": "ch900_masjid_raudhatul.jpg", "label": "Masjid Raudhatul Jannah Bukit Bayan", "note": "CH 0+900 LHS", "lat": 2.2236092244139614, "lon": 102.29904712832099}, {"ch": 960, "img": "ch960_simpang_demang.jpg", "label": "Simpang Demang Hussin", "note": "CH 0+960", "lat": 2.2231187309955796, "lon": 102.29882258555662}, {"ch": 1550, "img": "ch1550_monsoon_drain.jpg", "label": "Monsoon Drain", "note": "CH 1+550\u20131+750 RHS", "lat": 2.217970282128877, "lon": 102.29882801862968}, {"ch": 1775, "img": "ch1775_roundabout_tebing_tinggi.jpg", "label": "Roundabout Jalan Tebing Tinggi", "note": "CH 1+775", "lat": 2.2160219422913947, "lon": 102.29844148397018}, {"ch": 1815, "img": "ch1815_arch_culvert.jpg", "label": "Arch Culvert", "note": "CH 1+815", "lat": 2.2156794436411347, "lon": 102.29833140452357}, {"ch": 2200, "img": "ch2200_culvert_crossing.jpg", "label": "Culvert Crossing", "note": "CH 2+200", "lat": 2.212386429633136, "lon": 102.29728252844315}, {"ch": 2700, "img": "ch2700_perkuburan_cina.jpg", "label": "Perkuburan Cina", "note": "CH 2+700 LHS", "lat": 2.2085211249258494, "lon": 102.29511573061355}, {"ch": 2775, "img": "ch2775_perkuburan_islam_duyong.jpg", "label": "Perkuburan Islam Bukit Duyong", "note": "CH 2+775 LHS", "lat": 2.2079039373773477, "lon": 102.29484346611584}, {"ch": 3125, "img": "ch3125_overhead_gantry.jpg", "label": "Overhead Gantry Sign Board", "note": "CH 3+125", "lat": 2.204966122445294, "lon": 102.2937171940662}, {"ch": 3330, "img": "ch3330_persimpangan_duyong.jpg", "label": "Persimpangan Duyong", "note": "CH 3+330", "lat": 2.2031938518566343, "lon": 102.29320906277376}, {"ch": 3330, "img": "ch3330_rs_wall_duyong.jpg", "label": "RS Wall Persimpangan Duyong", "note": "CH 3+330 RHS", "lat": 2.2031938518566343, "lon": 102.29320906277376}, {"ch": 3675, "img": "ch3675_simpang_perigi_hang_tuah.jpg", "label": "Persimpangan Perigi Hang Tuah", "note": "CH 3+675", "lat": 2.200221240702286, "lon": 102.29233015046428}, {"ch": 3900, "img": "ch3900_crossing_culvert.jpg", "label": "Crossing Culvert", "note": "CH 3+900", "lat": 2.1984530878172865, "lon": 102.29135855985862}, {"ch": 3600, "img": "ch3330_pokok_warisan.jpg", "label": "Pokok Warisan (Heritage Trees)", "note": "CH 3+330\u20134+300", "lat": 2.2008537127072336, "lon": 102.29256417390754}];
-APP_CONFIG.JUNC = [[0, "1", "Persimpangan JPJ Bukit Katil", "Mula projek (CH 0+000). Persimpangan sedia ada — dinaiktaraf.", 102.299182, 2.230963], [960, "2", "Simpang Demang Hussin", "CH 0+960. Persimpangan at-grade Jalan Demang Hussin.", 102.29904, 2.22353], [1775, "3", "Roundabout Jalan Tebing Tinggi", "CH 1+775. Bulatan sedia ada — dinaiktaraf sebagai sebahagian skop projek.", 102.29793, 2.21621], [3330, "4", "Persimpangan Duyong", "CH 3+330. Bersebelahan dengan BR2 Flyover. Persimpangan berbilang hala.", 102.29346, 2.20332], [3675, "5", "Persimpangan Perigi Hang Tuah", "CH 3+675. Persimpangan at-grade — dinaiktaraf.", 102.29128, 2.19849], [4500, "6", "Persimpangan Lebuh Ama / FT019 (TAMAT)", "TAMAT projek (CH 4+500). Persimpangan Semabok Lebuh AMJ (FT019).", 102.288241, 2.19385]];
-APP_CONFIG.PROP = [[700, "Jejantas Pejalan Kaki & Motosikal", "Cadangan jejantas pejalan kaki dan motosikal. Bentang 28.5m, U-beam, cerucuk spun 300mm, lebar laluan 3.0m.", "jejantas"], [790, "BR1 — Menggantikan Jambatan Parit Besar Bukit Katil", "BR1: Jambatan integral 15m. Cerucuk bored 700mm. Carriageway 2-lorong. CH 0+790.", "bridge"], [3150, "BR2 — Flyover Persimpangan Kg. Duyong & Kg. Hang Tuah", "BR2: 7 rentang × 40m = 280m jumlah. T-beam 2145mm. Cerucuk bored 600mm. Pemisahan gred (grade separation).", "flyover"]];
-APP_CONFIG.CPS = [{"id": "CP1", "name": "Depan Kompleks JAPERUN Bukit Katil", "lat": 2.228647, "lon": 102.298848, "url": "https://maps.app.goo.gl/RQjQa3qka5u9wt1z5"}, {"id": "CP2", "name": "Bulatan Tebing Tinggi", "lat": 2.216538, "lon": 102.298664, "url": "https://maps.app.goo.gl/W9iMssvFyv2BipHG8"}, {"id": "CP3", "name": "Balai Raya Bukit Duyong", "lat": 2.204294, "lon": 102.293617, "url": "https://Maps.App.Goo.Gl/Sdqw4rcgs9uhhaos9"}, {"id": "CP4", "name": "Kampung Tengah", "lat": 2.194338, "lon": 102.288704, "url": "https://maps.app.goo.gl/Xs2vsYaqnG1gxu3Y7"}];
+// ---------------------------------------------------------------------------
+// Geospatial arrays — Route 1 (IOI Conezion → Hospital Serdang, 400mm MSCL)
+// + Route 2 (Hospital Serdang → Hospital Veterinar, 200mm MSCL/HDPE)
+//
+// COORDINATES ARE APPROXIMATE — derived from route description in Method Statement.
+// Replace with verified survey data (GPS or design drawings) before live briefing.
+// ---------------------------------------------------------------------------
+
+// Pipeline alignment polyline (Route 1 then Route 2)
+APP_CONFIG.POLY = [
+  // Route 1: IOI Conezion → Hospital Serdang (northeast along Lebuh IRC then FT 345)
+  [2.9697, 101.7122],
+  [2.9715, 101.7131],
+  [2.9734, 101.7140],
+  [2.9753, 101.7149],
+  [2.9772, 101.7158],
+  [2.9791, 101.7167],
+  [2.9810, 101.7177],
+  [2.9828, 101.7186],
+  [2.9863, 101.7197],
+  [2.9898, 101.7208],
+  [2.9933, 101.7215],
+  [2.9975, 101.7222],
+  // Route 2: Hospital Serdang → Hospital Veterinar (westward along FT 345)
+  [2.9968, 101.7195],
+  [2.9961, 101.7168],
+  [2.9954, 101.7141],
+  [2.9950, 101.7118]
+];
+
+// Chainage points along Route 1 (100m intervals, approximate)
+APP_CONFIG.CH_PTS = [
+  [0,    2.9697, 101.7122],
+  [200,  2.9715, 101.7131],
+  [400,  2.9734, 101.7140],
+  [600,  2.9753, 101.7149],
+  [800,  2.9772, 101.7158],
+  [950,  2.9791, 101.7167],
+  [1100, 2.9810, 101.7177],
+  [1250, 2.9828, 101.7186],
+  [1300, 2.9863, 101.7197],
+  [1350, 2.9898, 101.7208],
+  [1400, 2.9933, 101.7215],
+  [1450, 2.9975, 101.7222]
+];
+
+// Site photo positions (empty — populate after site visit)
+APP_CONFIG.SPOS = [];
+
+// Junction / key node points
+APP_CONFIG.JUNC = [
+  [0,    "A", "IOI Conezion — Tap on 900mm Main",
+   "CH 0+000 (Route 1 mula). Hot tap pada paip sedia 900mm diameter dari IOI City Reservoir. Bekalan redundan baru bermula di sini. Koordinat perlu disahkan dari pelan rekabentuk.",
+   101.7122, 2.9697],
+  [950,  "B", "SKVE Crossing — Twin Pipe Jacking",
+   "CH ~0+950 hingga CH ~1+100. Twin pipe jacking di bawah South Klang Valley Expressway (SKVE). Dua paip 400mm MSCL selari, ~150m alignment (300m paip dipasang). Jacking pit di selatan, receiving pit di utara SKVE.",
+   101.7172, 2.9810],
+  [1450, "C", "Hospital Serdang (HSIS) — Bulk Meter Off-Take",
+   "CH 1+450 (Route 1 tamat / Route 2 mula). Bulk meter dan off-take ke Hospital Serdang (Hospital Sultan Idris Shah). Electromagnetic flowmeter, RTU panel, dan sistem SCADA telemetri dipasang di sini.",
+   101.7222, 2.9975],
+  [2250, "D", "Hospital Veterinar (HVet) — Route 2 Tamat",
+   "Hujung Route 2 (~800m dari HSIS). Hot tap pada paip sedia 200mm diameter bekalan Hospital Veterinar UPM. Paip produk HDPE PN10 atau MSCL 200mm melalui HDD dan open trench.",
+   101.7118, 2.9950]
+];
+
+// Proposed structures / special features
+APP_CONFIG.PROP = [
+  [950,  "Twin Pipe Jacking — SKVE Crossing",
+   "Dua drive selari 400mm MSCL. Jacking pits di kedua-dua sisi SKVE. Tiada gangguan lalulintas SKVE dijangkakan. Pemantauan enapan berterusan sepanjang operasi. Jacking boleh diteruskan secara serentak (twin campaign).",
+   "bridge"],
+  [1250, "HDD Crossing — Koridor Utiliti FT 345",
+   "Route 2: Horizontal Directional Drilling (HDD) di bawah koridor utiliti sedia ada sepanjang FT 345. Paip produk HDPE PN10 200mm. Kedalaman minimum 3.0m di bawah permukaan jalan. Entry/exit angle: 10°–18°.",
+   "flyover"],
+  [1450, "Flowmeter, RTU & SCADA Telemetri",
+   "Pasang electromagnetic flowmeter, RTU panel, instrument panel, dan sistem SCADA telemetri di off-take Hospital Serdang. Pemantauan aliran masa nyata untuk grid bekalan redundan.",
+   "jejantas"]
+];
+
+// Checkpoint navigation points
+APP_CONFIG.CPS = [
+  {
+    "id": "CP1",
+    "name": "IOI Conezion — Start Route 1",
+    "lat": 2.9697,
+    "lon": 101.7122,
+    "url": ""
+  },
+  {
+    "id": "CP2",
+    "name": "SKVE Pipe Jacking Zone",
+    "lat": 2.9810,
+    "lon": 101.7177,
+    "url": ""
+  },
+  {
+    "id": "CP3",
+    "name": "Hospital Serdang (HSIS) Bulk Meter",
+    "lat": 2.9975,
+    "lon": 101.7222,
+    "url": ""
+  },
+  {
+    "id": "CP4",
+    "name": "Hospital Veterinar — End Route 2",
+    "lat": 2.9950,
+    "lon": 101.7118,
+    "url": ""
+  }
+];
