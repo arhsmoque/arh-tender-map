@@ -8,21 +8,22 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="config.js"></script>
 <style>
 :root{
-  --bg:#0b0d12;--panel:#13161f;--panel2:#1a1e2b;--panel3:#20253a;
+  --bg:#060d18;--panel:#0b1524;--panel2:#0f1d30;--panel3:#14253e;
   --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
-  --text:#e4e8f0;--muted:#7a84a0;--faint:#3a4060;
-  --yellow:#aaff00;--y2:rgba(170,255,0,0.12);--y3:rgba(170,255,0,0.06);
+  --text:#ddeeff;--muted:#6a88a8;--faint:#1e3a58;
+  --yellow:#00aaff;--y2:rgba(0,170,255,0.12);--y3:rgba(0,170,255,0.06);
   --amber:#ffaa00;--red:#ff4455;--cyan:#33ccff;--magenta:#ff33cc;--orange:#ff7733;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{height:100%;overflow:hidden;}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;}
 /* ── MASTHEAD ── */
-#mast{background:var(--panel);border-bottom:2px solid rgba(170,255,0,0.22);
+#mast{background:var(--panel);border-bottom:2px solid rgba(0,170,255,0.22);
   padding:0 16px;display:flex;align-items:stretch;flex-shrink:0;min-height:68px;z-index:2000;position:relative;}
 .m-jkr{display:flex;align-items:center;gap:12px;padding:10px 16px 10px 0;border-right:1px solid var(--border2);flex-shrink:0;}
 .m-jkr img.jata{width:52px;height:auto;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4));}
@@ -36,7 +37,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
 .chip{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:3px;}
 .chip-y{background:var(--yellow);color:#000;}
 .chip-n{background:var(--panel3);color:var(--muted);border:1px solid var(--border2);}
-.chip-live{background:rgba(255,68,85,0.15);color:#ff8899;border:1px solid rgba(255,68,85,0.3);animation:blink 1.8s ease-in-out infinite;}
+.chip-live{background:rgba(0,170,255,0.15);color:#66ccff;border:1px solid rgba(0,170,255,0.3);animation:blink 1.8s ease-in-out infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.5}}
 .m-title{font-size:13px;font-weight:600;color:#fff;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .m-sub{font-size:10px;color:var(--muted);margin-top:3px;}
@@ -44,7 +45,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
 .di{display:flex;flex-direction:column;align-items:center;padding:6px 11px;
   border-right:1px solid var(--border);min-width:84px;}
 .di:last-child{border-right:none;}
-.di.active{background:rgba(170,255,0,0.07);}
+.di.active{background:rgba(0,170,255,0.07);}
 .di-l{font-size:7.5px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
 .di-v{font-size:10.5px;font-weight:700;color:var(--text);text-align:center;line-height:1.3;}
 .di.active .di-v{color:var(--yellow);}
@@ -56,7 +57,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
 .m-dpi-txt .d3{font-size:8px;color:var(--muted);margin-top:2px;font-style:italic;}
 /* ── TOOLBAR ── */
 #tb{background:var(--panel);border-bottom:1px solid var(--border);padding:5px 14px;
-  display:flex;align-items:center;gap:6px;flex-shrink:0;}
+  display:flex;align-items:center;gap:6px;flex-shrink:0;flex-wrap:wrap;}
 .tbb{background:var(--panel2);border:1px solid var(--border2);color:var(--text);
   font-family:'Inter',sans-serif;font-size:10.5px;font-weight:500;
   padding:4px 11px;border-radius:5px;cursor:pointer;transition:all .15s;white-space:nowrap;}
@@ -73,10 +74,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
 #sidebar.collapsed{width:0;min-width:0;}
 #map{flex:1;}
 /* ── SIDEBAR ── */
-.stabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0;}
-.stab{flex:1;padding:8px 0;text-align:center;font-size:9.5px;font-weight:600;
-  color:var(--muted);cursor:pointer;letter-spacing:.5px;text-transform:uppercase;
-  border-bottom:2px solid transparent;transition:all .15s;}
+.stabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;}
+.stab{flex:1;padding:8px 4px;text-align:center;font-size:8.5px;font-weight:600;
+  color:var(--muted);cursor:pointer;letter-spacing:.4px;text-transform:uppercase;
+  border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;}
 .stab.active{color:var(--yellow);border-bottom-color:var(--yellow);}
 .tpane{display:none;flex:1;overflow-y:auto;flex-direction:column;}
 .tpane.active{display:flex;}
@@ -95,11 +96,11 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
   position:relative;transition:all .15s;cursor:pointer;}
 .sw::after{content:'';position:absolute;width:9px;height:9px;background:var(--muted);border-radius:50%;
   top:2px;left:2px;transition:all .15s;}
-.sw.on{background:rgba(170,255,0,0.15);border-color:var(--yellow);}
+.sw.on{background:var(--y2);border-color:var(--yellow);}
 .sw.on::after{background:var(--yellow);left:13px;}
 .fitem{padding:7px 9px;border-radius:5px;background:var(--panel2);border:1px solid var(--border);
   cursor:pointer;transition:all .15s;}
-.fitem:hover{border-color:rgba(170,255,0,0.3);background:var(--y3);}
+.fitem:hover{border-color:rgba(0,170,255,0.3);background:var(--y3);}
 .fi-ch{font-size:7.5px;font-weight:700;letter-spacing:1px;margin-bottom:2px;}
 .fi-nm{font-size:11px;font-weight:500;}
 .fi-sb{font-size:9px;color:var(--muted);margin-top:1px;}
@@ -145,12 +146,12 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
 .qbtn.waze{background:#05c8f7;color:#000;}
 .qbtn.gmaps{background:#4285f4;color:#fff;}
 .qbtn.copy{background:var(--panel2);color:var(--text);border:1px solid var(--border2);}
-#pinbtn{background:var(--panel2);border:1px solid rgba(170,255,0,0.3);color:var(--yellow);
+#pinbtn{background:var(--panel2);border:1px solid rgba(0,170,255,0.3);color:var(--yellow);
   font-family:'Inter',sans-serif;font-size:10.5px;font-weight:600;padding:8px;
   border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:all .15s;}
 #pinbtn.active{background:var(--yellow);color:#000;border-color:var(--yellow);}
 .cpcard{background:var(--panel2);border:1px solid var(--border);border-radius:6px;padding:7px 9px;cursor:pointer;transition:all .15s;margin-bottom:4px;}
-.cpcard:hover{border-color:rgba(170,255,0,0.3);}
+.cpcard:hover{border-color:rgba(0,170,255,0.3);}
 .cphd{display:flex;align-items:center;gap:7px;margin-bottom:3px;}
 .cpbadge{width:22px;height:22px;border-radius:4px;background:var(--yellow);color:#000;
   font-size:8.5px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
@@ -161,6 +162,16 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
 .cpbtn{flex:1;padding:4px;border-radius:4px;font-size:8.5px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;border:none;}
 .cpbtn.waze{background:#05c8f7;color:#000;}
 .cpbtn.gmaps{background:#4285f4;color:#fff;}
+/* ── CONTEXT TAB ── */
+.ctx-card{background:var(--panel2);border:1px solid var(--border);border-radius:7px;overflow:hidden;}
+.ctx-hd{display:flex;align-items:center;justify-content:space-between;padding:8px 11px;
+  cursor:pointer;font-size:10px;font-weight:700;color:var(--text);user-select:none;transition:background .15s;}
+.ctx-hd:hover{background:var(--panel3);}
+.ctx-hd .ctx-arr{font-size:9px;color:var(--muted);transition:transform .2s;}
+.ctx-hd.open .ctx-arr{transform:rotate(180deg);}
+.ctx-body{display:none;padding:9px 11px;border-top:1px solid var(--border);font-size:9.5px;color:var(--muted);line-height:1.7;}
+.ctx-hd.open + .ctx-body{display:block;}
+.ctx-body p{margin-bottom:6px;white-space:pre-line;}
 /* popup */
 .leaflet-popup-content-wrapper{background:var(--panel)!important;border:1px solid var(--border2)!important;
   border-radius:9px!important;box-shadow:0 8px 32px rgba(0,0,0,0.6)!important;
@@ -175,7 +186,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
 .popen{display:block;width:100%;padding:5px;text-align:center;background:var(--yellow);color:#000;font-weight:700;font-size:9.5px;border-radius:4px;border:none;cursor:pointer;font-family:'Inter',sans-serif;}
 /* legend */
 #legend{position:absolute;bottom:14px;right:9px;z-index:800;
-  background:rgba(19,22,31,0.93);border:1px solid var(--border2);border-radius:9px;
+  background:rgba(11,21,36,0.93);border:1px solid var(--border2);border-radius:9px;
   padding:9px 11px;min-width:170px;backdrop-filter:blur(4px);}
 .lgt{font-size:8.5px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
 .lgr{display:flex;align-items:center;gap:6px;margin-bottom:4px;font-size:9.5px;}
@@ -249,7 +260,7 @@ body.pres .lgr{font-size:12px;}
   <button class="tbb" onclick="map.setZoom(map.getZoom()+1)">＋</button>
   <button class="tbb" onclick="map.setZoom(map.getZoom()-1)">－</button>
   <button class="tbb" onclick="flyFull()">Penuh</button>
-  <button class="tbb" onclick="flyFlyover()">BR2 Flyover</button>
+  <div id="quicknav-btns"></div>
   <div class="tsep"></div>
   <button class="tbb" id="presbtn" onclick="togglePres()">🖥 Mod Projektor</button>
   <button class="tbb" id="sbbtn" onclick="toggleSb()">◀ Panel</button>
@@ -258,19 +269,15 @@ body.pres .lgr{font-size:12px;}
 <!-- BODY -->
 <div id="body">
   <div id="sidebar">
-    <div class="stabs">
-      <div class="stab active" onclick="switchTab('layers')">Lapisan</div>
-      <div class="stab" onclick="switchTab('features')">Ciri</div>
-      <div class="stab" onclick="switchTab('project')">Projek</div>
-      <div class="stab" onclick="switchTab('cp')">CP/QR</div>
-      <div class="stab" onclick="switchTab('contacts')">Pasukan JKR</div>
-    </div>
+    <div class="stabs" id="sidebar-tabs"></div>
     <!-- LAYERS -->
     <div class="tpane active" id="tab-layers"><div class="tb2" id="layers-list"></div></div>
     <!-- FEATURES -->
     <div class="tpane" id="tab-features"><div class="tb2" id="feat-list"></div></div>
     <!-- PROJECT -->
     <div class="tpane" id="tab-project"><div class="tb2" id="project-panel"></div></div>
+    <!-- CONTEXT -->
+    <div class="tpane" id="tab-context"><div class="tb2" id="context-panel"></div></div>
     <!-- CP/QR -->
     <div class="tpane" id="tab-cp"><div class="qpane" id="cp-panel"></div></div>
     <!-- CONTACTS -->
@@ -302,63 +309,264 @@ body.pres .lgr{font-size:12px;}
 </div>
 <div id="toast">Disalin!</div>
 <script>
-/* Geospatial data loaded from config.js */
-const {POLY, CH_PTS, SPOS, JUNC, PROP, CPS} = APP_CONFIG;
+/* ── Theme injection — maps APP_CONFIG.theme → CSS custom properties ── */
+(function(){
+  const t = APP_CONFIG.theme || {};
+  const map = {
+    bg:'--bg', panel:'--panel', panel2:'--panel2', panel3:'--panel3',
+    border:'--border', border2:'--border2', text:'--text', muted:'--muted', faint:'--faint',
+    accent:'--yellow',
+    accent2:'--y2', accent3:'--y3',
+    amber:'--amber', red:'--red', cyan:'--cyan', magenta:'--magenta', orange:'--orange'
+  };
+  const root = document.documentElement.style;
+  Object.entries(map).forEach(([k,v]) => { if (t[k]) root.setProperty(v, t[k]); });
+})();
+
+/* ── Mutable geospatial globals (overridden by KMZ loader) ── */
+let POLY = APP_CONFIG.POLY;
+let CH_PTS = APP_CONFIG.CH_PTS;
+const SPOS = APP_CONFIG.SPOS;
+const JUNC = APP_CONFIG.JUNC;
+const PROP = APP_CONFIG.PROP;
+const CPS  = APP_CONFIG.CPS;
 const PHOTOS = APP_CONFIG.photos.map(p => ({...p, src: `assets/photos/${p.img}`}));
 
-// Set title
+/* ── Masthead ── */
 document.title = APP_CONFIG.project.title;
-
-// Initialize masthead
-document.getElementById('client-logo').src = APP_CONFIG.client.logo;
-document.getElementById('client-name').textContent = APP_CONFIG.client.name;
+document.getElementById('client-logo').src       = APP_CONFIG.client.logo;
+document.getElementById('client-name').textContent    = APP_CONFIG.client.name;
 document.getElementById('client-subname').textContent = APP_CONFIG.client.subname;
-document.getElementById('client-url').href = APP_CONFIG.client.url;
+document.getElementById('client-url').href        = APP_CONFIG.client.url;
 document.getElementById('client-url').textContent = APP_CONFIG.client.url.replace('https://','');
-document.getElementById('consultant-logo').src = APP_CONFIG.consultant.logo;
-document.getElementById('consultant-name').textContent = APP_CONFIG.consultant.name;
+document.getElementById('consultant-logo').src        = APP_CONFIG.consultant.logo;
+document.getElementById('consultant-name').textContent    = APP_CONFIG.consultant.name;
 document.getElementById('consultant-subname').textContent = APP_CONFIG.consultant.subname;
-document.getElementById('project-title').textContent = APP_CONFIG.project.title;
-document.getElementById('project-subtitle').textContent = APP_CONFIG.project.subtitle;
+document.getElementById('project-title').textContent    = APP_CONFIG.project.title;
+document.getElementById('project-subtitle').textContent  = APP_CONFIG.project.subtitle;
 
-// Badges
+/* ── Badges ── */
 const badges = document.getElementById('badges');
-const b1 = document.createElement('span'); b1.className = 'chip chip-y'; b1.textContent = APP_CONFIG.project.programme; badges.appendChild(b1);
-const b2 = document.createElement('span'); b2.className = 'chip chip-n'; b2.textContent = APP_CONFIG.project.tenderNumber; badges.appendChild(b2);
-const b3 = document.createElement('span'); b3.className = 'chip chip-live'; b3.textContent = '● ' + APP_CONFIG.dates.briefing; badges.appendChild(b3);
+[{cls:'chip-y',txt:APP_CONFIG.project.programme},
+ {cls:'chip-n',txt:APP_CONFIG.project.tenderNumber},
+ {cls:'chip-live',txt:'● '+APP_CONFIG.dates.briefing}
+].forEach(({cls,txt}) => { const s=document.createElement('span'); s.className='chip '+cls; s.textContent=txt; badges.appendChild(s); });
 
-// Date strip
+/* ── Date strip ── */
 const dateStrip = document.getElementById('date-strip');
-const dateDefs = [
-  {key:'advertisement', label:'Tarikh Iklan'},
-  {key:'download', label:'Muat Turun', sub:APP_CONFIG.dates.download.price},
-  {key:'briefing', label:'Taklimat & Lawatan', sub:'HARI INI'},
-  {key:'closing', label:'Tarikh Tutup', sub:APP_CONFIG.dates.closing.time},
-];
-dateDefs.forEach(d => {
+[{key:'advertisement',label:'Tarikh Iklan'},
+ {key:'download',label:'Muat Turun',sub:APP_CONFIG.dates.download.price},
+ {key:'briefing',label:'Taklimat & Lawatan',sub:'HARI INI'},
+ {key:'closing',label:'Tarikh Tutup',sub:APP_CONFIG.dates.closing.time}
+].forEach(d => {
   const info = APP_CONFIG.dates[d.key];
-  const div = document.createElement('div'); div.className = 'di' + (APP_CONFIG.dates.active === d.key ? ' active' : '');
-  const v = typeof info === 'string' ? info : `${info.start}<br>${info.end || info.date}`;
-  div.innerHTML = `<div class="di-l">${d.label}</div><div class="di-v">${v}</div>${d.sub ? `<div class="di-n">${d.sub}</div>` : ''}`;
+  const div = document.createElement('div');
+  div.className = 'di' + (APP_CONFIG.dates.active===d.key?' active':'');
+  const v = typeof info==='string' ? info : `${info.start}<br>${info.end||info.date}`;
+  div.innerHTML = `<div class="di-l">${d.label}</div><div class="di-v">${v}</div>${d.sub?`<div class="di-n">${d.sub}</div>`:''}`;
   dateStrip.appendChild(div);
 });
 
-// Layers
+/* ── Sidebar tabs (dynamic, includes Konteks) ── */
+const TAB_DEFS = [
+  {id:'layers',   label:'Lapisan'},
+  {id:'features', label:'Ciri'},
+  {id:'project',  label:'Projek'},
+  {id:'context',  label:'Konteks'},
+  {id:'cp',       label:'CP/QR'},
+  {id:'contacts', label: APP_CONFIG.contactsTabLabel || 'Pasukan'}
+];
+const tabsEl = document.getElementById('sidebar-tabs');
+TAB_DEFS.forEach((td, i) => {
+  const el = document.createElement('div');
+  el.className = 'stab' + (i===0?' active':'');
+  el.textContent = td.label;
+  el.onclick = () => switchTab(td.id);
+  tabsEl.appendChild(el);
+});
+
+/* ── Quick-nav toolbar buttons ── */
+const qnEl = document.getElementById('quicknav-btns');
+(APP_CONFIG.quickNav||[]).forEach(nav => {
+  const b = document.createElement('button');
+  b.className = 'tbb';
+  b.textContent = nav.label;
+  b.onclick = () => map.flyTo([nav.lat, nav.lon], nav.zoom||17, {duration:1.5});
+  qnEl.appendChild(b);
+});
+
+/* ── KMZ Helpers ── */
+function _hav(lat1, lon1, lat2, lon2) {
+  const R=6371000, p1=lat1*Math.PI/180, p2=lat2*Math.PI/180,
+        dp=(lat2-lat1)*Math.PI/180, dl=(lon2-lon1)*Math.PI/180,
+        a=Math.sin(dp/2)**2+Math.cos(p1)*Math.cos(p2)*Math.sin(dl/2)**2;
+  return 2*R*Math.asin(Math.sqrt(a));
+}
+
+function _buildCH(poly, interval) {
+  if (!poly||poly.length<2) return [];
+  const pts=[[0,poly[0][0],poly[0][1]]]; let cum=0, next=interval;
+  for (let i=0;i<poly.length-1;i++) {
+    const [la1,lo1]=poly[i],[la2,lo2]=poly[i+1], seg=_hav(la1,lo1,la2,lo2);
+    while (next<=cum+seg) { const f=(next-cum)/seg; pts.push([next,la1+f*(la2-la1),lo1+f*(lo2-lo1)]); next+=interval; }
+    cum+=seg;
+  }
+  const last=poly[poly.length-1]; pts.push([Math.round(cum),last[0],last[1]]);
+  return pts;
+}
+
+async function _loadKMZ(url) {
+  try {
+    const ab = await fetch(url).then(r=>r.arrayBuffer());
+    const zip = await JSZip.loadAsync(ab);
+    const kmlFile = Object.values(zip.files).find(f=>f.name.toLowerCase().endsWith('.kml'));
+    if (!kmlFile) return null;
+    let kmlTxt = await kmlFile.async('string');
+    kmlTxt = kmlTxt.replace(/<gx:/g,'<').replace(/<\/gx:/g,'</').replace(/<kml:/g,'<').replace(/<\/kml:/g,'</').replace(/<atom:[^>]*>/g,'').replace(/<\/atom:[^>]*>/g,'');
+    const doc = new DOMParser().parseFromString(kmlTxt,'application/xml');
+    const segs = {};
+    doc.querySelectorAll('Placemark').forEach(pm => {
+      const name = pm.querySelector('name')?.textContent?.trim();
+      const coords = pm.querySelector('LineString coordinates')?.textContent?.trim();
+      if (!name||!coords) return;
+      segs[name] = coords.trim().split(/\s+/).map(c => { const [lon,lat]=c.split(',').map(Number); return [lat,lon]; });
+    });
+    return segs;
+  } catch(e) { console.warn('KMZ load failed:',e); return null; }
+}
+
+/* ── Map setup ── */
+const map = L.map('map', {center:APP_CONFIG.map.center, zoom:APP_CONFIG.map.zoom, zoomControl:false});
+L.control.zoom({position:'bottomleft'}).addTo(map);
+const OSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19});
+const SAT = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'© Esri',maxZoom:19});
+OSM.addTo(map);
+map.on('zoomend',()=>document.getElementById('zdisplay').textContent='Z:'+map.getZoom());
+
+const lgA=L.layerGroup().addTo(map), lgC=L.layerGroup().addTo(map),
+      lgJ=L.layerGroup().addTo(map), lgP=L.layerGroup().addTo(map),
+      lgS=L.layerGroup().addTo(map), lgCP=L.layerGroup().addTo(map), lgPin=L.layerGroup().addTo(map);
+const LGM={alignment:lgA,chainage:lgC,junctions:lgJ,proposed:lgP,sitephotos:lgS,cp:lgCP};
+const LGS={alignment:true,chainage:true,junctions:true,proposed:true,sitephotos:true,cp:true};
+
+/* ── Render alignment (multi-route) ── */
+function renderAlignment() {
+  lgA.clearLayers();
+  const routes = APP_CONFIG.routes || [];
+  if (routes.length) {
+    routes.forEach(r => {
+      const pts = r.poly;
+      L.polyline(pts,{color:r.glowColor||'rgba(0,170,255,0.12)',weight:18,lineJoin:'round'}).addTo(lgA);
+      L.polyline(pts,{color:r.color,weight:4,opacity:0.9,lineJoin:'round'}).addTo(lgA);
+    });
+  } else {
+    L.polyline(POLY,{color:'rgba(0,170,255,0.12)',weight:16,lineJoin:'round'}).addTo(lgA);
+    L.polyline(POLY,{color:'#00aaff',weight:4,opacity:0.88,lineJoin:'round'}).addTo(lgA);
+  }
+}
+
+/* ── Render chainage ── */
+function renderChainage() {
+  lgC.clearLayers();
+  CH_PTS.forEach(([ch,lat,lon]) => {
+    if (ch===0) return;
+    if (ch%500===0||ch===CH_PTS[CH_PTS.length-1][0]) {
+      const km=Math.floor(ch/1000), m=String(ch%1000).padStart(3,'0'), lbl=ch>=1000?`${km}+${m}`:`0+${m}`;
+      L.marker([lat,lon],{icon:L.divIcon({className:'',html:`<div style="background:#ffcc00;color:#000;font-family:Inter,sans-serif;font-size:9px;font-weight:800;padding:2px 6px;border-radius:3px;white-space:nowrap;box-shadow:0 1px 5px rgba(0,0,0,0.5);border:1px solid rgba(0,0,0,0.25);">${lbl}</div>`,iconAnchor:[0,8]}),zIndexOffset:50}).addTo(lgC);
+    } else {
+      L.circleMarker([lat,lon],{radius:3.5,color:'rgba(255,255,255,0.7)',fillColor:'rgba(255,255,255,0.45)',fillOpacity:1,weight:1.2}).addTo(lgC);
+    }
+  });
+}
+
+/* ── interp: find [lat,lon] at distance d along POLY ── */
+function interp(d) {
+  let cum=0;
+  for (let i=0;i<POLY.length-1;i++) {
+    const [la1,lo1]=POLY[i],[la2,lo2]=POLY[i+1],seg=_hav(la1,lo1,la2,lo2);
+    if (cum+seg>=d) { const f=(d-cum)/seg; return [la1+f*(la2-la1),lo1+f*(lo2-lo1)]; }
+    cum+=seg;
+  }
+  return POLY[POLY.length-1];
+}
+
+/* ── Render junctions ── */
+function renderJunctions() {
+  lgJ.clearLayers();
+  JUNC.forEach(([ch,num,name,desc,lon,lat]) => {
+    const isS=ch===0, isE=ch===JUNC[JUNC.length-1][0], bg=isS?'#00aaff':isE?'#ff4455':'#ff4455', tc='#fff', lbl=isS?'S':isE?'E':num;
+    const m=L.marker([lat,lon],{icon:L.divIcon({className:'',html:`<div style="width:30px;height:30px;border-radius:50%;background:${bg};color:${tc};display:flex;align-items:center;justify-content:center;font-family:Inter,sans-serif;font-size:13px;font-weight:800;border:2.5px solid rgba(255,255,255,0.9);box-shadow:0 3px 12px rgba(0,0,0,0.6);cursor:pointer;">${lbl}</div>`,iconSize:[30,30],iconAnchor:[15,15]}),zIndexOffset:300}).addTo(lgJ);
+    const cs=`${Math.floor(ch/1000)}+${String(ch%1000).padStart(3,'0')}`;
+    m.bindPopup(`<div class="pw"><div class="pch">NOD ${num} · CH ${cs}</div><div class="ptl">${name}</div><p style="font-size:9.5px;color:var(--muted);margin-top:3px;line-height:1.6;">${desc}</p></div>`);
+  });
+}
+
+/* ── Render proposed structures ── */
+const pnames={jacking:'🔵 Twin Pipe Jacking — SKVE',hdd:'🟣 HDD Crossing',scada:'📡 SCADA Telemetri',bridge:'🌉 Jambatan',flyover:'🛣 Flyover',jejantas:'🚶 Jejantas'};
+function renderProposed() {
+  lgP.clearLayers();
+  PROP.forEach(([ch,name,desc,type]) => {
+    const [lat,lon]=interp(ch), bg=type==='jacking'?'#ff8833':type==='hdd'?'#ff33cc':'#ffaa00', tc='#000';
+    const short=pnames[type]||name;
+    const mk=L.marker([lat,lon],{icon:L.divIcon({className:'',html:`<div style="background:${bg};color:${tc};font-family:Inter,sans-serif;font-size:9px;font-weight:800;padding:3px 8px;border-radius:4px;white-space:nowrap;box-shadow:0 2px 10px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);cursor:pointer;">${short}</div>`,iconAnchor:[40,10]}),zIndexOffset:250}).addTo(lgP);
+    const cs=`${Math.floor(ch/1000)}+${String(ch%1000).padStart(3,'0')}`;
+    mk.bindPopup(`<div class="pw"><div class="pch">CADANGAN · CH ${cs}</div><div class="ptl">${pnames[type]||name}</div><p style="font-size:9.5px;color:var(--muted);margin-top:4px;line-height:1.6;">${desc}</p></div>`);
+  });
+}
+
+/* ── Render site photos ── */
+let curP=0; const PM={};
+PHOTOS.forEach(p=>PM[p.img]=p);
+function renderSitePhotos() {
+  lgS.clearLayers();
+  SPOS.forEach((pos,idx) => {
+    const p=PM[pos.img]; if(!p) return;
+    const mk=L.marker([pos.lat,pos.lon],{icon:L.divIcon({className:'',html:`<div style="width:24px;height:24px;border-radius:50%;background:#33ccff;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,0.8);box-shadow:0 2px 8px rgba(0,0,0,0.5);cursor:pointer;font-size:11px;">📷</div>`,iconSize:[24,24],iconAnchor:[12,12]}),zIndexOffset:100}).addTo(lgS);
+    const cs=`${Math.floor(pos.ch/1000)}+${String(pos.ch%1000).padStart(3,'0')}`;
+    mk.bindPopup(`<div style="padding:0;width:220px;"><img src="${p.src}" class="pthumb" style="border-radius:7px 7px 0 0;" onclick="openM(${idx})"><div style="padding:9px 11px;"><div class="pch">GAMBAR TAPAK · CH ${cs}</div><div class="ptl" style="font-size:11px;">${pos.label}</div><div style="font-size:8.5px;color:var(--muted);margin-top:1px;">${pos.note}</div><button class="popen" style="margin-top:6px;" onclick="openM(${idx})">Lihat Gambar Penuh</button></div></div>`,{maxWidth:240,minWidth:220});
+  });
+}
+
+/* ── Render CPs ── */
+function renderCPs() {
+  lgCP.clearLayers();
+  CPS.forEach((cp,i) => {
+    const mk=L.marker([cp.lat,cp.lon],{icon:L.divIcon({className:'',html:`<div style="background:#00aaff;color:#000;font-family:Inter,sans-serif;font-size:11px;font-weight:800;padding:4px 8px;border-radius:5px;border:2px solid rgba(0,0,0,0.4);box-shadow:0 3px 12px rgba(0,0,0,0.6);white-space:nowrap;cursor:pointer;">${cp.id}</div>`,iconAnchor:[20,15]}),zIndexOffset:400}).addTo(lgCP);
+    mk.bindPopup(`<div class="pw"><div class="pch">LOKASI LAWATAN TAPAK</div><div class="ptl">${cp.id}: ${cp.name}</div><p style="font-size:9px;color:var(--muted);margin-top:3px;">${cp.lat.toFixed(6)}, ${cp.lon.toFixed(6)}</p><div style="display:flex;gap:4px;margin-top:7px;"><button onclick="window.open('https://waze.com/ul?ll=${cp.lat},${cp.lon}&navigate=yes','_blank')" style="flex:1;padding:5px;background:#05c8f7;color:#000;border:none;border-radius:4px;font-weight:700;font-size:9px;cursor:pointer;font-family:Inter,sans-serif;">Waze</button><button onclick="window.open('https://www.google.com/maps?q=${cp.lat},${cp.lon}','_blank')" style="flex:1;padding:5px;background:#4285f4;color:#fff;border:none;border-radius:4px;font-weight:700;font-size:9px;cursor:pointer;font-family:Inter,sans-serif;">Google Maps</button></div></div>`);
+  });
+}
+
+/* ── Layers panel ── */
 const layersList = document.getElementById('layers-list');
+const totalLen = (APP_CONFIG.stats.lengthKm||0)+'km';
+const nJunc = JUNC.length;
 layersList.innerHTML = `
   <div class="slbl">Lapisan Peta</div>
-  <div class="lrow" onclick="tgl('alignment')"><div class="ldot" style="background:#aaff00;"></div><span class="lname">Jajaran Projek</span><span class="lcnt">4,500m</span><div class="sw on" id="sw-alignment"></div></div>
-  <div class="lrow" onclick="tgl('chainage')"><div class="ldot" style="background:#ffcc00;"></div><span class="lname">Penanda Chainage</span><span class="lcnt">@100m</span><div class="sw on" id="sw-chainage"></div></div>
-  <div class="lrow" onclick="tgl('junctions')"><div class="ldot" style="background:#ff4455;"></div><span class="lname">Persimpangan Utama</span><span class="lcnt">6 nod</span><div class="sw on" id="sw-junctions"></div></div>
-  <div class="lrow" onclick="tgl('proposed')"><div class="ldot" style="background:#ff8833;"></div><span class="lname">Cadangan Struktur</span><span class="lcnt">Flyover·Jambatan·Jejantas</span><div class="sw on" id="sw-proposed"></div></div>
-  <div class="lrow" onclick="tgl('sitephotos')"><div class="ldot" style="background:#33ccff;"></div><span class="lname">Gambar Tapak Sedia Ada</span><span class="lcnt">${APP_CONFIG.photos.length} lokasi</span><div class="sw on" id="sw-sitephotos"></div></div>
-  <div class="lrow" onclick="tgl('cp')"><div class="ldot" style="background:#aaff00;"></div><span class="lname">Lokasi Lawatan Tapak</span><span class="lcnt">CP1–CP4</span><div class="sw on" id="sw-cp"></div></div>
+  <div class="lrow" onclick="tgl('alignment')"><div class="ldot" style="background:#00aaff;"></div><span class="lname">Jajaran Projek</span><span class="lcnt">${totalLen}</span><div class="sw on" id="sw-alignment"></div></div>
+  <div class="lrow" onclick="tgl('chainage')"><div class="ldot" style="background:#ffcc00;"></div><span class="lname">Penanda Chainage</span><span class="lcnt">@${APP_CONFIG.chainageInterval||100}m</span><div class="sw on" id="sw-chainage"></div></div>
+  <div class="lrow" onclick="tgl('junctions')"><div class="ldot" style="background:#ff4455;"></div><span class="lname">Nod Utama</span><span class="lcnt">${nJunc} nod</span><div class="sw on" id="sw-junctions"></div></div>
+  <div class="lrow" onclick="tgl('proposed')"><div class="ldot" style="background:#ff8833;"></div><span class="lname">Kaedah Pembinaan Khas</span><span class="lcnt">${PROP.length} item</span><div class="sw on" id="sw-proposed"></div></div>
+  <div class="lrow" onclick="tgl('sitephotos')"><div class="ldot" style="background:#33ccff;"></div><span class="lname">Gambar Tapak</span><span class="lcnt">${APP_CONFIG.photos.length} lokasi</span><div class="sw on" id="sw-sitephotos"></div></div>
+  <div class="lrow" onclick="tgl('cp')"><div class="ldot" style="background:#00aaff;"></div><span class="lname">Lokasi Lawatan Tapak</span><span class="lcnt">CP1–CP${CPS.length}</span><div class="sw on" id="sw-cp"></div></div>
   <div class="slbl" style="margin-top:6px;">Navigasi Pantas</div>
-  <div class="lrow" onclick="flyFlyover()"><div class="ldot" style="background:#ff33cc;"></div><span class="lname">BR2 — Flyover Duyong</span><span class="lcnt">→</span></div>
-  <div class="lrow" onclick="flyFull()"><div class="ldot" style="background:#aaff00;"></div><span class="lname">Pandangan Penuh</span><span class="lcnt">Reset →</span></div>
+  ${(APP_CONFIG.quickNav||[]).map(n=>`<div class="lrow" onclick="map.flyTo([${n.lat},${n.lon}],${n.zoom||17},{duration:1.5})"><div class="ldot" style="background:#ff8833;"></div><span class="lname">${n.label}</span><span class="lcnt">→</span></div>`).join('')}
+  <div class="lrow" onclick="flyFull()"><div class="ldot" style="background:#00aaff;"></div><span class="lname">Pandangan Penuh</span><span class="lcnt">Reset →</span></div>
 `;
 
-// Project panel
+/* ── Route legend ── */
+const legendContent = document.getElementById('legend-content');
+let legendHtml = '';
+(APP_CONFIG.routes||[]).forEach(r => { legendHtml+=`<div class="lgr"><div class="lgln" style="width:20px;background:${r.color};height:4px;"></div>${r.label}</div>`; });
+legendHtml += `
+  <div class="lgr"><div class="lgd" style="background:#ff4455;border:2px solid rgba(255,68,85,0.3);"></div>Nod Utama</div>
+  <div class="lgr"><div class="lgd" style="background:#ff8833;"></div>Kaedah Pembinaan Khas</div>
+  <div class="lgr"><div class="lgd" style="background:#33ccff;"></div>Gambar Tapak</div>
+  <div class="lgr"><div class="lgd" style="background:#00aaff;border:2px solid #000;"></div>Lokasi Lawatan (CP)</div>
+  <div class="lgr"><div style="width:20px;height:12px;border-radius:2px;background:#ffcc00;display:flex;align-items:center;justify-content:center;font-size:6px;font-weight:800;color:#000;flex-shrink:0;">CH</div>Penanda Chainage</div>
+`;
+legendContent.innerHTML = legendHtml;
+
+/* ── Project panel ── */
 const projectPanel = document.getElementById('project-panel');
 projectPanel.innerHTML = `
   <div class="slbl">Maklumat Tender</div>
@@ -369,49 +577,54 @@ projectPanel.innerHTML = `
     <div class="icr"><span class="ick">Kelas CIDB</span><span class="icv">${APP_CONFIG.project.cidbClass}</span></div>
     <div class="icr"><span class="ick">Pengkhususan</span><span class="icv">${APP_CONFIG.project.cidbSpecialization}</span></div>
     <div class="icr"><span class="ick">Kaedah Perolehan</span><span class="icv">${APP_CONFIG.project.procurementMethod}</span></div>
-    <div class="icr"><span class="ick">Piawaian Jalan</span><span class="icv">${APP_CONFIG.project.designStandard}</span></div>
+    <div class="icr"><span class="ick">Piawaian Rekabentuk</span><span class="icv">${APP_CONFIG.project.designStandard}</span></div>
     <div class="icr"><span class="ick">Harga Dokumen</span><span class="icv">${APP_CONFIG.project.documentPrice}</span></div>
   </div>
   <div class="slbl">Statistik</div>
   <div class="sgrid">
     <div class="spill"><div class="snum">${APP_CONFIG.stats.lengthKm}</div><div class="sunit">km</div><div class="slabel">Panjang Projek</div></div>
     <div class="spill"><div class="snum">${APP_CONFIG.stats.landAcquisitionLots}</div><div class="sunit">lot</div><div class="slabel">Pengambilan Tanah</div></div>
-    <div class="spill"><div class="snum">${APP_CONFIG.stats.landAreaEkar}</div><div class="sunit">ekar</div><div class="slabel">Luas (${APP_CONFIG.stats.landAreaSqm} m²)</div></div>
+    <div class="spill"><div class="snum">${APP_CONFIG.stats.landAreaEkar}</div><div class="sunit">ekar</div><div class="slabel">Luas Tanah</div></div>
     <div class="spill"><div class="snum">${APP_CONFIG.stats.constructionDurationMonths}</div><div class="sunit">bulan</div><div class="slabel">Tempoh Pembinaan</div></div>
   </div>
-  <div class="slbl">Skop Kerja</div>
-  <div id="scope-list"></div>
-  <div class="slbl">Piawai Rekabentuk Geometrik</div>
-  <div class="icard" style="padding:0;overflow:hidden;">
-    <table class="ptbl">
-      <thead><tr><th>Parameter</th><th>Unit</th><th>Nilai</th></tr></thead>
-      <tbody>${APP_CONFIG.designStandards.map(ds => `<tr><td>${ds.parameter}</td><td>${ds.unit}</td><td>${ds.value}</td></tr>`).join('')}</tbody>
-    </table>
-  </div>
-  <div class="slbl">Pengambilan Tanah</div>
-  <div class="icard">
-    ${APP_CONFIG.landAcquisition.map(la => `<div class="icr"><span class="ick">${la.area}</span><span class="icv${la.area.startsWith('Jumlah')?' hl':''}">${la.lots}</span></div>`).join('')}
-  </div>
-  <div class="slbl">Nota Utiliti</div>
-  ${APP_CONFIG.alerts.map(a => `<div class="icard" style="border-color:rgba(255,170,0,0.3);background:rgba(255,170,0,0.04);">
-    <div style="font-size:9.5px;color:#ffaa00;font-weight:700;margin-bottom:3px;">${a.title}</div>
-    <div style="font-size:9.5px;color:var(--muted);line-height:1.6;">${a.body}</div>
-  </div>`).join('')}
+  <div class="slbl">Laluan Paip</div>
+  ${(APP_CONFIG.routes||[]).map(r=>`<div class="icard" style="border-left:3px solid ${r.color};margin-bottom:4px;"><div style="font-size:9.5px;font-weight:700;color:${r.color};">${r.label}</div></div>`).join('')}
+  <div class="slbl">Nota</div>
+  ${APP_CONFIG.alerts.map(a=>`<div class="icard" style="border-color:rgba(255,170,0,0.3);background:rgba(255,170,0,0.04);"><div style="font-size:9.5px;color:#ffaa00;font-weight:700;margin-bottom:3px;">${a.title}</div><div style="font-size:9.5px;color:var(--muted);line-height:1.6;">${a.body}</div></div>`).join('')}
 `;
 
-// Scope list
-const scopeList = document.getElementById('scope-list');
-APP_CONFIG.scope.forEach((s, i) => {
-  const d = document.createElement('div'); d.className = 'scope-i';
-  d.innerHTML = `<div class="sdot" style="background:${s.color}1a;color:${s.color};border:1px solid ${s.color}40;">${i+1}</div><span class="stxt">${s.text}</span>`;
-  scopeList.appendChild(d);
+/* ── Context accordion cards ── */
+const contextPanel = document.getElementById('context-panel');
+(APP_CONFIG.contextCards||[]).forEach(card => {
+  const wrap = document.createElement('div'); wrap.className='ctx-card';
+  const hd = document.createElement('div'); hd.className='ctx-hd'+(card.open?' open':'');
+  hd.innerHTML=`<span>${card.title}</span><span class="ctx-arr">▼</span>`;
+  hd.onclick=()=>{hd.classList.toggle('open');};
+  const body = document.createElement('div'); body.className='ctx-body';
+
+  if (card.type==='text') {
+    body.innerHTML=`<p>${(card.body||'').replace(/\n/g,'<br>')}</p>`;
+  } else if (card.type==='scope') {
+    body.innerHTML = APP_CONFIG.scope.map((s,i)=>`<div class="scope-i"><div class="sdot" style="background:${s.color}1a;color:${s.color};border:1px solid ${s.color}40;">${i+1}</div><span class="stxt">${s.text}</span></div>`).join('');
+  } else if (card.type==='table') {
+    let rows=[], cols=['Parameter','Unit','Nilai'];
+    if (card.source==='designStandards') {
+      rows=APP_CONFIG.designStandards.map(d=>[d.parameter,d.unit,d.value]);
+    } else if (card.rows) {
+      rows=card.rows; cols=card.columns||cols;
+    }
+    body.innerHTML=`<div class="icard" style="padding:0;overflow:hidden;"><table class="ptbl"><thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  }
+
+  wrap.appendChild(hd); wrap.appendChild(body);
+  contextPanel.appendChild(wrap);
 });
 
-// CP panel
+/* ── CP panel ── */
 const cpPanel = document.getElementById('cp-panel');
 cpPanel.innerHTML = `
   <div class="slbl">Lokasi Lawatan Tapak</div>
-  <div class="qinfo">Pendaftaran & Taklimat: <strong style="color:var(--text);">Kompleks JAPERUN Bukit Katil</strong>, Dewan Dato' Demang Husin, Km 9, Jalan Bukit Katil, 75450 Melaka. Klik CP untuk zoom. Imbas QR → Waze.</div>
+  <div class="qinfo">Klik kad CP untuk zoom ke lokasi. Imbas QR → Waze.</div>
   <div id="cp-cards"></div>
   <div style="height:1px;background:var(--border);margin:3px 0;"></div>
   <div class="slbl">Pin Manual</div>
@@ -427,157 +640,112 @@ cpPanel.innerHTML = `
   </div>
 `;
 
-// Contacts
+/* ── Contacts ── */
 const contactList = document.getElementById('contact-list');
 APP_CONFIG.contacts.forEach(t => {
-  const g = document.createElement('div'); g.className = 'cgrp';
-  const hd = document.createElement('div'); hd.className = 'cghd'; hd.innerHTML = `${t.label}<span>▾</span>`;
-  const bd = document.createElement('div'); bd.style.cssText = 'background:var(--panel2);border:1px solid var(--border);border-radius:0 0 5px 5px;overflow:hidden;display:none;';
-  t.members.forEach(m => {
-    const r = document.createElement('div'); r.className = 'crow';
-    r.innerHTML = `<span class="cr-n">${m.name}</span><span class="cr-t">${m.title}</span><span class="cr-e">${m.email}</span>`;
-    bd.appendChild(r);
-  });
-  let open = false; hd.onclick = () => { open = !open; bd.style.display = open ? 'block' : 'none'; hd.querySelector('span').textContent = open ? '▴' : '▾'; };
-  g.appendChild(hd); g.appendChild(bd); contactList.appendChild(g);
+  const g=document.createElement('div'); g.className='cgrp';
+  const hd=document.createElement('div'); hd.className='cghd'; hd.innerHTML=`${t.label}<span>▾</span>`;
+  const bd=document.createElement('div'); bd.style.cssText='background:var(--panel2);border:1px solid var(--border);border-radius:0 0 5px 5px;overflow:hidden;display:none;';
+  t.members.forEach(m=>{const r=document.createElement('div');r.className='crow';r.innerHTML=`<span class="cr-n">${m.name}</span><span class="cr-t">${m.title}</span><span class="cr-e">${m.email}</span>`;bd.appendChild(r);});
+  let open=false; hd.onclick=()=>{open=!open;bd.style.display=open?'block':'none';hd.querySelector('span').textContent=open?'▴':'▾';};
+  g.appendChild(hd);g.appendChild(bd);contactList.appendChild(g);
 });
 
-// Legend
-const legendContent = document.getElementById('legend-content');
-legendContent.innerHTML = `
-  <div class="lgr"><div class="lgln" style="width:20px;background:#aaff00;height:4px;"></div>Pelan Menaik Taraf</div>
-  <div class="lgr"><div class="lgln" style="width:20px;background:transparent;border-top:3px dashed #ff33cc;height:0;"></div>BR2 Flyover</div>
-  <div class="lgr"><div class="lgd" style="background:#ff4455;border:2px solid rgba(255,68,85,0.3);"></div>Persimpangan</div>
-  <div class="lgr"><div class="lgd" style="background:#ff8833;"></div>Cadangan Struktur</div>
-  <div class="lgr"><div class="lgd" style="background:#33ccff;"></div>Gambar Tapak</div>
-  <div class="lgr"><div class="lgd" style="background:#aaff00;border:2px solid #000;"></div>Lokasi Lawatan (CP)</div>
-  <div class="lgr"><div style="width:20px;height:12px;border-radius:2px;background:#ffcc00;display:flex;align-items:center;justify-content:center;font-size:6px;font-weight:800;color:#000;flex-shrink:0;">CH</div>Penanda Chainage</div>
-`;
-
-// Map setup
-const map = L.map('map', {center: APP_CONFIG.map.center, zoom: APP_CONFIG.map.zoom, zoomControl: false});
-L.control.zoom({position: 'bottomleft'}).addTo(map);
-const OSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '© OpenStreetMap', maxZoom: 19});
-const SAT = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {attribution: '© Esri', maxZoom: 19});
-OSM.addTo(map);
-map.on('zoomend', () => document.getElementById('zdisplay').textContent = 'Z:' + map.getZoom());
-
-const lgA = L.layerGroup().addTo(map), lgC = L.layerGroup().addTo(map), lgJ = L.layerGroup().addTo(map), lgP = L.layerGroup().addTo(map), lgS = L.layerGroup().addTo(map), lgCP = L.layerGroup().addTo(map), lgPin = L.layerGroup().addTo(map);
-const LGM = {alignment: lgA, chainage: lgC, junctions: lgJ, proposed: lgP, sitephotos: lgS, cp: lgCP};
-const LGS = {alignment: true, chainage: true, junctions: true, proposed: true, sitephotos: true, cp: true};
-
-// Alignment
-L.polyline(POLY, {color: 'rgba(170,255,0,0.11)', weight: 16, lineJoin: 'round'}).addTo(lgA);
-L.polyline(POLY, {color: '#aaff00', weight: 4, opacity: 0.88, lineJoin: 'round'}).addTo(lgA);
-const flyPts = POLY.filter(c => c[0] >= 2.200 && c[0] <= 2.210);
-L.polyline(flyPts, {color: '#ff33cc', weight: 9, opacity: 0.82, dashArray: '13,6', lineJoin: 'round'}).addTo(lgA);
-
-// Chainage
-CH_PTS.forEach(([ch, lat, lon]) => {
-  if (ch === 0 || ch === 4500) return;
-  if (ch % 500 === 0) {
-    const km = Math.floor(ch / 1000), m = String(ch % 1000).padStart(3, '0'), lbl = ch >= 1000 ? `${km}+${m}` : `0+${m}`;
-    L.marker([lat, lon], {icon: L.divIcon({className: '', html: `<div style="background:#ffcc00;color:#000;font-family:Inter,sans-serif;font-size:9px;font-weight:800;padding:2px 6px;border-radius:3px;white-space:nowrap;box-shadow:0 1px 5px rgba(0,0,0,0.5);border:1px solid rgba(0,0,0,0.25);">${lbl}</div>`, iconAnchor: [0, 8]}), zIndexOffset: 50}).addTo(lgC);
-  } else {
-    L.circleMarker([lat, lon], {radius: 3.5, color: 'rgba(255,255,255,0.7)', fillColor: 'rgba(255,255,255,0.45)', fillOpacity: 1, weight: 1.2}).addTo(lgC);
-  }
-});
-
-// Junctions
-JUNC.forEach(([ch, num, name, desc, lon, lat]) => {
-  const isS = ch === 0, isE = ch === 4500, bg = isS ? '#aaff00' : '#ff4455', tc = isS ? '#000' : '#fff', lbl = isS ? 'S' : isE ? 'E' : num;
-  const m = L.marker([lat, lon], {icon: L.divIcon({className: '', html: `<div style="width:30px;height:30px;border-radius:50%;background:${bg};color:${tc};display:flex;align-items:center;justify-content:center;font-family:Inter,sans-serif;font-size:13px;font-weight:800;border:2.5px solid rgba(255,255,255,0.9);box-shadow:0 3px 12px rgba(0,0,0,0.6);cursor:pointer;">${lbl}</div>`, iconSize: [30, 30], iconAnchor: [15, 15]}), zIndexOffset: 300}).addTo(lgJ);
-  const cs = `${Math.floor(ch / 1000)}+${String(ch % 1000).padStart(3, '0')}`;
-  m.bindPopup(`<div class="pw"><div class="pch">PERSIMPANGAN ${num} · CH ${cs}</div><div class="ptl">${name}</div><p style="font-size:9.5px;color:var(--muted);margin-top:3px;">${desc}</p>${isS ? '<div style="margin-top:5px;padding:3px 7px;background:rgba(170,255,0,0.1);border-radius:4px;font-size:8.5px;color:var(--yellow);font-weight:700;">▶ MULA PROJEK</div>' : ''}${isE ? '<div style="margin-top:5px;padding:3px 7px;background:rgba(255,68,85,0.1);border-radius:4px;font-size:8.5px;color:#ff4455;font-weight:700;">■ TAMAT PROJEK</div>' : ''}</div>`);
-});
-
-// Interp
-function interp(d) { let cum = 0; for (let i = 0; i < POLY.length - 1; i++) { const [la1, lo1] = POLY[i], [la2, lo2] = POLY[i + 1], R = 6371000, p1 = la1 * Math.PI / 180, p2 = la2 * Math.PI / 180, dp = (la2 - la1) * Math.PI / 180, dl = (lo2 - lo1) * Math.PI / 180, a = Math.sin(dp / 2) ** 2 + Math.cos(p1) * Math.cos(p2) * Math.sin(dl / 2) ** 2, seg = 2 * R * Math.asin(Math.sqrt(a)); if (cum + seg >= d) { const f = (d - cum) / seg; return [la1 + f * (la2 - la1), lo1 + f * (lo2 - lo1)]; } cum += seg; } return POLY[POLY.length - 1]; }
-
-// Proposed
-const pnames = {jejantas: '🚶 Jejantas Pejalan Kaki & Motosikal', bridge: '🌉 Menggantikan Jambatan Sedia Ada (BR1)', flyover: '🛣 Flyover — Persimpangan Kg. Duyong & Kg. Hang Tuah (BR2)'};
-PROP.forEach(([ch, name, desc, type]) => {
-  const [lat, lon] = interp(ch), fly = type === 'flyover', bg = fly ? '#ff33cc' : '#ff8833', tc = fly ? '#fff' : '#000', short = fly ? 'BR2 FLYOVER' : type === 'bridge' ? 'BR1 JAMBATAN' : 'JEJANTAS';
-  const mk = L.marker([lat, lon], {icon: L.divIcon({className: '', html: `<div style="background:${bg};color:${tc};font-family:Inter,sans-serif;font-size:9px;font-weight:800;padding:3px 8px;border-radius:4px;white-space:nowrap;box-shadow:0 2px 10px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);cursor:pointer;">${short}</div>`, iconAnchor: [40, 10]}), zIndexOffset: 250}).addTo(lgP);
-  const cs = `${Math.floor(ch / 1000)}+${String(ch % 1000).padStart(3, '0')}`;
-  mk.bindPopup(`<div class="pw"><div class="pch">CADANGAN · CH ${cs}</div><div class="ptl">${pnames[type] || name}</div><p style="font-size:9.5px;color:var(--muted);margin-top:4px;line-height:1.6;">${desc}</p><div style="margin-top:5px;padding:3px 7px;background:rgba(255,136,51,0.08);border-radius:3px;font-size:8.5px;color:#ff8833;font-weight:700;">⚠ CADANGAN — BELUM DIBINA</div></div>`);
-});
-
-// Site photos
-let curP = 0; const PM = {};
-PHOTOS.forEach(p => PM[p.img] = p);
-SPOS.forEach((pos, idx) => {
-  const p = PM[pos.img]; if (!p) return;
-  const mk = L.marker([pos.lat, pos.lon], {icon: L.divIcon({className: '', html: `<div style="width:24px;height:24px;border-radius:50%;background:#33ccff;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,0.8);box-shadow:0 2px 8px rgba(0,0,0,0.5);cursor:pointer;font-size:11px;">📷</div>`, iconSize: [24, 24], iconAnchor: [12, 12]}), zIndexOffset: 100}).addTo(lgS);
-  const cs = `${Math.floor(pos.ch / 1000)}+${String(pos.ch % 1000).padStart(3, '0')}`;
-  mk.bindPopup(`<div style="padding:0;width:220px;"><img src="${p.src}" class="pthumb" style="border-radius:7px 7px 0 0;" onclick="openM(${idx})"><div style="padding:9px 11px;"><div class="pch">GAMBAR TAPAK · CH ${cs}</div><div class="ptl" style="font-size:11px;">${pos.label}</div><div style="font-size:8.5px;color:var(--muted);margin-top:1px;">${pos.note}</div><button class="popen" style="margin-top:6px;" onclick="openM(${idx})">Lihat Gambar Penuh</button></div></div>`, {maxWidth: 240, minWidth: 220});
-});
-
-// CPs
-CPS.forEach((cp, i) => {
-  const mk = L.marker([cp.lat, cp.lon], {icon: L.divIcon({className: '', html: `<div style="background:#aaff00;color:#000;font-family:Inter,sans-serif;font-size:11px;font-weight:800;padding:4px 8px;border-radius:5px;border:2px solid rgba(0,0,0,0.4);box-shadow:0 3px 12px rgba(0,0,0,0.6);white-space:nowrap;cursor:pointer;">${cp.id}</div>`, iconAnchor: [20, 15]}), zIndexOffset: 400}).addTo(lgCP);
-  mk.bindPopup(`<div class="pw"><div class="pch">LOKASI LAWATAN TAPAK</div><div class="ptl">${cp.id}: ${cp.name}</div><p style="font-size:9px;color:var(--muted);margin-top:3px;">${cp.lat.toFixed(6)}, ${cp.lon.toFixed(6)}</p><div style="display:flex;gap:4px;margin-top:7px;"><button onclick="window.open('https://waze.com/ul?ll=${cp.lat},${cp.lon}&navigate=yes','_blank')" style="flex:1;padding:5px;background:#05c8f7;color:#000;border:none;border-radius:4px;font-weight:700;font-size:9px;cursor:pointer;font-family:Inter,sans-serif;">Waze</button><button onclick="window.open('https://www.google.com/maps?q=${cp.lat},${cp.lon}','_blank')" style="flex:1;padding:5px;background:#4285f4;color:#fff;border:none;border-radius:4px;font-weight:700;font-size:9px;cursor:pointer;font-family:Inter,sans-serif;">Google Maps</button></div></div>`);
-});
-
-// CP cards with QR
-const cpc = document.getElementById('cp-cards');
-CPS.forEach((cp, i) => {
-  const d = document.createElement('div'); d.className = 'cpcard';
-  d.innerHTML = `<div class="cphd"><div class="cpbadge">${cp.id}</div><div><div class="cpname">${cp.name}</div><div class="cpcoord">${cp.lat.toFixed(6)}, ${cp.lon.toFixed(6)}</div></div></div><div class="cpqr" id="cqr-${i}"></div><div class="cpbtns"><button class="cpbtn waze" onclick="event.stopPropagation();window.open('https://waze.com/ul?ll=${cp.lat},${cp.lon}&navigate=yes','_blank')">Waze</button><button class="cpbtn gmaps" onclick="event.stopPropagation();window.open('https://www.google.com/maps?q=${cp.lat},${cp.lon}','_blank')">Google Maps</button></div>`;
-  d.onclick = () => map.flyTo([cp.lat, cp.lon], 17, {duration: 1.2});
-  cpc.appendChild(d);
-  setTimeout(() => new QRCode(document.getElementById(`cqr-${i}`), {text: `https://waze.com/ul?ll=${cp.lat},${cp.lon}&navigate=yes`, width: 100, height: 100, colorDark: '#000', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.M}), 200 + i * 100);
-});
-
-// Feature list
-const fl = document.getElementById('feat-list');
-const af = [];
-JUNC.forEach(([ch, num, name, desc, lon, lat]) => af.push({ch, label: name, sub: 'Persimpangan J' + num, color: '#ff4455', lat, lon}));
-PROP.forEach(([ch, name, desc, type]) => { const [lat, lon] = interp(ch); af.push({ch, label: pnames[type] || name, sub: 'Cadangan Struktur', color: '#ff8833', lat, lon}); });
-SPOS.forEach((pos, i) => af.push({ch: pos.ch, label: pos.label, sub: pos.note + ' · Gambar Tapak', color: '#33ccff', lat: pos.lat, lon: pos.lon, pi: i}));
-CPS.forEach(cp => af.push({ch: 0, label: cp.id + ': ' + cp.name, sub: 'Lokasi Lawatan Tapak', color: '#aaff00', lat: cp.lat, lon: cp.lon}));
-af.sort((a, b) => a.ch - b.ch);
-af.forEach(f => {
-  const cs = f.ch ? `CH ${Math.floor(f.ch / 1000)}+${String(f.ch % 1000).padStart(3, '0')}` : '—';
-  const d = document.createElement('div'); d.className = 'fitem';
-  d.innerHTML = `<div class="fi-ch" style="color:${f.color}">${cs}</div><div class="fi-nm">${f.label}</div><div class="fi-sb">${f.sub}</div>`;
-  d.onclick = () => { map.flyTo([f.lat, f.lon], 17, {animate: true, duration: 1.2}); if (f.pi !== undefined) setTimeout(() => openM(f.pi), 700); };
+/* ── Feature list ── */
+const fl=document.getElementById('feat-list');
+const af=[];
+JUNC.forEach(([ch,num,name,desc,lon,lat])=>af.push({ch,label:name,sub:'Nod J'+num,color:'#ff4455',lat,lon}));
+PROP.forEach(([ch,name,desc,type])=>{const[lat,lon]=interp(ch);af.push({ch,label:pnames[type]||name,sub:'Kaedah Pembinaan Khas',color:'#ff8833',lat,lon});});
+SPOS.forEach((pos,i)=>af.push({ch:pos.ch,label:pos.label,sub:pos.note+' · Gambar Tapak',color:'#33ccff',lat:pos.lat,lon:pos.lon,pi:i}));
+CPS.forEach(cp=>af.push({ch:0,label:cp.id+': '+cp.name,sub:'Lokasi Lawatan Tapak',color:'#00aaff',lat:cp.lat,lon:cp.lon}));
+af.sort((a,b)=>a.ch-b.ch);
+af.forEach(f=>{
+  const cs=f.ch?`CH ${Math.floor(f.ch/1000)}+${String(f.ch%1000).padStart(3,'0')}`:'—';
+  const d=document.createElement('div'); d.className='fitem';
+  d.innerHTML=`<div class="fi-ch" style="color:${f.color}">${cs}</div><div class="fi-nm">${f.label}</div><div class="fi-sb">${f.sub}</div>`;
+  d.onclick=()=>{map.flyTo([f.lat,f.lon],17,{animate:true,duration:1.2});if(f.pi!==undefined)setTimeout(()=>openM(f.pi),700);};
   fl.appendChild(d);
 });
 
-// Modal
-function openM(idx) { curP = idx; const pos = SPOS[idx]; const p = PM[pos.img]; if (!p) return; const cs = pos.note; document.getElementById('mch').textContent = cs; document.getElementById('mtl').textContent = pos.label; document.getElementById('mimg').src = p.src; document.getElementById('mnote').textContent = 'Keadaan tapak sedia ada · Lawatan 2 Mei 2024'; document.getElementById('pmodal').classList.add('show'); }
-function closeM() { document.getElementById('pmodal').classList.remove('show'); }
-function mnav(d) { curP = (curP + d + SPOS.length) % SPOS.length; openM(curP); }
-document.getElementById('pmodal').addEventListener('click', e => { if (e.target === document.getElementById('pmodal')) closeM(); });
+/* ── Modal ── */
+function openM(idx){curP=idx;const pos=SPOS[idx];const p=PM[pos.img];if(!p)return;document.getElementById('mch').textContent=pos.note;document.getElementById('mtl').textContent=pos.label;document.getElementById('mimg').src=p.src;document.getElementById('mnote').textContent='Lawatan tapak · '+pos.note;document.getElementById('pmodal').classList.add('show');}
+function closeM(){document.getElementById('pmodal').classList.remove('show');}
+function mnav(d){curP=(curP+d+SPOS.length)%SPOS.length;openM(curP);}
+document.getElementById('pmodal').addEventListener('click',e=>{if(e.target===document.getElementById('pmodal'))closeM();});
 
-// Layer toggle
-function tgl(n) { LGS[n] = !LGS[n]; const sw = document.getElementById('sw-' + n); if (LGS[n]) { LGM[n].addTo(map); sw.classList.add('on'); } else { map.removeLayer(LGM[n]); sw.classList.remove('on'); } }
+/* ── Layer toggle ── */
+function tgl(n){LGS[n]=!LGS[n];const sw=document.getElementById('sw-'+n);if(LGS[n]){LGM[n].addTo(map);sw.classList.add('on');}else{map.removeLayer(LGM[n]);sw.classList.remove('on');}}
 
-// Base toggle
-function setBase(v, el) { document.querySelectorAll('.tbb').forEach(b => { if (['Peta', 'Satelit'].includes(b.textContent)) b.classList.remove('active'); }); el.classList.add('active'); if (v === 'map') { SAT.remove(); OSM.addTo(map); } else { OSM.remove(); SAT.addTo(map); } }
+/* ── Base toggle ── */
+function setBase(v,el){document.querySelectorAll('.tbb').forEach(b=>{if(b.textContent==='Peta'||b.textContent==='Satelit')b.classList.remove('active');});el.classList.add('active');if(v==='map'){SAT.remove();OSM.addTo(map);}else{OSM.remove();SAT.addTo(map);}}
 
-// Sidebar
-let sbO = true;
-function toggleSb() { sbO = !sbO; document.getElementById('sidebar').classList.toggle('collapsed', !sbO); document.getElementById('sbbtn').textContent = (sbO ? '◀' : '▶') + ' Panel'; }
-function switchTab(n) { const ns = ['layers', 'features', 'project', 'cp', 'contacts']; document.querySelectorAll('.stab').forEach((t, i) => t.classList.toggle('active', ns[i] === n)); document.querySelectorAll('.tpane').forEach(t => t.classList.remove('active')); document.getElementById('tab-' + n).classList.add('active'); }
+/* ── Sidebar ── */
+let sbO=true;
+function toggleSb(){sbO=!sbO;document.getElementById('sidebar').classList.toggle('collapsed',!sbO);document.getElementById('sbbtn').textContent=(sbO?'◀':'▶')+' Panel';}
+function switchTab(n){
+  const ns=TAB_DEFS.map(t=>t.id);
+  document.querySelectorAll('.stab').forEach((t,i)=>t.classList.toggle('active',ns[i]===n));
+  document.querySelectorAll('.tpane').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+n).classList.add('active');
+}
 
-// Fly
-function flyFull() { map.flyToBounds(APP_CONFIG.map.bounds, {padding: [40, 40], duration: 1.5}); }
-function flyFlyover() { map.flyTo([2.204, 102.293], 17, {duration: 1.5}); }
+/* ── Fly ── */
+function flyFull(){map.flyToBounds(APP_CONFIG.map.bounds,{padding:[40,40],duration:1.5});}
 
-// Pin
-let pinM = false, pinC = null, qrI = null;
-function togglePin() { pinM = !pinM; const b = document.getElementById('pinbtn'); b.classList.toggle('active', pinM); b.innerHTML = `<span style="width:6px;height:6px;border-radius:50%;background:currentColor;"></span>${pinM ? 'Aktif — Klik peta' : 'Klik peta untuk letak pin'}`; map.getContainer().style.cursor = pinM ? 'crosshair' : ''; }
-map.on('click', e => { if (!pinM) return; const {lat, lng} = e.latlng; pinC = {lat, lng}; lgPin.clearLayers(); L.marker([lat, lng], {icon: L.divIcon({className: '', html: `<div style="background:#aaff00;color:#000;font-weight:800;font-size:10px;padding:3px 9px;border-radius:5px;box-shadow:0 4px 16px rgba(0,0,0,0.5);border:2px solid rgba(0,0,0,0.3);white-space:nowrap;">📍 Titik Kumpul</div>`, iconAnchor: [55, 16]}), zIndexOffset: 1000}).addTo(lgPin); document.getElementById('qcoord').textContent = `${lat.toFixed(6)}, ${lng.toFixed(6)}`; document.getElementById('pin-wrap').style.display = 'block'; const box = document.getElementById('qrbox'); box.innerHTML = ''; qrI = new QRCode(box, {text: `https://waze.com/ul?ll=${lat},${lng}&navigate=yes`, width: 130, height: 130, colorDark: '#000', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.M}); switchTab('cp'); pinM = false; document.getElementById('pinbtn').classList.remove('active'); document.getElementById('pinbtn').innerHTML = '<span style="width:6px;height:6px;border-radius:50%;background:currentColor;"></span>Klik peta untuk letak pin'; map.getContainer().style.cursor = ''; });
-function openWaze() { if (pinC) window.open(`https://waze.com/ul?ll=${pinC.lat},${pinC.lng}&navigate=yes`, '_blank'); }
-function openGmaps() { if (pinC) window.open(`https://www.google.com/maps?q=${pinC.lat},${pinC.lng}`, '_blank'); }
-function copyC() { if (!pinC) return; navigator.clipboard.writeText(`${pinC.lat.toFixed(6)},${pinC.lng.toFixed(6)}`); const t = document.getElementById('toast'); t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2000); }
+/* ── Pin ── */
+let pinM=false,pinC=null,qrI=null;
+function togglePin(){pinM=!pinM;const b=document.getElementById('pinbtn');b.classList.toggle('active',pinM);b.innerHTML=`<span style="width:6px;height:6px;border-radius:50%;background:currentColor;"></span>${pinM?'Aktif — Klik peta':'Klik peta untuk letak pin'}`;map.getContainer().style.cursor=pinM?'crosshair':'';}
+map.on('click',e=>{if(!pinM)return;const{lat,lng}=e.latlng;pinC={lat,lng};lgPin.clearLayers();L.marker([lat,lng],{icon:L.divIcon({className:'',html:`<div style="background:#00aaff;color:#000;font-weight:800;font-size:10px;padding:3px 9px;border-radius:5px;box-shadow:0 4px 16px rgba(0,0,0,0.5);border:2px solid rgba(0,0,0,0.3);white-space:nowrap;">📍 Titik Kumpul</div>`,iconAnchor:[55,16]}),zIndexOffset:1000}).addTo(lgPin);document.getElementById('qcoord').textContent=`${lat.toFixed(6)}, ${lng.toFixed(6)}`;document.getElementById('pin-wrap').style.display='block';const box=document.getElementById('qrbox');box.innerHTML='';qrI=new QRCode(box,{text:`https://waze.com/ul?ll=${lat},${lng}&navigate=yes`,width:130,height:130,colorDark:'#000',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.M});switchTab('cp');pinM=false;document.getElementById('pinbtn').classList.remove('active');document.getElementById('pinbtn').innerHTML='<span style="width:6px;height:6px;border-radius:50%;background:currentColor;"></span>Klik peta untuk letak pin';map.getContainer().style.cursor='';});
+function openWaze(){if(pinC)window.open(`https://waze.com/ul?ll=${pinC.lat},${pinC.lng}&navigate=yes`,'_blank');}
+function openGmaps(){if(pinC)window.open(`https://www.google.com/maps?q=${pinC.lat},${pinC.lng}`,'_blank');}
+function copyC(){if(!pinC)return;navigator.clipboard.writeText(`${pinC.lat.toFixed(6)},${pinC.lng.toFixed(6)}`);const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
 
-// Pres mode
-let presM = false;
-function togglePres() { presM = !presM; document.body.classList.toggle('pres', presM); document.getElementById('presbtn').classList.toggle('active', presM); }
-flyFull();
+/* ── Pres mode ── */
+let presM=false;
+function togglePres(){presM=!presM;document.body.classList.toggle('pres',presM);document.getElementById('presbtn').classList.toggle('active',presM);}
+
+/* ── Async init: load KMZ, then render everything ── */
+(async function init(){
+  // Try KMZ override
+  if (APP_CONFIG.kmzPath && typeof JSZip!=='undefined') {
+    const segs = await _loadKMZ(APP_CONFIG.kmzPath);
+    if (segs) {
+      const routes = APP_CONFIG.routes||[];
+      routes.forEach(r => {
+        const pts=[];
+        (r.kmzSegments||[]).forEach(sn => { if(segs[sn]) pts.push(...segs[sn]); });
+        if (pts.length>=2) r.poly=pts;
+      });
+      // Rebuild combined POLY and CH_PTS from KMZ routes
+      const combined=[];
+      routes.forEach(r=>combined.push(...r.poly));
+      if (combined.length>=2) {
+        POLY=combined;
+        CH_PTS=_buildCH(combined, APP_CONFIG.chainageInterval||100);
+      }
+    }
+  }
+
+  // Render all layers
+  renderAlignment();
+  renderChainage();
+  renderJunctions();
+  renderProposed();
+  renderSitePhotos();
+  renderCPs();
+
+  // CP cards with QR
+  const cpc=document.getElementById('cp-cards');
+  CPS.forEach((cp,i)=>{
+    const d=document.createElement('div');d.className='cpcard';
+    d.innerHTML=`<div class="cphd"><div class="cpbadge">${cp.id}</div><div><div class="cpname">${cp.name}</div><div class="cpcoord">${cp.lat.toFixed(6)}, ${cp.lon.toFixed(6)}</div></div></div><div class="cpqr" id="cqr-${i}"></div><div class="cpbtns"><button class="cpbtn waze" onclick="event.stopPropagation();window.open('https://waze.com/ul?ll=${cp.lat},${cp.lon}&navigate=yes','_blank')">Waze</button><button class="cpbtn gmaps" onclick="event.stopPropagation();window.open('https://www.google.com/maps?q=${cp.lat},${cp.lon}','_blank')">Google Maps</button></div>`;
+    d.onclick=()=>map.flyTo([cp.lat,cp.lon],17,{duration:1.2});
+    cpc.appendChild(d);
+    setTimeout(()=>new QRCode(document.getElementById(`cqr-${i}`),{text:`https://waze.com/ul?ll=${cp.lat},${cp.lon}&navigate=yes`,width:100,height:100,colorDark:'#000',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.M}),200+i*100);
+  });
+
+  flyFull();
+})();
 </script>
 </body>
 </html>
