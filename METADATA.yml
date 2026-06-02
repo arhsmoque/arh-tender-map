@@ -1,0 +1,72 @@
+# METADATA.yml — arh-tender-map
+# UBAP spec packet: intent, risk, surface, conformance
+# Update when stack, deployment, or architecture changes.
+
+project:
+  name: arh-tender-map
+  version: "1.0"
+  description: Zero-build-step static map briefing suite for civil engineering tender projects
+  owner: DPI Konsult Sdn Bhd
+  repo: arhsmoque/arh-tender-map
+  protocol: UBAP v1.6
+
+stack:
+  type: static-html
+  build_step: false
+  bundler: none
+  package_manager: none
+  deployment: Cloudflare Pages / Cloudflare Workers (static assets)
+  runtime: browser-only
+  data_backend: none
+  languages:
+    - HTML5
+    - CSS3
+    - JavaScript (ES2020, no modules)
+
+architecture:
+  pattern: base-adapter
+  base_files:
+    - path: index.html
+      role: desktop map viewer engine
+    - path: mobile.html
+      role: mobile map viewer engine
+    - path: qr.html
+      role: QR landing page engine
+  adapter_files:
+    - path: config.js
+      role: project-specific adapter (only file that changes per deployment)
+  asset_directories:
+    - path: assets/logos/
+      role: client and consultant logos (per deployment)
+    - path: assets/photos/
+      role: site photos (per deployment)
+
+risk_profile:
+  overall: local_mutation
+  surfaces:
+    - surface: config.js edits
+      risk: local_mutation
+    - surface: HTML engine edits
+      risk: local_mutation (affects all current and future deployments)
+    - surface: wrangler.jsonc name change
+      risk: local_mutation + URL-breaking
+    - surface: asset replacement
+      risk: local_mutation
+
+conformance:
+  checklist: CONFORMANCE_CHECKLIST.yml
+  current_level: Level 1 (Operable) — partial
+  target_level: Level 1 (Operable) — full
+  arch_review_plan: ARCH_REVIEW_PLAN.md
+
+agent_readiness:
+  stateless_agent_safe: partial
+  notes: >
+    An agent can read AGENTS.md and safely edit config.js and assets.
+    Recipe automation (ubap-check, provisioner, sync) is pending per ARCH_REVIEW_PLAN.md.
+    The config.js two-zone structure and JUNC coordinate inconsistency require care.
+  pending_tasks:
+    - ARCH_REVIEW_PLAN.md Task 2.1 (config.js consolidation)
+    - ARCH_REVIEW_PLAN.md Task 3.1 (ubap-check recipe)
+    - ARCH_REVIEW_PLAN.md Task 3.2 (provisioner recipe)
+    - ARCH_REVIEW_PLAN.md Task 4.1 (multi-branch deployment)
