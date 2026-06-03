@@ -384,3 +384,11 @@ const APP_CONFIG = {
     ]
   }
 };
+
+// Compatibility shim — mobile.html engine destructures flat keys from APP_CONFIG
+APP_CONFIG.POLY   = APP_CONFIG.geo.poly;
+APP_CONFIG.CH_PTS = APP_CONFIG.geo.chPts;
+APP_CONFIG.JUNC   = APP_CONFIG.geo.junc;
+APP_CONFIG.PROP   = APP_CONFIG.geo.prop;
+APP_CONFIG.CPS    = APP_CONFIG.geo.cps;
+APP_CONFIG.SPOS   = APP_CONFIG.geo.sPos;
