@@ -266,7 +266,7 @@ const APP_CONFIG = {
     "subtitle": "Imbas kod QR untuk akses peta laluan paip, kaedah pembinaan (pipe jacking & HDD), dan lokasi tapak kerja",
     "chips":    ["📱 Mobile Friendly", "🔵 Air Selangor PN0000023850"],
     "note":     "Selepas imbas → peta projek dibuka secara terus.<br>Klik setiap node → butiran teknikal laluan dan kaedah pembinaan.",
-    "url":      ""
+    "url":      "https://dpiktender.pages.dev"
   }
 };
 

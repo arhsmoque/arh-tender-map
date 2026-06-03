@@ -13,10 +13,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="config.js"></script>
 <style>
-:root{--bg:#0b0d12;--panel:#13161f;--p2:#1a1e2b;--p3:#20253a;
-  --bd:rgba(255,255,255,0.08);--bd2:rgba(255,255,255,0.14);
-  --tx:#e4e8f0;--mu:#7a84a0;--y:#aaff00;--y2:rgba(170,255,0,0.1);
-  --cy:#33ccff;--mg:#ff33cc;--or:#ff8833;--rd:#ff4455;--am:#ffcc00;}
+:root{--bg:#060d18;--panel:#0b1524;--p2:#0f1d30;--p3:#14253e;
+  --bd:rgba(255,255,255,0.07);--bd2:rgba(255,255,255,0.13);
+  --tx:#ddeeff;--mu:#6a88a8;--y:#009B9B;--y2:rgba(0,155,155,0.12);
+  --cy:#33ccff;--mg:#ff33cc;--or:#ff8833;--rd:#ff4455;--am:#FFB800;}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;}
 /* HEADER */
@@ -158,12 +158,21 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--tx);font-
 <!-- HEADER -->
 <div id="hdr">
   <div class="hdr-top">
-    <div class="hdr-jkr">
-      <img src="" id="m-client-logo" alt="Client Logo">
-      <div class="hdr-jkr-t">
-        <div class="t1" id="m-client-name"></div>
-        <div class="t2" id="m-client-subname"></div>
-        <a href="" id="m-client-url" target="_blank"></a>
+    <div class="hdr-jkr" style="flex-direction:column;gap:5px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <img src="" id="m-client-logo" alt="" style="width:38px;height:auto;filter:drop-shadow(0 1px 3px rgba(0,0,0,0.4));">
+        <div class="hdr-jkr-t">
+          <div class="t1" id="m-client-name"></div>
+          <div class="t2" id="m-client-subname"></div>
+          <a href="" id="m-client-url" target="_blank"></a>
+        </div>
+      </div>
+      <div id="m-client2-row" style="display:none;align-items:center;gap:8px;border-top:1px solid var(--bd2);padding-top:5px;">
+        <img src="" id="m-client2-logo" alt="" style="width:32px;height:auto;filter:drop-shadow(0 1px 3px rgba(0,0,0,0.4));">
+        <div class="hdr-jkr-t">
+          <div class="t1" id="m-client2-name"></div>
+          <div class="t2" id="m-client2-subname"></div>
+        </div>
       </div>
     </div>
     <div class="hdr-dpi">
@@ -186,13 +195,13 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--tx);font-
       <button class="mbtn active" id="base-osm" onclick="setBase('osm')">Peta</button>
       <button class="mbtn" id="base-sat" onclick="setBase('sat')">Satelit</button>
       <button class="mbtn" onclick="flyFull()">↔</button>
-      <button class="mbtn" style="background:rgba(255,51,204,0.2);color:#ff33cc;border-color:#ff33cc40;" onclick="flyFlyover()">BR2</button>
+      <div id="m-quicknav-btns"></div>
     </div>
     <div id="map-legend">
-      <div class="llr"><div class="lll" style="background:#aaff00;"></div>Pelan Menaik Taraf</div>
-      <div class="llr"><div class="lld" style="background:#ff4455;"></div>Persimpangan</div>
-      <div class="llr"><div class="lld" style="background:#33ccff;"></div>Gambar Tapak</div>
-      <div class="llr"><div class="lld" style="background:#aaff00;border:1.5px solid #000;"></div>Lokasi Lawatan</div>
+      <div id="legend-routes"></div>
+      <div class="llr"><div class="lld" style="background:var(--rd);"></div>Nod Utama</div>
+      <div class="llr"><div class="lld" style="background:var(--cy);"></div>Gambar Tapak</div>
+      <div class="llr"><div class="lld" style="background:var(--y);border:1.5px solid rgba(0,0,0,0.3);"></div>Lokasi Lawatan (CP)</div>
     </div>
   </div>
 
@@ -262,6 +271,15 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--tx);font-
 </div>
 
 <script>
+// Inject theme CSS variables from APP_CONFIG.theme
+(function(){
+  const t = APP_CONFIG.theme || {}, r = document.documentElement;
+  const map = {bg:'--bg',panel:'--panel',panel2:'--p2',panel3:'--p3',
+    border:'--bd',border2:'--bd2',text:'--tx',muted:'--mu',
+    accent:'--y',accent2:'--y2',amber:'--am'};
+  Object.entries(map).forEach(([k,v]) => { if (t[k]) r.style.setProperty(v, t[k]); });
+})();
+
 const {POLY, CH_PTS, SPOS, JUNC, PROP, CPS} = APP_CONFIG;
 const PHOTOS = APP_CONFIG.photos.map(p => ({...p, src: `assets/photos/${p.img}`}));
 
@@ -277,6 +295,13 @@ document.getElementById('m-client-url').textContent = APP_CONFIG.client.url.repl
 document.getElementById('m-consultant-logo').src = APP_CONFIG.consultant.logo;
 document.getElementById('m-consultant-name').textContent = APP_CONFIG.consultant.name;
 document.getElementById('m-project-title').textContent = APP_CONFIG.project.title;
+const c2 = APP_CONFIG.client2;
+if (c2) {
+  document.getElementById('m-client2-logo').src = c2.logo;
+  document.getElementById('m-client2-name').textContent = c2.name;
+  document.getElementById('m-client2-subname').textContent = c2.subname;
+  document.getElementById('m-client2-row').style.display = 'flex';
+}
 
 // Date strip
 const mDateStrip = document.getElementById('m-date-strip');
@@ -303,11 +328,27 @@ OSM.addTo(map);
 
 const lgA = L.layerGroup().addTo(map), lgC = L.layerGroup().addTo(map), lgJ = L.layerGroup().addTo(map), lgP = L.layerGroup().addTo(map), lgS = L.layerGroup().addTo(map), lgCP = L.layerGroup().addTo(map);
 
-// Alignment
-L.polyline(POLY, {color: 'rgba(170,255,0,0.11)', weight: 16, lineJoin: 'round'}).addTo(lgA);
-L.polyline(POLY, {color: '#aaff00', weight: 4, opacity: 0.88, lineJoin: 'round'}).addTo(lgA);
-const flyPts = POLY.filter(c => c[0] >= 2.200 && c[0] <= 2.210);
-L.polyline(flyPts, {color: '#ff33cc', weight: 9, opacity: 0.82, dashArray: '13,6', lineJoin: 'round'}).addTo(lgA);
+// Route polylines — read from APP_CONFIG.routes, fall back to POLY
+(APP_CONFIG.routes || []).forEach(r => {
+  L.polyline(r.poly, {color: r.glowColor || r.color, weight: 16, opacity: 0.18, lineJoin: 'round'}).addTo(lgA);
+  L.polyline(r.poly, {color: r.color, weight: 4, opacity: 0.9, lineJoin: 'round'}).addTo(lgA);
+});
+// Dynamic legend route rows
+const legendRoutes = document.getElementById('legend-routes');
+(APP_CONFIG.routes || []).forEach(r => {
+  const d = document.createElement('div'); d.className = 'llr';
+  d.innerHTML = `<div class="lll" style="background:${r.color};"></div><span>${r.label}</span>`;
+  legendRoutes.appendChild(d);
+});
+// Dynamic quickNav buttons
+const qnContainer = document.getElementById('m-quicknav-btns');
+(APP_CONFIG.quickNav || []).forEach(q => {
+  const b = document.createElement('button'); b.className = 'mbtn';
+  b.style.cssText = 'background:var(--y2);color:var(--y);border-color:var(--y);';
+  b.textContent = q.label;
+  b.onclick = () => map.flyTo([q.lat, q.lon], q.zoom || 17, {animate:true, duration:1.2});
+  qnContainer.appendChild(b);
+});
 
 // Chainage
 CH_PTS.forEach(([ch, lat, lon]) => {
@@ -324,8 +365,11 @@ CH_PTS.forEach(([ch, lat, lon]) => {
 function interp(d) { let cum = 0; for (let i = 0; i < POLY.length - 1; i++) { const [la1, lo1] = POLY[i], [la2, lo2] = POLY[i + 1], R = 6371000, p1 = la1 * Math.PI / 180, p2 = la2 * Math.PI / 180, dp = (la2 - la1) * Math.PI / 180, dl = (lo2 - lo1) * Math.PI / 180, a = Math.sin(dp / 2) ** 2 + Math.cos(p1) * Math.cos(p2) * Math.sin(dl / 2) ** 2, seg = 2 * R * Math.asin(Math.sqrt(a)); if (cum + seg >= d) { const f = (d - cum) / seg; return [la1 + f * (la2 - la1), lo1 + f * (lo2 - lo1)]; } cum += seg; } return POLY[POLY.length - 1]; }
 
 // Junctions
+const juncStart = JUNC[0][0], juncEnd = JUNC[JUNC.length-1][0];
 JUNC.forEach(([ch, num, name, desc, lon, lat]) => {
-  const isS = ch === 0, isE = ch === 4500, bg = isS ? '#aaff00' : '#ff4455', tc = isS ? '#000' : '#fff', lbl = isS ? 'S' : isE ? 'E' : num;
+  const isS = ch === juncStart, isE = ch === juncEnd;
+  const bg = isS ? APP_CONFIG.theme.accent : isE ? APP_CONFIG.theme.amber : '#ff4455';
+  const tc = '#fff', lbl = isS ? 'S' : isE ? 'E' : num;
   const m = L.marker([lat, lon], {icon: L.divIcon({className: '', html: `<div style="width:30px;height:30px;border-radius:50%;background:${bg};color:${tc};display:flex;align-items:center;justify-content:center;font-family:Inter,sans-serif;font-size:13px;font-weight:800;border:2.5px solid rgba(255,255,255,0.9);box-shadow:0 3px 12px rgba(0,0,0,0.6);cursor:pointer;">${lbl}</div>`, iconSize: [30, 30], iconAnchor: [15, 15]}), zIndexOffset: 300}).addTo(lgJ);
 });
 
@@ -351,7 +395,7 @@ CPS.forEach((cp, i) => {
 });
 
 // CP cards
-document.getElementById('cp-info').innerHTML = `<strong style="color:var(--tx);">Pendaftaran & Taklimat:</strong> Kompleks JAPERUN Bukit Katil, Dewan Dato' Demang Husin, Km 9, Jalan Bukit Katil, 75450 Melaka. <strong style="color:var(--tx);">Imbas QR → buka Waze.</strong>`;
+document.getElementById('cp-info').innerHTML = `<strong style="color:var(--tx);">Lokasi Lawatan Tapak (CP):</strong> Imbas kod QR untuk membuka Waze atau Google Maps ke setiap titik lawatan tapak.`;
 const mCpc = document.getElementById('cp-cards');
 CPS.forEach((cp, i) => {
   const d = document.createElement('div'); d.className = 'cpcard';
@@ -438,7 +482,6 @@ function mnav(d) { curP = (curP + d + SPOS.length) % SPOS.length; openM(curP); }
 function showScreen(id, el) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); document.querySelectorAll('.ntab').forEach(t => t.classList.remove('active')); el.classList.add('active'); }
 function setBase(v) { document.getElementById('base-osm').classList.toggle('active', v === 'osm'); document.getElementById('base-sat').classList.toggle('active', v === 'sat'); if (v === 'osm') { SAT.remove(); OSM.addTo(map); } else { OSM.remove(); SAT.addTo(map); } }
 function flyFull() { map.flyToBounds(APP_CONFIG.map.bounds, {padding: [40, 40], duration: 1.5}); }
-function flyFlyover() { map.flyTo([2.204, 102.293], 17, {duration: 1.5}); }
 </script>
 </body>
 </html>
