@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="locales/ui.js"></script>
 <script src="config.js"></script>
 <style>
 :root{
@@ -177,13 +178,13 @@ a{color:var(--teal);text-decoration:none;}
   </div>
   <div class="hc">
     <div class="hc-t">
-      <div class="c2">Disediakan oleh:</div>
+      <div class="c2" data-i18n="prepared_by">Disediakan oleh:</div>
       <div class="c1" id="d-cons"></div>
     </div>
     <img id="d-cnslogo" src="" alt="">
   </div>
   <div class="ha">
-    <a href="tender-report.html" class="btn-rpt">Laporan Penilaian →</a>
+    <a href="tender-report.html" class="btn-rpt" data-i18n="report_btn">Laporan Penilaian →</a>
   </div>
 </div>
 
@@ -193,10 +194,10 @@ a{color:var(--teal);text-decoration:none;}
   <!-- SIDEBAR -->
   <div id="sb">
     <div id="stabs">
-      <button class="stab active" onclick="showTab('projek',this)">Projek</button>
-      <button class="stab" onclick="showTab('skop',this)">Skop</button>
-      <button class="stab" onclick="showTab('kaedah',this)">Kaedah</button>
-      <button class="stab" onclick="showTab('pasukan',this)">Pasukan</button>
+      <button class="stab active" onclick="showTab('projek',this)" data-i18n="tab_project">Projek</button>
+      <button class="stab" onclick="showTab('skop',this)" data-i18n="tab_scope">Skop</button>
+      <button class="stab" onclick="showTab('kaedah',this)" data-i18n="tab_methods">Kaedah</button>
+      <button class="stab" onclick="showTab('pasukan',this)" data-i18n="tab_team">Pasukan</button>
     </div>
     <div id="spanel">
       <div class="spane active" id="tab-projek"></div>
@@ -210,15 +211,15 @@ a{color:var(--teal);text-decoration:none;}
   <div id="mapp">
     <div id="map"></div>
     <div class="mc">
-      <button class="mb on" id="btn-osm" onclick="setBase('osm')">Peta</button>
-      <button class="mb" id="btn-sat" onclick="setBase('sat')">Satelit</button>
-      <button class="mb" onclick="flyFull()">↔ Semua</button>
+      <button class="mb on" id="btn-osm" onclick="setBase('osm')" data-i18n="btn_map">Peta</button>
+      <button class="mb" id="btn-sat" onclick="setBase('sat')" data-i18n="btn_satellite">Satelit</button>
+      <button class="mb" onclick="flyFull()" data-i18n="btn_all">↔ Semua</button>
       <div id="qnav"></div>
     </div>
     <div id="leg">
       <div id="leg-routes"></div>
-      <div class="ll"><div class="ldot" style="background:#ff4455;"></div><span>Nod Utama</span></div>
-      <div class="ll"><div class="ldot" style="background:#ffcc00;border:1px solid rgba(0,0,0,.2);"></div><span>Tanda Chainage</span></div>
+      <div class="ll"><div class="ldot" style="background:#ff4455;"></div><span data-i18n="legend_key_nodes">Nod Utama</span></div>
+      <div class="ll"><div class="ldot" style="background:#ffcc00;border:1px solid rgba(0,0,0,.2);"></div><span data-i18n="legend_chainage">Tanda Chainage</span></div>
     </div>
   </div>
 
@@ -233,6 +234,11 @@ a{color:var(--teal);text-decoration:none;}
     accent:'--teal',accent2:'--teal2',amber:'--am'};
   Object.entries(map).forEach(([k,v])=>{if(t[k])r.style.setProperty(v,t[k]);});
 })();
+const UI = (window.LOCALES||{})[APP_CONFIG.lang||'ms'] || (window.LOCALES||{}).ms || {};
+document.querySelectorAll('[data-i18n]').forEach(el => {
+  const k = el.getAttribute('data-i18n');
+  if (UI[k] !== undefined) el.textContent = UI[k];
+});
 
 // ── Header ────────────────────────────────────────────
 const C=APP_CONFIG;
@@ -373,24 +379,24 @@ function showTab(id,btn){
     ? bgCard.split('\n\n').map(par=>`<p>${par.replace(/\n/g,'<br>')}</p>`).join('')
     : '';
   document.getElementById('tab-projek').innerHTML=`
-    <div class="sh">Ringkasan Projek</div>
+    <div class="sh">${UI.sh_project_summary}</div>
     <div class="kpi2">
-      <div class="kpi"><div class="kpi-v">${s.lengthKm||'2.07'}</div><div class="kpi-l">km Jumlah Paip</div></div>
-      <div class="kpi"><div class="kpi-v">${s.constructionDurationMonths||p.durationMonths||24}</div><div class="kpi-l">Bulan Pembinaan</div></div>
+      <div class="kpi"><div class="kpi-v">${s.lengthKm||'2.07'}</div><div class="kpi-l">${UI.kpi_total_pipe}</div></div>
+      <div class="kpi"><div class="kpi-v">${s.constructionDurationMonths||p.durationMonths||24}</div><div class="kpi-l">${UI.kpi_months}</div></div>
     </div>
     <div class="card">
       <div class="krow"><div class="kk">No. Tender</div><div class="kv hl">${p.tenderNumber||'—'}</div></div>
       <div class="krow"><div class="kk">Program</div><div class="kv">${p.programme||'—'}</div></div>
-      <div class="krow"><div class="kk">Piawai Rekabentuk</div><div class="kv">${p.designStandard||'—'}</div></div>
+      <div class="krow"><div class="kk">${UI.lbl_design_standard}</div><div class="kv">${p.designStandard||'—'}</div></div>
       <div class="krow"><div class="kk">Status</div><div class="kv">${p.status||'—'}</div></div>
     </div>
-    ${bgHtml?`<div class="sh">Latar Belakang</div><div class="card"><div class="bgp">${bgHtml}</div></div>`:''}
+    ${bgHtml?`<div class="sh">${UI.sh_background}</div><div class="card"><div class="bgp">${bgHtml}</div></div>`:''}
     ${(C.alerts||[]).map(a=>`
       <div class="al${a.type==='info'?' info':''}">
         <div class="al-hd">${a.title}</div>
         <div class="al-bd">${a.body}</div>
       </div>`).join('')}
-    <div class="sh">Laluan Paip</div>
+    <div class="sh">${UI.sh_pipeline_routes}</div>
     <div class="card">
       ${(C.routes||[]).map(r=>`
         <div class="route-chip">
@@ -405,9 +411,9 @@ function showTab(id,btn){
 (function(){
   const scope=C.scope||[];
   const ds=C.designStandards||[];
-  const permits=((C.contextCards||[]).find(c=>c.columns&&c.columns[0]==='Pihak Berkuasa')||{}).rows||[];
+  const permits=((C.contextCards||[]).find(c=>c.columns&&c.columns[0]===UI.permit_col_first)||{}).rows||[];
   document.getElementById('tab-skop').innerHTML=`
-    <div class="sh">Skop Kerja</div>
+    <div class="sh">${UI.sh_work_scope}</div>
     <div class="card">
       ${scope.map(s=>`
         <div class="si">
@@ -416,7 +422,7 @@ function showTab(id,btn){
         </div>`).join('')}
     </div>
     ${ds.length?`
-      <div class="sh">Piawai Rekabentuk</div>
+      <div class="sh">${UI.sh_design_standards_tbl}</div>
       <div class="card" style="padding:0;overflow:hidden;">
         <table class="vtbl">
           <thead><tr><th>Parameter</th><th>Nilai</th><th>Unit</th></tr></thead>
@@ -426,7 +432,7 @@ function showTab(id,btn){
         </table>
       </div>`:''}
     ${permits.length?`
-      <div class="sh">Permit &amp; Kebenaran</div>
+      <div class="sh">${UI.sh_permits}</div>
       <div class="card" style="padding:0;overflow:hidden;">
         <table class="vtbl">
           <tbody>
@@ -441,7 +447,7 @@ function showTab(id,btn){
 (function(){
   const methods=C.constructionMethods||[];
   document.getElementById('tab-kaedah').innerHTML=`
-    <div class="sh">Kaedah Pembinaan</div>
+    <div class="sh">${UI.sh_construction_methods}</div>
     ${methods.map(m=>`
       <div class="meth" onclick="this.classList.toggle('open')">
         <div class="meth-hd">
@@ -460,7 +466,7 @@ function showTab(id,btn){
 (function(){
   const contacts=C.contacts||[];
   document.getElementById('tab-pasukan').innerHTML=`
-    <div class="sh">Pasukan Projek</div>
+    <div class="sh">${UI.sh_project_team}</div>
     ${contacts.map(cg=>`
       <div class="cg" onclick="this.classList.toggle('open')">
         <div class="cg-hd"><span>${cg.label}</span><span>▾</span></div>

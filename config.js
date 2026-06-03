@@ -18,6 +18,7 @@
  */
 
 const APP_CONFIG = {
+  "lang": "en",
   "pageTitle": "Hospital Serdang Water Supply — Technical Route Map",
 
   "project": {
