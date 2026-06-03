@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<meta name="theme-color" content="#060d18">
+<title>Laporan Penilaian Tender — Hospital Serdang | Air Selangor PN0000023850</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060d18;--panel:#0b1524;--panel2:#0f1d30;--panel3:#14253e;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.14);--border3:rgba(255,255,255,0.22);
+  --text:#ddeeff;--muted:#6a88a8;--faint:#1e3a58;--soft:rgba(6,13,24,0.92);
+  --teal:#009B9B;--teal2:rgba(0,155,155,0.15);--teal3:rgba(0,155,155,0.07);--teal4:rgba(0,155,155,0.3);
+  --amber:#FFB800;--green:#22c87a;--red:#ff4455;--orange:#ff7733;
+  --complied:#22c87a;--pending:#FFB800;--disqual:#ff4455;--noted:#5588cc;
+  --radius:7px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100%;}
+button{cursor:pointer;font-family:'Inter',sans-serif;}
+a{color:var(--teal);text-decoration:none;}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-thumb{background:var(--faint);border-radius:2px;}
+
+/* ── HEADER ─────────────────────────────────────── */
+#hdr{background:var(--panel);border-bottom:2px solid var(--teal4);padding:0;flex-shrink:0;z-index:200;position:sticky;top:0;}
+.hdr-inner{display:flex;align-items:stretch;min-height:66px;}
+.hdr-brand{display:flex;align-items:center;gap:12px;padding:10px 16px 10px 14px;border-right:1px solid var(--border2);}
+.hdr-brand img{height:42px;width:auto;object-fit:contain;}
+.hdr-brand-txt .b1{font-size:13px;font-weight:800;color:#fff;letter-spacing:.3px;line-height:1.1;}
+.hdr-brand-txt .b2{font-size:9.5px;color:rgba(255,255,255,.55);margin-top:2px;letter-spacing:.2px;}
+.hdr-mid{flex:1;display:flex;flex-direction:column;justify-content:center;padding:8px 16px;min-width:0;}
+.hdr-chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:4px;}
+.chip{font-size:8.5px;font-weight:700;letter-spacing:.9px;text-transform:uppercase;padding:2px 8px;border-radius:3px;white-space:nowrap;}
+.chip-teal{background:var(--teal);color:#000;}
+.chip-grey{background:var(--panel3);color:var(--muted);border:1px solid var(--border2);}
+.chip-live{background:rgba(0,155,155,.15);color:#66dddd;border:1px solid rgba(0,155,155,.3);animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.45}}
+.hdr-title{font-size:12.5px;font-weight:700;color:#fff;line-height:1.35;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.hdr-sub{font-size:9.5px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hdr-meta{display:flex;align-items:center;flex-shrink:0;border-left:1px solid var(--border2);}
+.hdi{display:flex;flex-direction:column;align-items:center;padding:6px 12px;border-right:1px solid var(--border);min-width:80px;}
+.hdi:last-child{border-right:none;}
+.hdi-l{font-size:7.5px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.hdi-v{font-size:10px;font-weight:700;color:var(--text);text-align:center;line-height:1.3;}
+.hdr-cons{display:flex;align-items:center;gap:9px;padding:10px 14px 10px 14px;border-left:1px solid var(--border2);flex-shrink:0;}
+.hdr-cons-txt .c1{font-size:9.5px;font-weight:700;color:#fff;}
+.hdr-cons-txt .c2{font-size:8px;color:var(--muted);margin-top:1px;}
+.hdr-cons-txt .c3{font-size:7.5px;color:var(--muted);margin-top:1px;font-style:italic;}
+
+/* ── NAV TABS ────────────────────────────────────── */
+#nav{background:var(--panel);border-bottom:1px solid var(--border2);display:flex;overflow-x:auto;flex-shrink:0;position:sticky;top:66px;z-index:190;}
+#nav::-webkit-scrollbar{height:0;}
+.ntab{flex-shrink:0;padding:9px 16px;font-size:10px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);border:none;background:transparent;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;}
+.ntab:hover{color:var(--text);}
+.ntab.active{color:var(--teal);border-bottom-color:var(--teal);}
+
+/* ── MAIN CONTENT ────────────────────────────────── */
+#main{flex:1;overflow-y:auto;padding:0;}
+.section{display:none;padding:20px 16px;max-width:1280px;margin:0 auto;animation:fadein .18s ease;}
+.section.active{display:block;}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ── COMMON COMPONENTS ───────────────────────────── */
+.sec-hd{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--teal);padding-bottom:8px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;}
+.card-sm{background:var(--panel2);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.kv{display:flex;justify-content:space-between;align-items:baseline;padding:4px 0;border-bottom:1px solid var(--border);}
+.kv:last-child{border-bottom:none;padding-bottom:0;}
+.kk{font-size:9.5px;color:var(--muted);}
+.kv-val{font-size:10.5px;font-weight:600;color:var(--text);text-align:right;flex:1;margin-left:8px;}
+.kv-val.hl{color:var(--teal);}
+.kv-val.amber{color:var(--amber);}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:8.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:3px 9px;border-radius:3px;}
+.badge-complied{background:rgba(34,200,122,.15);color:var(--complied);border:1px solid rgba(34,200,122,.3);}
+.badge-pending{background:rgba(255,184,0,.15);color:var(--amber);border:1px solid rgba(255,184,0,.3);}
+.badge-noted{background:rgba(85,136,204,.15);color:var(--noted);border:1px solid rgba(85,136,204,.3);}
+.badge-disqual{background:rgba(255,68,85,.12);color:var(--red);border:1px solid rgba(255,68,85,.3);}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0;}
+.dot-complied{background:var(--complied);}
+.dot-pending{background:var(--amber);}
+.dot-disqual{background:var(--red);}
+.dot-teal{background:var(--teal);}
+
+/* ── SECTION: OVERVIEW ─────────────────────────── */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-bottom:16px;}
+.kpi{background:var(--panel2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;text-align:center;}
+.kpi-val{font-size:22px;font-weight:800;color:var(--teal);line-height:1;}
+.kpi-unit{font-size:9px;color:var(--muted);margin-top:2px;}
+.kpi-lbl{font-size:9.5px;font-weight:600;color:var(--muted);margin-top:5px;}
+.timeline{display:flex;flex-direction:column;gap:0;}
+.tl-row{display:flex;gap:12px;padding:7px 0;position:relative;}
+.tl-row:not(:last-child)::before{content:'';position:absolute;left:8px;top:22px;bottom:-3px;width:1px;background:var(--border2);}
+.tl-dot{width:17px;height:17px;border-radius:50%;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:800;}
+.tl-dot.done{background:var(--teal);color:#000;}
+.tl-dot.current{background:var(--amber);color:#000;box-shadow:0 0 0 3px rgba(255,184,0,.2);}
+.tl-dot.future{background:var(--panel3);color:var(--muted);border:1px solid var(--border2);}
+.tl-body{flex:1;}
+.tl-date{font-size:8.5px;color:var(--muted);font-weight:600;}
+.tl-ev{font-size:10.5px;font-weight:600;color:var(--text);margin-top:1px;}
+.tl-note{font-size:9px;color:var(--muted);margin-top:2px;line-height:1.45;}
+.tl-row.highlight .tl-ev{color:var(--teal);}
+
+/* ── SECTION: BACKGROUND ─────────────────────────── */
+.bg-context{font-size:11px;line-height:1.75;color:var(--text);margin-bottom:10px;}
+.bg-context strong{color:#fff;font-weight:600;}
+.facility-row{display:flex;gap:8px;align-items:flex-start;padding:9px 10px;border-radius:var(--radius);background:var(--panel2);border:1px solid var(--border);}
+.facility-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;margin-top:1px;}
+.facility-txt .f1{font-size:10.5px;font-weight:700;color:#fff;}
+.facility-txt .f2{font-size:9px;color:var(--muted);margin-top:2px;line-height:1.4;}
+.issue-card{background:var(--panel2);border:1px solid var(--border);border-left:3px solid var(--amber);border-radius:var(--radius);padding:10px 13px;margin-bottom:8px;}
+.issue-card.green{border-left-color:var(--teal);}
+.issue-hd{font-size:9px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:var(--amber);margin-bottom:4px;}
+.issue-card.green .issue-hd{color:var(--teal);}
+.issue-body{font-size:10.5px;line-height:1.6;color:var(--text);}
+
+/* ── SECTION: SCOPE ───────────────────────────────── */
+.route-card{background:var(--panel2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-bottom:8px;}
+.route-hd{display:flex;align-items:center;gap:9px;margin-bottom:10px;}
+.route-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+.route-title{font-size:11px;font-weight:700;color:#fff;}
+.route-sub{font-size:9px;color:var(--muted);margin-top:1px;}
+.method-bar{margin-bottom:8px;}
+.method-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.method-lbl{font-size:9.5px;color:var(--muted);width:160px;flex-shrink:0;}
+.method-track{flex:1;background:var(--panel3);border-radius:3px;height:8px;overflow:hidden;}
+.method-fill{height:100%;border-radius:3px;transition:width .6s ease;}
+.method-pct{font-size:9px;font-weight:700;color:var(--text);width:32px;text-align:right;flex-shrink:0;}
+.scope-list{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.scope-list li{display:flex;gap:8px;font-size:10px;line-height:1.5;align-items:flex-start;}
+.scope-list li::before{content:'▸';color:var(--teal);font-size:9px;margin-top:2px;flex-shrink:0;}
+.vtbl{width:100%;border-collapse:collapse;font-size:9.5px;}
+.vtbl th{padding:5px 8px;background:var(--panel3);color:var(--muted);text-align:left;font-weight:600;font-size:8.5px;letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid var(--border2);}
+.vtbl td{padding:5px 8px;border-bottom:1px solid var(--border);vertical-align:top;}
+.vtbl tr:last-child td{border-bottom:none;}
+.vtbl td:first-child{color:var(--teal);font-weight:600;white-space:nowrap;}
+
+/* ── SECTION: TENDERERS ───────────────────────────── */
+.tend-card{background:var(--panel2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-bottom:8px;transition:border-color .15s;}
+.tend-card:hover{border-color:var(--teal4);}
+.tend-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px;}
+.tend-num{width:26px;height:26px;border-radius:5px;background:var(--panel3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--teal);flex-shrink:0;}
+.tend-name{flex:1;font-size:11px;font-weight:700;color:#fff;line-height:1.3;}
+.tend-tams{font-size:8.5px;color:var(--muted);margin-top:2px;}
+.tend-stages{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.stage-chip{font-size:8px;font-weight:700;letter-spacing:.6px;padding:3px 8px;border-radius:3px;display:flex;align-items:center;gap:4px;}
+.stage-chip.pass{background:rgba(34,200,122,.12);color:var(--green);border:1px solid rgba(34,200,122,.25);}
+.stage-chip.pass-note{background:rgba(85,136,204,.12);color:var(--noted);border:1px solid rgba(85,136,204,.25);}
+.stage-chip.fail{background:rgba(255,68,85,.12);color:var(--red);border:1px solid rgba(255,68,85,.25);}
+.stage-chip.pend{background:rgba(255,184,0,.1);color:var(--amber);border:1px solid rgba(255,184,0,.25);}
+.tend-notes{font-size:9px;color:var(--muted);line-height:1.5;margin-top:6px;padding-top:6px;border-top:1px solid var(--border);}
+.tend-notes strong{color:var(--text);}
+.exp-tag{display:inline-flex;align-items:center;gap:3px;font-size:8px;font-weight:600;padding:2px 7px;border-radius:3px;margin-right:3px;}
+.exp-relevant{background:rgba(34,200,122,.1);color:var(--green);}
+.exp-partial{background:rgba(255,184,0,.1);color:var(--amber);}
+.exp-none{background:rgba(255,68,85,.1);color:var(--red);}
+
+/* ── SECTION: EVALUATION ─────────────────────────── */
+.eval-stage{margin-bottom:20px;}
+.stage-hd{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.stage-num{width:32px;height:32px;border-radius:50%;background:var(--teal);color:#000;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.stage-num.s2{background:var(--amber);}
+.stage-num.s3{background:var(--panel3);border:1px solid var(--border2);color:var(--muted);}
+.stage-title{font-size:13px;font-weight:700;color:#fff;}
+.stage-sub{font-size:9.5px;color:var(--muted);margin-top:1px;}
+.eval-tbl{width:100%;border-collapse:collapse;font-size:9.5px;}
+.eval-tbl th{padding:6px 8px;background:var(--panel3);color:var(--muted);font-weight:600;font-size:8px;letter-spacing:.6px;text-transform:uppercase;border-bottom:1px solid var(--border2);white-space:nowrap;}
+.eval-tbl th:first-child{text-align:left;min-width:160px;}
+.eval-tbl td{padding:6px 8px;border-bottom:1px solid var(--border);text-align:center;vertical-align:middle;}
+.eval-tbl td:first-child{text-align:left;font-weight:500;color:var(--text);}
+.eval-tbl tr:last-child td{border-bottom:none;}
+.eval-tbl .tick{color:var(--green);font-size:13px;}
+.eval-tbl .cross{color:var(--red);font-size:13px;}
+.eval-tbl .dash{color:var(--muted);font-size:11px;}
+.eval-tbl .note{color:var(--amber);font-size:10px;}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;}
+.sum-box{background:var(--panel2);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;text-align:center;}
+.sum-num{font-size:24px;font-weight:800;line-height:1;}
+.sum-lbl{font-size:9px;color:var(--muted);margin-top:4px;}
+
+/* ── SECTION: COMMITTEE ───────────────────────────── */
+.tec-card{background:var(--panel2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;display:flex;gap:13px;align-items:flex-start;}
+.tec-avatar{width:42px;height:42px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#000;flex-shrink:0;}
+.tec-avatar.chair{background:linear-gradient(135deg,var(--teal),#007777);}
+.tec-info .t1{font-size:12px;font-weight:700;color:#fff;}
+.tec-info .t2{font-size:9.5px;color:var(--teal);font-weight:600;margin-top:2px;}
+.tec-info .t3{font-size:9px;color:var(--muted);margin-top:1px;}
+.tec-info .t4{font-size:8.5px;color:var(--muted);margin-top:1px;}
+.role-badge{display:inline-block;font-size:7.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:2px 8px;border-radius:3px;margin-top:4px;}
+.role-chair{background:rgba(0,155,155,.2);color:var(--teal);border:1px solid rgba(0,155,155,.35);}
+.role-member{background:var(--panel3);color:var(--muted);border:1px solid var(--border2);}
+.rec-box{background:var(--panel2);border:2px solid var(--teal4);border-radius:var(--radius);padding:16px 18px;}
+.rec-hd{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--teal);margin-bottom:10px;}
+.rec-body{font-size:11px;line-height:1.7;color:var(--text);}
+.rec-body strong{color:#fff;}
+.rec-steps{list-style:none;margin-top:8px;}
+.rec-steps li{display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--border);}
+.rec-steps li:last-child{border-bottom:none;}
+.rec-step-num{width:20px;height:20px;border-radius:50%;background:var(--teal);color:#000;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.rec-step-txt{font-size:10px;color:var(--text);line-height:1.5;}
+.approval-box{background:rgba(0,155,155,.06);border:1px dashed var(--teal4);border-radius:var(--radius);padding:16px 18px;text-align:center;margin-top:12px;}
+.approval-box .a1{font-size:11px;color:var(--muted);margin-bottom:12px;}
+.sig-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.sig-box{background:var(--panel2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;min-width:180px;text-align:center;}
+.sig-line{width:100%;height:1px;background:var(--border2);margin:18px 0 6px;}
+.sig-name{font-size:9.5px;font-weight:700;color:#fff;}
+.sig-title{font-size:8.5px;color:var(--muted);margin-top:2px;}
+.sig-dept{font-size:8px;color:var(--muted);}
+
+/* ── RESPONSIVE ───────────────────────────────────── */
+@media(max-width:768px){
+  .hdr-meta{display:none;}
+  .hdr-cons{display:none;}
+  .hdr-brand .hdr-brand-txt .b2{display:none;}
+  .hdr-title{font-size:11px;}
+  .grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}
+  .kpi-grid{grid-template-columns:repeat(2,1fr);}
+  .eval-tbl th,.eval-tbl td{padding:4px 5px;font-size:8.5px;}
+  .eval-tbl th:first-child{min-width:100px;}
+  .section{padding:14px 12px;}
+  .sig-row{flex-direction:column;align-items:center;}
+  .method-lbl{width:120px;font-size:9px;}
+  #nav{top:66px;}
+}
+@media(max-width:480px){
+  .hdr-inner{flex-wrap:wrap;}
+  .hdr-mid{padding:8px 12px;}
+  .hdr-brand{padding:8px 12px;}
+  .kpi-grid{grid-template-columns:1fr 1fr;}
+}
+@media print{
+  #hdr{position:static;box-shadow:none;}
+  #nav{position:static;box-shadow:none;}
+  .section{display:block!important;page-break-inside:avoid;}
+  .ntab.active{color:var(--teal);border-color:var(--teal);}
+}
+
+/* ── DIVIDER ─────────────────────────────────────── */
+.divider{height:1px;background:var(--border);margin:16px 0;}
+.row-gap{display:flex;flex-direction:column;gap:8px;}
+.mt8{margin-top:8px;}
+.mt12{margin-top:12px;}
+.mt16{margin-top:16px;}
+.txt-muted{font-size:10px;color:var(--muted);line-height:1.6;}
+.bold-txt{font-weight:600;color:#fff;}
+
+/* ── FLOWCHART / DIAGRAMS ────────────────────────── */
+.diag-wrap{overflow-x:auto;padding:4px 0 8px;}
+.flow-h{display:flex;align-items:center;gap:0;min-width:max-content;}
+.flow-v{display:flex;flex-direction:column;align-items:center;gap:0;}
+.fnode{background:var(--panel2);border:1px solid var(--border2);border-radius:var(--radius);padding:8px 11px;font-size:9.5px;text-align:center;line-height:1.4;min-width:90px;max-width:130px;position:relative;}
+.fnode .fn-label{font-size:7.5px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;margin-bottom:3px;}
+.fnode .fn-val{font-size:10px;font-weight:700;color:#fff;}
+.fnode .fn-note{font-size:8px;color:var(--muted);margin-top:2px;line-height:1.35;}
+.fnode.teal{border-color:var(--teal4);background:var(--teal3);}
+.fnode.teal .fn-label{color:var(--teal);}
+.fnode.amber{border-color:rgba(255,184,0,.3);background:rgba(255,184,0,.07);}
+.fnode.amber .fn-label{color:var(--amber);}
+.fnode.red{border-color:rgba(255,68,85,.3);background:rgba(255,68,85,.07);}
+.fnode.red .fn-label{color:var(--red);}
+.fnode.green{border-color:rgba(34,200,122,.3);background:rgba(34,200,122,.07);}
+.fnode.green .fn-label{color:var(--green);}
+.farr-h{display:flex;align-items:center;padding:0 3px;color:var(--muted);font-size:13px;flex-shrink:0;}
+.farr-v{display:flex;justify-content:center;padding:3px 0;color:var(--muted);font-size:13px;}
+.farr-h .farr-lbl,.farr-v .farr-lbl{font-size:7.5px;color:var(--muted);white-space:nowrap;margin:0 2px;}
+
+/* network diagram */
+.net-diag{display:grid;grid-template-columns:1fr auto 1fr;grid-template-rows:auto auto auto;gap:0;align-items:center;justify-items:center;padding:8px 0;}
+.net-node{background:var(--panel2);border:1px solid var(--border2);border-radius:var(--radius);padding:10px 13px;text-align:center;min-width:110px;}
+.net-node .nn-icon{font-size:18px;margin-bottom:4px;}
+.net-node .nn-name{font-size:10px;font-weight:700;color:#fff;line-height:1.3;}
+.net-node .nn-sub{font-size:8px;color:var(--muted);margin-top:2px;}
+.net-node.primary{border-color:var(--teal4);background:var(--teal3);}
+.net-node.source{border-color:rgba(85,136,204,.3);background:rgba(85,136,204,.07);}
+.net-edge{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 6px;}
+.net-edge .ne-line{height:2px;width:60px;background:var(--teal);border-radius:1px;position:relative;}
+.net-edge .ne-line.dashed{background:repeating-linear-gradient(90deg,var(--muted) 0,var(--muted) 5px,transparent 5px,transparent 10px);}
+.net-edge .ne-lbl{font-size:7.5px;color:var(--teal);font-weight:600;margin-top:3px;white-space:nowrap;text-align:center;}
+.net-edge .ne-lbl.grey{color:var(--muted);}
+.net-edge-v{display:flex;flex-direction:column;align-items:center;padding:4px 0;}
+.net-edge-v .nev-line{width:2px;height:40px;background:var(--amber);border-radius:1px;}
+.net-edge-v .nev-lbl{font-size:7.5px;color:var(--amber);font-weight:600;margin-top:3px;white-space:nowrap;}
+@media(max-width:768px){
+  .flow-h{flex-direction:column;min-width:unset;align-items:flex-start;}
+  .farr-h{transform:rotate(90deg);align-self:center;}
+  .net-diag{grid-template-columns:1fr;grid-template-rows:auto;}
+  .net-edge{flex-direction:column;}
+  .net-edge .ne-line{width:2px;height:40px;}
+}
+.hdr-action{display:flex;align-items:center;padding:0 12px;border-left:1px solid var(--border2);flex-shrink:0;}
+.btn-back{font-size:10px;font-weight:700;padding:6px 12px;border-radius:5px;background:var(--teal2);color:var(--teal);border:1px solid var(--teal4);letter-spacing:.3px;text-decoration:none;white-space:nowrap;transition:all .15s;}
+.btn-back:hover{background:var(--teal);color:#000;}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ───────────────────────────────────────────── -->
+<header id="hdr">
+  <div class="hdr-inner">
+    <div class="hdr-brand">
+      <img src="https://images.seeklogo.com/logo-png/38/1/air-selangor-malaysia-logo-png_seeklogo-381791.png" alt="Air Selangor" onerror="this.style.display='none'">
+      <div class="hdr-brand-txt">
+        <div class="b1">PENGURUSAN AIR SELANGOR</div>
+        <div class="b2">Sdn Bhd &nbsp;·&nbsp; Tender Evaluation Report</div>
+      </div>
+    </div>
+    <div class="hdr-mid">
+      <div class="hdr-chips">
+        <span class="chip chip-teal">MPC PRESENTATION</span>
+        <span class="chip chip-grey">PN0000023850</span>
+        <span class="chip chip-grey">CAPEX 2023</span>
+        <span class="chip chip-live">● Penilaian Teknikal</span>
+      </div>
+      <div class="hdr-title">Proposed Pipe Laying and Improvement Works for Hospital Serdang and Hospital Sultan Idris Shah (Blok Pusat Kardiologi)</div>
+      <div class="hdr-sub">IOI Conezion → Hospital Serdang (400mm MSCL, 1,452m) &nbsp;·&nbsp; Hospital Serdang → Hospital Veterinar (200mm MSCL/HDPE, 746m)</div>
+    </div>
+    <div class="hdr-meta">
+      <div class="hdi"><div class="hdi-l">Tender No.</div><div class="hdi-v">PN0000023850</div></div>
+      <div class="hdi"><div class="hdi-l">Perunding</div><div class="hdi-v">DPI Konsult</div></div>
+      <div class="hdi"><div class="hdi-l">Pembida</div><div class="hdi-v">7 Syarikat</div></div>
+      <div class="hdi"><div class="hdi-l">Paip (m)</div><div class="hdi-v">2,198.85 m</div></div>
+    </div>
+    <div class="hdr-cons">
+      <div class="hdr-cons-txt">
+        <div class="c2">Disediakan oleh:</div>
+        <div class="c1">DPI Konsult Sdn Bhd</div>
+        <div class="c3">Perunding Sivil &amp; Struktur</div>
+      </div>
+    </div>
+    <div class="hdr-action">
+      <a href="index.html" class="btn-back">← Peta</a>
+    </div>
+  </div>
+</header>
+
+<!-- ── NAVIGATION ───────────────────────────────────────── -->
+<nav id="nav">
+  <button class="ntab active" onclick="showTab('overview',this)">Gambaran Keseluruhan</button>
+  <button class="ntab" onclick="showTab('background',this)">Latar Belakang</button>
+  <button class="ntab" onclick="showTab('scope',this)">Skop Kerja</button>
+  <button class="ntab" onclick="showTab('tenderers',this)">Pembida</button>
+  <button class="ntab" onclick="showTab('evaluation',this)">Penilaian Tender</button>
+  <button class="ntab" onclick="showTab('committee',this)">Jawatankuasa &amp; Cadangan</button>
+</nav>
+
+<!-- ── MAIN ─────────────────────────────────────────────── -->
+<main id="main">
+
+<!-- ══════════════ OVERVIEW ══════════════ -->
+<section class="section active" id="overview">
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-val">7</div><div class="kpi-unit">syarikat</div><div class="kpi-lbl">Tender Diterima</div></div>
+    <div class="kpi"><div class="kpi-val">2,199</div><div class="kpi-unit">meter</div><div class="kpi-lbl">Jumlah Paip</div></div>
+    <div class="kpi"><div class="kpi-val">RM 8.35</div><div class="kpi-unit">juta (CAPEX 2023)</div><div class="kpi-lbl">Bajet Diluluskan</div></div>
+    <div class="kpi"><div class="kpi-val">RM 8.13</div><div class="kpi-unit">juta</div><div class="kpi-lbl">Anggaran Air Selangor</div></div>
+    <div class="kpi"><div class="kpi-val">24</div><div class="kpi-unit">bulan</div><div class="kpi-lbl">Tempoh Pembinaan</div></div>
+    <div class="kpi"><div class="kpi-val">3</div><div class="kpi-unit">hospital</div><div class="kpi-lbl">Fasiliti Dilindungi</div></div>
+  </div>
+
+  <div class="grid-2">
+    <div>
+      <div class="sec-hd">Maklumat Tender</div>
+      <div class="card">
+        <div class="kv"><span class="kk">No. Tender</span><span class="kv-val hl">PN0000023850</span></div>
+        <div class="kv"><span class="kk">Kaedah Perolehan</span><span class="kv-val">Open Tender</span></div>
+        <div class="kv"><span class="kk">Program</span><span class="kv-val">Emergency &amp; Ad-Hoc Water Improvement</span></div>
+        <div class="kv"><span class="kk">Jenis Bajet</span><span class="kv-val amber">CAPEX 2023 (Spillover)</span></div>
+        <div class="kv"><span class="kk">Bajet Diluluskan (PRC 5/2024)</span><span class="kv-val hl">RM 8,350,000.00</span></div>
+        <div class="kv"><span class="kk">Anggaran Air Selangor</span><span class="kv-val">RM 8,128,460.00</span></div>
+        <div class="kv"><span class="kk">Perunding</span><span class="kv-val">DPI Konsult Sdn Bhd</span></div>
+        <div class="kv"><span class="kk">Tempoh Sah Tender</span><span class="kv-val">120 hari (sehingga 28 Feb 2026)</span></div>
+        <div class="kv"><span class="kk">Sistem Perolehan</span><span class="kv-val">Air Selangor TAMS</span></div>
+      </div>
+
+      <div class="sec-hd mt16">Media Pengiklanan</div>
+      <div class="card-sm">
+        <div class="kv"><span class="kk">Berita Harian</span><span class="kv-val">25 September 2025</span></div>
+        <div class="kv"><span class="kk">The Star</span><span class="kv-val">25 September 2025</span></div>
+        <div class="kv"><span class="kk">Selangorkini</span><span class="kv-val">25 September 2025</span></div>
+        <div class="kv"><span class="kk">Telegram [Tender Air Selangor]</span><span class="kv-val">25 September 2025</span></div>
+        <div class="kv"><span class="kk">Lawatan Tapak (Wajib)</span><span class="kv-val">8 Oktober 2025 — 24 Peserta</span></div>
+        <div class="kv"><span class="kk">Lokasi Taklimat</span><span class="kv-val">Persiaran Bandar, Bandar Baru Bangi</span></div>
+        <div class="kv"><span class="kk">Pembelian Tender</span><span class="kv-val">9 Syarikat</span></div>
+        <div class="kv"><span class="kk">Addendum</span><span class="kv-val">Tiada</span></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sec-hd">Kronologi Tender</div>
+      <div class="card">
+        <div class="timeline">
+          <div class="tl-row">
+            <div class="tl-dot done">✓</div>
+            <div class="tl-body">
+              <div class="tl-date">25 September 2025</div>
+              <div class="tl-ev">Pengiklanan Tender</div>
+              <div class="tl-note">Berita Harian, The Star, Selangorkini, Telegram</div>
+            </div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-dot done">✓</div>
+            <div class="tl-body">
+              <div class="tl-date">8 Oktober 2025</div>
+              <div class="tl-ev">Taklimat &amp; Lawatan Tapak</div>
+              <div class="tl-note">Persiaran Bandar, Bandar Baru Bangi — 24 Peserta (Wajib)</div>
+            </div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-dot done">✓</div>
+            <div class="tl-body">
+              <div class="tl-date">8 – 17 Oktober 2025</div>
+              <div class="tl-ev">Tempoh Penjualan Dokumen</div>
+              <div class="tl-note">9 Syarikat telah membeli dokumen tender</div>
+            </div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-dot done">✓</div>
+            <div class="tl-body">
+              <div class="tl-date">4 November 2025</div>
+              <div class="tl-ev">Penutupan &amp; Pembukaan Tender</div>
+              <div class="tl-note">7 Syarikat menyerahkan melalui TAMS sebelum 3.00 ptg</div>
+            </div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-dot done">✓</div>
+            <div class="tl-body">
+              <div class="tl-date">22 Disember 2025</div>
+              <div class="tl-ev">Penjelasan Tender Dikeluarkan</div>
+              <div class="tl-note">Penjelasan teknikal kepada semua 7 pembida untuk pematuhan SPAN &amp; dokumen</div>
+            </div>
+          </div>
+          <div class="tl-row highlight">
+            <div class="tl-dot current">●</div>
+            <div class="tl-body">
+              <div class="tl-date">Jun 2026</div>
+              <div class="tl-ev">Pembentangan Jawatankuasa Penilaian Tender (TEC)</div>
+              <div class="tl-note">Pembentangan kepada Jawatankuasa Perolehan Pengurusan (MPC)</div>
+            </div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-dot future">○</div>
+            <div class="tl-body">
+              <div class="tl-date">Tertakluk Kelulusan MPC</div>
+              <div class="tl-ev">Pembukaan Tawaran Komersial</div>
+              <div class="tl-note">Hanya pembida yang lulus Tahap 2 akan dibuka tawaran komersial</div>
+            </div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-dot future">○</div>
+            <div class="tl-body">
+              <div class="tl-date">Tertakluk Kelulusan MPC</div>
+              <div class="tl-ev">Cadangan Pemberian Kontrak</div>
+              <div class="tl-note">TACLO — Technically Acceptable &amp; Commercially Lowest Offer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ BACKGROUND ══════════════ -->
+<section class="section" id="background">
+  <div class="sec-hd">Project Context &amp; Mandate</div>
+  <div class="card mt8">
+    <p class="bg-context">This project is a <strong>critical intervention under Air Selangor's Emergency and Ad-Hoc Water Improvement Program</strong>, initiated in response to directives from state and regulatory authorities. The objective is to secure a resilient, redundant water supply for essential national healthcare infrastructure in the Serdang corridor.</p>
+    <p class="bg-context">Working with hospital management, Air Selangor diagnosed a <strong>persistent low-pressure condition at Hospital Sultan Idris Shah's Cardiology Block</strong>. Technical assessment traced the fault to a fundamental design discrepancy introduced during the original planning phase.</p>
+  </div>
+
+  <!-- ── SUPPLY NETWORK DIAGRAM ── -->
+  <div class="sec-hd mt16">Supply Network — Final Configuration</div>
+  <div class="card mt8">
+    <div class="diag-wrap">
+      <!-- top row: Semenyih BR (existing) above HSIS -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+
+        <!-- row 1: sources + centre node -->
+        <div style="display:flex;align-items:center;gap:0;justify-content:center;flex-wrap:wrap;row-gap:8px;">
+          <!-- IOI Reservoir -->
+          <div class="net-node source" style="min-width:120px;">
+            <div class="nn-icon">🏗️</div>
+            <div class="nn-name">IOI City Reservoir</div>
+            <div class="nn-sub">900mm Ø MS existing main</div>
+          </div>
+          <!-- arrow right to HSIS -->
+          <div class="net-edge" style="flex-direction:column;align-items:center;padding:0 8px;">
+            <div class="ne-lbl" style="margin-bottom:3px;">NEW</div>
+            <div style="display:flex;align-items:center;gap:4px;">
+              <div class="ne-line" style="width:70px;"></div>
+              <span style="color:var(--teal);font-size:14px;">▶</span>
+            </div>
+            <div class="ne-lbl">400mm MSCL · 1,452m</div>
+          </div>
+          <!-- HSIS — primary node -->
+          <div class="net-node primary" style="min-width:140px;">
+            <div class="nn-icon">🏥</div>
+            <div class="nn-name">Hospital Serdang<br><span style="color:var(--teal);font-size:9px;">(HSIS)</span></div>
+            <div class="nn-sub">Bulk meter · SCADA · EMF</div>
+          </div>
+          <!-- arrow right to HVet -->
+          <div class="net-edge" style="flex-direction:column;align-items:center;padding:0 8px;">
+            <div class="ne-lbl" style="margin-bottom:3px;">NEW</div>
+            <div style="display:flex;align-items:center;gap:4px;">
+              <div class="ne-line" style="width:70px;background:var(--amber);"></div>
+              <span style="color:var(--amber);font-size:14px;">▶</span>
+            </div>
+            <div class="ne-lbl" style="color:var(--amber);">200mm MSCL/HDPE · 746m</div>
+          </div>
+          <!-- HVet -->
+          <div class="net-node" style="min-width:120px;border-color:rgba(255,119,51,.3);background:rgba(255,119,51,.07);">
+            <div class="nn-icon">🐾</div>
+            <div class="nn-name">Hospital Veterinar<br>UPM</div>
+            <div class="nn-sub">Hot-tap to existing 200mm</div>
+          </div>
+        </div>
+
+        <!-- row 2: Semenyih BR existing supply below HSIS -->
+        <div style="display:flex;flex-direction:column;align-items:center;margin-top:4px;">
+          <div style="display:flex;align-items:center;gap:6px;padding:5px 14px;background:var(--panel3);border:1px dashed var(--border2);border-radius:var(--radius);font-size:8.5px;color:var(--muted);">
+            <span style="color:var(--muted);">↑</span>
+            <span><strong style="color:var(--text);">Existing:</strong> Semenyih Balancing Reservoir → HSIS (retained as alternate supply source)</span>
+          </div>
+        </div>
+
+        <!-- redundancy callout -->
+        <div style="margin-top:10px;padding:8px 14px;background:rgba(34,200,122,.07);border:1px solid rgba(34,200,122,.2);border-radius:var(--radius);font-size:9px;color:var(--green);text-align:center;max-width:500px;">
+          <strong>Redundancy achieved:</strong> IOI route &amp; Semenyih route are interchangeable — disruption to either source does not interrupt hospital supply.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FACILITIES ── -->
+  <div class="sec-hd mt16">Facilities Served</div>
+  <div class="row-gap">
+    <div class="facility-row">
+      <div class="facility-icon" style="background:rgba(0,155,155,.15);">🏥</div>
+      <div class="facility-txt">
+        <div class="f1">Hospital Serdang — Hospital Sultan Idris Shah (HSIS)</div>
+        <div class="f2">Malaysia's National Cardiology Referral Centre. Primary off-take point for the new 400mm MSCL main, fitted with bulk meter, electromagnetic flowmeter, and SCADA telemetry.</div>
+      </div>
+    </div>
+    <div class="facility-row">
+      <div class="facility-icon" style="background:rgba(255,184,0,.12);">🏥</div>
+      <div class="facility-txt">
+        <div class="f1">Hospital Sultan Idris Shah — Cardiology Block (New)</div>
+        <div class="f2">New cardiology block requiring uninterrupted supply. Chronic low pressure traced to a design discrepancy in the suction tank TWL — project eliminates the pressure deficit at source.</div>
+      </div>
+    </div>
+    <div class="facility-row">
+      <div class="facility-icon" style="background:rgba(255,119,51,.12);">🐾</div>
+      <div class="facility-txt">
+        <div class="f1">Hospital Veterinar UPM</div>
+        <div class="f2">Added to scope as a strategic value extension. Route 2 (200mm MSCL/HDPE, 746m) connects from Hospital Serdang, reinforcing the local distribution grid.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ROOT CAUSE FLOWCHART ── -->
+  <div class="sec-hd mt16">Root Cause Analysis</div>
+  <div class="card mt8">
+    <div class="diag-wrap">
+      <div class="flow-h" style="justify-content:center;gap:0;flex-wrap:wrap;row-gap:6px;">
+
+        <div class="fnode amber" style="max-width:110px;">
+          <div class="fn-label">Trigger</div>
+          <div class="fn-val">MCO Period</div>
+          <div class="fn-note">March 2020 — abnormally low water demand nationwide</div>
+        </div>
+        <div class="farr-h">→</div>
+
+        <div class="fnode amber" style="max-width:110px;">
+          <div class="fn-label">Data Collected</div>
+          <div class="fn-val">79m ODL</div>
+          <div class="fn-note">Bulk meter pressure reading at peak MCO conditions</div>
+        </div>
+        <div class="farr-h">→</div>
+
+        <div class="fnode red" style="max-width:115px;">
+          <div class="fn-label">Design Decision</div>
+          <div class="fn-val">TWL 69.95m</div>
+          <div class="fn-note">Suction tank top water level set using MCO data</div>
+        </div>
+        <div class="farr-h">→</div>
+
+        <div class="fnode" style="max-width:110px;">
+          <div class="fn-label">Reality</div>
+          <div class="fn-val">~69m ODL</div>
+          <div class="fn-note">Actual supply pressure under normal peak operations</div>
+        </div>
+        <div class="farr-h">→</div>
+
+        <div class="fnode red" style="max-width:110px;">
+          <div class="fn-label">Outcome</div>
+          <div class="fn-val">Zero Head</div>
+          <div class="fn-note">TWL ≈ operating pressure → no hydraulic head for gravity feed</div>
+        </div>
+        <div class="farr-h">→</div>
+
+        <div class="fnode red" style="max-width:115px;">
+          <div class="fn-label">Impact</div>
+          <div class="fn-val">Low Pressure</div>
+          <div class="fn-note">Chronic under-pressure at Cardiology Block — critical care risk</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SOLUTION FLOW ── -->
+  <div class="sec-hd mt16">Solution Development</div>
+  <div class="card mt8">
+    <div class="diag-wrap">
+      <div class="flow-h" style="justify-content:center;gap:0;flex-wrap:wrap;row-gap:6px;">
+
+        <div class="fnode amber" style="max-width:105px;">
+          <div class="fn-label">Step 1</div>
+          <div class="fn-val">Diagnosis</div>
+          <div class="fn-note">Root cause confirmed — temporary mitigation insufficient</div>
+        </div>
+        <div class="farr-h">→</div>
+
+        <div class="fnode" style="max-width:110px;">
+          <div class="fn-label">Step 2</div>
+          <div class="fn-val">Consultant</div>
+          <div class="fn-note">DPI Konsult appointed for detailed design &amp; supervision</div>
+        </div>
+        <div class="farr-h">→</div>
+
+        <div class="fnode" style="max-width:110px;">
+          <div class="fn-label">Step 3</div>
+          <div class="fn-val">600mm DED</div>
+          <div class="fn-note">Initial design validated — meets pressure &amp; headloss for 4 MLD</div>
+        </div>
+        <div class="farr-h">→</div>
+
+        <div class="fnode amber" style="max-width:115px;">
+          <div class="fn-label">Step 4</div>
+          <div class="fn-val">Optimise</div>
+          <div class="fn-note">Downsize to 400mm — velocity compliance + cost savings</div>
+        </div>
+        <div class="farr-h">→</div>
+
+        <div class="fnode teal" style="max-width:115px;">
+          <div class="fn-label">Step 5</div>
+          <div class="fn-val">Extend Scope</div>
+          <div class="fn-note">+800m to Hospital Veterinar using savings from optimisation</div>
+        </div>
+        <div class="farr-h">→</div>
+
+        <div class="fnode green" style="max-width:115px;">
+          <div class="fn-label">Final</div>
+          <div class="fn-val">Dual Route</div>
+          <div class="fn-note">400mm main + 200mm extension — redundant grid for 3 hospitals</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════ SCOPE ══════════════ -->
+<section class="section" id="scope">
+  <div class="sec-hd">Laluan Paip — Konfigurasi Akhir Diterima</div>
+  <div class="route-card">
+    <div class="route-hd">
+      <div class="route-dot" style="background:var(--teal);"></div>
+      <div>
+        <div class="route-title">Route 1 — IOI Conezion ke Hospital Serdang (HSIS)</div>
+        <div class="route-sub">400mm Ø MSCL (Mild Steel Cement Lined)</div>
+      </div>
+    </div>
+    <div class="kv"><span class="kk">Panjang</span><span class="kv-val hl">1,452.45 m</span></div>
+    <div class="kv"><span class="kk">Saiz Paip</span><span class="kv-val">400mm Ø MS</span></div>
+    <div class="kv"><span class="kk">Mula</span><span class="kv-val">Hot tap pada paip sedia 900mm Ø MS (IOI City Reservoir)</span></div>
+    <div class="kv"><span class="kk">Tamat</span><span class="kv-val">Off-take &amp; bulk meter Hospital Serdang</span></div>
+    <div class="kv"><span class="kk">Laluan</span><span class="kv-val">Lebuh IRC → SKVE (twin pipe jacking) → FT 345 (Jalan Hospital Serdang)</span></div>
+  </div>
+  <div class="route-card">
+    <div class="route-hd">
+      <div class="route-dot" style="background:var(--amber);"></div>
+      <div>
+        <div class="route-title">Route 2 — Hospital Serdang ke Hospital Veterinar (HVet)</div>
+        <div class="route-sub">200mm Ø MSCL / 250mm Ø HDPE</div>
+      </div>
+    </div>
+    <div class="kv"><span class="kk">Panjang</span><span class="kv-val hl">746.40 m</span></div>
+    <div class="kv"><span class="kk">Saiz Paip</span><span class="kv-val">200mm Ø MS (open trench) + 250mm Ø HDPE (HDD)</span></div>
+    <div class="kv"><span class="kk">Laluan</span><span class="kv-val">Koridor tepi jalan FT 345, HDD di bawah utiliti sedia ada</span></div>
+    <div class="kv"><span class="kk">Tamat</span><span class="kv-val">Hot tap pada paip sedia 200mm Ø Hospital Veterinar</span></div>
+  </div>
+  <div class="card-sm">
+    <div class="kv"><span class="kk">Jumlah Gabungan Infrastruktur</span><span class="kv-val hl">2,198.85 m</span></div>
+  </div>
+
+  <div class="sec-hd mt16">Kaedah Pembinaan — Pecahan Panjang</div>
+  <div class="card">
+    <div class="method-bar">
+      <div class="method-row"><span class="method-lbl">Under Paved (Open Cut)</span><div class="method-track"><div class="method-fill" style="width:62%;background:var(--teal);"></div></div><span class="method-pct">62%</span></div>
+      <div class="method-row"><span class="method-lbl">Side Table (Open Cut)</span><div class="method-track"><div class="method-fill" style="width:22%;background:var(--amber);"></div></div><span class="method-pct">22%</span></div>
+      <div class="method-row"><span class="method-lbl">Twin Pipe Jacking</span><div class="method-track"><div class="method-fill" style="width:7%;background:var(--orange);"></div></div><span class="method-pct">7%</span></div>
+      <div class="method-row"><span class="method-lbl">HDD</span><div class="method-track"><div class="method-fill" style="width:5%;background:#ff33cc;"></div></div><span class="method-pct">5%</span></div>
+      <div class="method-row"><span class="method-lbl">Pipe Jacking (Tunggal)</span><div class="method-track"><div class="method-fill" style="width:4%;background:var(--noted);"></div></div><span class="method-pct">4%</span></div>
+    </div>
+    <div class="divider"></div>
+    <table class="vtbl">
+      <thead><tr><th>Kaedah Pembinaan</th><th>Panjang (m)</th><th>Peratus (%)</th><th>Nota</th></tr></thead>
+      <tbody>
+        <tr><td>Under Paved (Open Cut)</td><td>1,363.85</td><td>62.00%</td><td>400mm &amp; 200mm MS — pelbagai laluan</td></tr>
+        <tr><td>Side Table (Open Cut)</td><td>492.00</td><td>22.00%</td><td>200mm MS — FT 345 koridor tepi jalan</td></tr>
+        <tr><td>Twin Pipe Jacking</td><td>150.00</td><td>7.00%</td><td>Di bawah SKVE — 2 paip 400mm selari dalam sleeve 600mm RC (300m paip sebenar)</td></tr>
+        <tr><td>HDD</td><td>108.00</td><td>5.00%</td><td>250mm HDPE — koridor utiliti FT 345</td></tr>
+        <tr><td>Pipe Jacking (Tunggal)</td><td>85.00</td><td>4.00%</td><td>2 lokasi — 400mm MS dalam sleeve 600mm RC</td></tr>
+        <tr><td style="color:#fff;font-weight:700;">JUMLAH</td><td style="color:var(--teal);font-weight:700;">2,198.85</td><td style="color:var(--teal);font-weight:700;">100%</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec-hd mt16">Piawai Rekabentuk Utama</div>
+  <div class="card-sm">
+    <div class="kv"><span class="kk">Piawai Rekabentuk</span><span class="kv-val">SYABAS Standard Specification 2007 / JKR Standard Specification 2014</span></div>
+    <div class="kv"><span class="kk">Saiz Paip Route 1</span><span class="kv-val">400mm ND MSCL</span></div>
+    <div class="kv"><span class="kk">Saiz Paip Route 2</span><span class="kv-val">200mm ND MSCL / HDPE PN10</span></div>
+    <div class="kv"><span class="kk">Min. Penutup Paip</span><span class="kv-val">1.2 m</span></div>
+    <div class="kv"><span class="kk">HDD — Kedalaman Minimum</span><span class="kv-val">3.0 m</span></div>
+    <div class="kv"><span class="kk">Toleransi Pipe Jacking (H)</span><span class="kv-val">±75 mm</span></div>
+    <div class="kv"><span class="kk">Ujian Tekanan Lapangan</span><span class="kv-val">15 bar (10 minit)</span></div>
+    <div class="kv"><span class="kk">Ujian Kebocoran</span><span class="kv-val">12 bar (24 jam)</span></div>
+    <div class="kv"><span class="kk">Kepekatan Penyahlkumanan</span><span class="kv-val">40 mg/L (min. 24 jam)</span></div>
+  </div>
+
+  <div class="sec-hd mt16">Komponen Utama Skop Kerja</div>
+  <div class="card-sm">
+    <ul class="scope-list">
+      <li>Pasang 400mm &amp; 200mm ND MSCL (paip lurus dan kepingan pendek) + sambungan &amp; aksesori besi keluli</li>
+      <li>Pasang semua injap (butterfly, sluice, air release, scour) serta bilik injap dan kerja paip washout</li>
+      <li>Pipe jacking berkembar di bawah SKVE (~150m alignment, 300m paip) + single pipe jacking (2 lokasi, 85m)</li>
+      <li>Horizontal Directional Drilling (HDD) — 108m HDPE PN10 250mm di koridor utiliti FT 345</li>
+      <li>Hot tapping — sambungan hidup ke paip sedia 900mm (IOI City Reservoir) dan 200mm (Hospital Veterinar)</li>
+      <li>Pasang electromagnetic flowmeter, RTU panel, dan sistem SCADA telemetri di off-take Hospital Serdang</li>
+      <li>Pasang sistem pengelasan &amp; pagar kawasan flowmeter</li>
+      <li>Kerja elektrikal penuh untuk flowmeter panel, RTU dan sistem bumi</li>
+      <li>Ujian tekanan &amp; kebocoran, sterilisasi/klorinasi, dan commissioning penuh</li>
+      <li>Reinstatement jalan kekal — kaedah mill &amp; pave mengikut spesifikasi JKR/pihak berkuasa tempatan</li>
+      <li>Penyelarasan permit — SPAN, JKR Road Opening, LLM/PLUS (SKVE), KUSEL (koridor utiliti)</li>
+    </ul>
+  </div>
+
+  <div class="sec-hd mt16">Permit &amp; Kebenaran Diperlukan</div>
+  <div class="card-sm">
+    <div class="kv"><span class="kk">SPAN</span><span class="kv-val">Pendaftaran kontraktor &amp; pematuhan bahan (sijil SPAN untuk semua bahan)</span></div>
+    <div class="kv"><span class="kk">JKR</span><span class="kv-val">Road Opening Permit &amp; piawaian reinstatement</span></div>
+    <div class="kv"><span class="kk">LLM / PLUS</span><span class="kv-val">Permit kerja di bawah lebuh raya SKVE</span></div>
+    <div class="kv"><span class="kk">KUSEL</span><span class="kv-val">Permit koridor utiliti &amp; watermain crossing FT 345</span></div>
+    <div class="kv"><span class="kk">Air Selangor Operations</span><span class="kv-val">Penjadualan shut-down &amp; penyelarasan hot-tapping</span></div>
+  </div>
+</section>
+
+<!-- ══════════════ TENDERERS ══════════════ -->
+<section class="section" id="tenderers">
+  <div class="sec-hd">Senarai Pembida — 7 Syarikat</div>
+  <p class="txt-muted" style="margin-bottom:14px;">Semua 7 syarikat menyerahkan dokumen tender melalui Air Selangor TAMS sebelum 3.00 ptg pada 4 November 2025. Penjelasan tender dikeluarkan kepada semua 7 pembida pada 22 Disember 2025.</p>
+
+  <!-- T1 -->
+  <div class="tend-card">
+    <div class="tend-hd">
+      <div class="tend-num">1</div>
+      <div>
+        <div class="tend-name">BH BERSATU BINA SDN BHD</div>
+        <div class="tend-tams">TAMS Ref: 2466135</div>
+      </div>
+      <span class="badge badge-complied">Lulus Tahap 1 &amp; 2</span>
+    </div>
+    <div class="tend-stages">
+      <span class="stage-chip pass">✓ Tahap 1: Kelayakan</span>
+      <span class="stage-chip pass-note">◉ Tahap 2: Teknikal (Penjelasan)</span>
+      <span class="stage-chip pend">⏳ Tahap 3: Komersial</span>
+    </div>
+    <div class="tend-notes">
+      <strong>Bahan yang ditawarkan:</strong> MS Pipes &amp; Fittings — LY Steel Pipe Industries (Malaysia, SPAN sah sehingga 01.11.2027). HDPE Fittings — Spirolite (M) Sdn Bhd (SPAN sah). HDPE Pipe — Spirolite Malaysia (SPAN sah sehingga 23.01.2028). Injap — Heap Wah Barakah / Dulvalco (SPAN sah).<br>
+      <strong>Penjelasan:</strong> Perlu cadangkan jenama flowmeter elektromagnet. Dijelas pada 22.12.2025 — Schedule H &amp; I dikemukakan semula.<br>
+      <strong>Pengalaman (5 Tahun Terkini):</strong> <span class="exp-tag exp-relevant">Relevan</span> 5 projek termasuk Selangor (Parit Mahang 1C), Perak (LAP 400mm &amp; 450mm CLMS), PAAB (300mm &amp; 200mm), Air Selangor Package 90F. Kumulatif ~RM 23.4 juta.
+    </div>
+  </div>
+
+  <!-- T2 -->
+  <div class="tend-card">
+    <div class="tend-hd">
+      <div class="tend-num">2</div>
+      <div>
+        <div class="tend-name">BRICOMP LESTARI SDN BHD</div>
+        <div class="tend-tams">TAMS Ref: 2467169</div>
+      </div>
+      <span class="badge badge-complied">Lulus Tahap 1 &amp; 2</span>
+    </div>
+    <div class="tend-stages">
+      <span class="stage-chip pass">✓ Tahap 1: Kelayakan</span>
+      <span class="stage-chip pass-note">◉ Tahap 2: Teknikal (Penjelasan)</span>
+      <span class="stage-chip pend">⏳ Tahap 3: Komersial</span>
+    </div>
+    <div class="tend-notes">
+      <strong>Bahan yang ditawarkan:</strong> MS Pipes &amp; Fittings — LY Steel Pipe Industries (SPAN sah sehingga 01.11.2027). HDPE Fittings — Spirolite (M) Sdn Bhd (China, SPAN sah sehingga 11.06.2027). HDPE Pipe — Spirolite Malaysia (SPAN sah sehingga 23.01.2028). Injap — Heap Wah Barakah / Dulvalco (SPAN sah).<br>
+      <strong>Penjelasan:</strong> Perlu cadangkan jenama flowmeter elektromagnet. Dijelas pada 22.12.2025.<br>
+      <strong>Pengalaman (5 Tahun Terkini):</strong> <span class="exp-tag exp-relevant">Relevan</span> Rekod Air Selangor yang sangat kukuh — Package 18, 16, 57, 61, 84, 89F, 52 (Gombak). Kumulatif ~RM 54 juta. Pengalaman luas dalam program penggantian paip Air Selangor.
+    </div>
+  </div>
+
+  <!-- T3 -->
+  <div class="tend-card">
+    <div class="tend-hd">
+      <div class="tend-num">3</div>
+      <div>
+        <div class="tend-name">HSA SETIAMURNI SDN BHD</div>
+        <div class="tend-tams">TAMS Ref: 2466082</div>
+      </div>
+      <span class="badge badge-noted">Pematuhan Semula Diperlukan</span>
+    </div>
+    <div class="tend-stages">
+      <span class="stage-chip pass">✓ Tahap 1: Kelayakan</span>
+      <span class="stage-chip fail">✕ Tahap 2: Berbilang Kekurangan</span>
+      <span class="stage-chip pend">— Tahap 3: Bergantung Keputusan MPC</span>
+    </div>
+    <div class="tend-notes">
+      <strong>Kekurangan Bahan:</strong> Tidak mengemukakan cadangan jenama untuk MS Pipes, MS Fittings, HDPE Pipe, HDPE Fittings, Scour Valve, Sluice Valve, Air Valve, dan Electromagnetic Flowmeter — semua items (1).<br>
+      <strong>Penjelasan:</strong> Penjelasan dikeluarkan pada 22.12.2025 meminta cadangan jenama semua bahan.<br>
+      <strong>Pengalaman Relevan:</strong> <span class="exp-tag exp-none">Tidak Relevan</span> Projek-projek terdiri daripada masjid (JKR), dewan banquet (MPHS), menara ibu pejabat (MPS), pusat 3S Perodua, MRT. <strong>Tiada pengalaman relevan dalam kerja pemasangan paip bekalan air.</strong>
+    </div>
+  </div>
+
+  <!-- T4 -->
+  <div class="tend-card">
+    <div class="tend-hd">
+      <div class="tend-num">4</div>
+      <div>
+        <div class="tend-name">I.A.L ENTERPRISE BINA SDN BHD</div>
+        <div class="tend-tams">TAMS Ref: 2466827</div>
+      </div>
+      <span class="badge badge-complied">Lulus Tahap 1 &amp; 2</span>
+    </div>
+    <div class="tend-stages">
+      <span class="stage-chip pass">✓ Tahap 1: Kelayakan</span>
+      <span class="stage-chip pass-note">◉ Tahap 2: Teknikal (Penjelasan)</span>
+      <span class="stage-chip pend">⏳ Tahap 3: Komersial</span>
+    </div>
+    <div class="tend-notes">
+      <strong>Bahan yang ditawarkan:</strong> MS Pipes &amp; Fittings — LY Steel Pipe Industries (SPAN sah 01.11.2027). HDPE Fittings — Piping Technology Sdn Bhd / FRIATEC (Jerman, SPAN sah 01.08.2028). Injap — VAG Valve Malaysia (China, SPAN sah 27.06.2027 &amp; 30.09.2028).<br>
+      <strong>Penjelasan:</strong> Perlu cadangkan jenama HDPE Pipe dan flowmeter elektromagnet. Dijelas pada 22.12.2025.<br>
+      <strong>Pengalaman (5 Tahun Terkini):</strong> <span class="exp-tag exp-relevant">Relevan</span> Kerja pengagihan Air Selangor termasuk Package C20, C43, Package 64 (Hulu Selangor), Package 41 (Sepang), Package 35 (Hulu Selangor). <span class="exp-tag exp-partial">Separa Relevan</span> Kerja Sg Kandis &amp; Jalan Kebun.
+    </div>
+  </div>
+
+  <!-- T5 -->
+  <div class="tend-card">
+    <div class="tend-hd">
+      <div class="tend-num">5</div>
+      <div>
+        <div class="tend-name">KNH TECHNOLOGY SDN BHD</div>
+        <div class="tend-tams">TAMS Ref: 2466127</div>
+      </div>
+      <span class="badge badge-complied">Lulus Tahap 1 &amp; 2</span>
+    </div>
+    <div class="tend-stages">
+      <span class="stage-chip pass">✓ Tahap 1: Kelayakan</span>
+      <span class="stage-chip pass-note">◉ Tahap 2: Teknikal (Penjelasan)</span>
+      <span class="stage-chip pend">⏳ Tahap 3: Komersial</span>
+    </div>
+    <div class="tend-notes">
+      <strong>Bahan yang ditawarkan:</strong> MS Pipes &amp; Fittings — LY Steel Pipe Industries (SPAN sah 01.11.2027). HDPE Fittings — Polyware Sdn Bhd / Polyfuse (Malaysia, SPAN sah 09.10.2027). Injap — VAG Valve Malaysia (SPAN sah). <strong>Electromagnetic Flowmeter — Siemens Malaysia Sdn Bhd (China, SPAN sah 30.07.2027) ✓ Hanya pembida dengan EMF brand dikemukakan awal.</strong><br>
+      <strong>Penjelasan:</strong> Perlu cadangkan jenama HDPE Pipe. Dijelas pada 22.12.2025.<br>
+      <strong>Pengalaman (5 Tahun Terkini):</strong> <span class="exp-tag exp-relevant">Relevan</span> Air Selangor Package 19 (RM 6.7j), Paip Retikulasi KG Sri Aman Petaling (RM 5.4j). <span class="exp-tag exp-none">Tidak Relevan</span> Pemulihan Rumah Pam (Package 4B).
+    </div>
+  </div>
+
+  <!-- T6 -->
+  <div class="tend-card">
+    <div class="tend-hd">
+      <div class="tend-num">6</div>
+      <div>
+        <div class="tend-name">PBJV GROUP SDN BHD</div>
+        <div class="tend-tams">TAMS Ref: 2467171</div>
+      </div>
+      <span class="badge badge-complied">Lulus Tahap 1 &amp; 2</span>
+    </div>
+    <div class="tend-stages">
+      <span class="stage-chip pass">✓ Tahap 1: Kelayakan</span>
+      <span class="stage-chip pass-note">◉ Tahap 2: Teknikal (Penjelasan)</span>
+      <span class="stage-chip pend">⏳ Tahap 3: Komersial</span>
+    </div>
+    <div class="tend-notes">
+      <strong>Bahan yang ditawarkan:</strong> MS Pipes &amp; Fittings — Allpipes Technology S/B (Malaysia, SPAN sah 24.07.2027). Injap — AVK Valves Manufacturing (M) Sdn Bhd (Malaysia, SPAN sah).<br>
+      <strong>Penjelasan:</strong> Perlu cadangkan jenama HDPE Pipe dan flowmeter elektromagnet. Dijelas pada 22.12.2025 — pelbagai Schedule dikemukakan semula.<br>
+      <strong>Nota:</strong> Rekod pengalaman terperinci tidak tersedia dalam dokumen semasa. Penjelasan telah diterima semasa penilaian.
+    </div>
+  </div>
+
+  <!-- T7 -->
+  <div class="tend-card">
+    <div class="tend-hd">
+      <div class="tend-num">7</div>
+      <div>
+        <div class="tend-name">STRENGTH WHEEL CONSTRUCTION SDN BHD</div>
+        <div class="tend-tams">TAMS Ref: 2466159</div>
+      </div>
+      <span class="badge badge-complied">Lulus Tahap 1 &amp; 2</span>
+    </div>
+    <div class="tend-stages">
+      <span class="stage-chip pass">✓ Tahap 1: Kelayakan</span>
+      <span class="stage-chip pass-note">◉ Tahap 2: Teknikal (Penjelasan)</span>
+      <span class="stage-chip pend">⏳ Tahap 3: Komersial</span>
+    </div>
+    <div class="tend-notes">
+      <strong>Bahan yang ditawarkan:</strong> MS Pipes &amp; Fittings — Allpipes Technology S/B (Malaysia, SPAN sah 24.07.2027). HDPE Fittings — AWT Fusion Sdn Bhd / Fusamatic (England, SPAN sah 04.12.2027). Injap — VAG Valve Malaysia (SPAN sah 27.06.2027 &amp; 30.09.2028).<br>
+      <strong>Penjelasan:</strong> Perlu cadangkan jenama HDPE Pipe dan flowmeter elektromagnet. Dijelas pada 22.12.2025.<br>
+      <strong>Pengalaman (5 Tahun Terkini):</strong> <span class="exp-tag exp-relevant">Relevan</span> Air Selangor Package 40 (Hulu Langat &amp; Sepang, RM 3.4j), Package 45 (KL, RM 3.7j), Package 56 (Klang, RM 7.3j). Rekod Air Selangor yang konsisten.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ EVALUATION ══════════════ -->
+<section class="section" id="evaluation">
+
+  <!-- STAGE 1 -->
+  <div class="eval-stage">
+    <div class="stage-hd">
+      <div class="stage-num">1</div>
+      <div>
+        <div class="stage-title">Tahap 1 — Kelayakan</div>
+        <div class="stage-sub">Kesempurnaan penyerahan dokumen mandatori</div>
+      </div>
+    </div>
+    <div class="summary-grid" style="margin-bottom:12px;">
+      <div class="sum-box"><div class="sum-num" style="color:var(--green);">7</div><div class="sum-lbl">Lulus</div></div>
+      <div class="sum-box"><div class="sum-num" style="color:var(--red);">0</div><div class="sum-lbl">Gagal</div></div>
+      <div class="sum-box"><div class="sum-num" style="color:var(--teal);">100%</div><div class="sum-lbl">Kadar Kelayakan</div></div>
+    </div>
+    <div class="card" style="overflow-x:auto;">
+      <table class="eval-tbl">
+        <thead>
+          <tr>
+            <th>Kriteria</th>
+            <th>BH Bersatu</th><th>Bricomp</th><th>HSA</th><th>IAL</th><th>KNH</th><th>PBJV</th><th>SWC</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Pengisytiharan Bukan Bankrap / Bukan Pembubaran</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+          <tr><td>Pakta Integriti (Anti-Rasuah, Anti-Kolusi)</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+          <tr><td>Butiran Kontraktor lengkap &amp; diisi</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+          <tr><td>Jadual Butiran lengkap &amp; diisi</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+          <tr style="background:var(--panel3);">
+            <td style="font-weight:700;color:#fff;">STATUS</td>
+            <td><span class="badge badge-complied">Lulus</span></td>
+            <td><span class="badge badge-complied">Lulus</span></td>
+            <td><span class="badge badge-complied">Lulus</span></td>
+            <td><span class="badge badge-complied">Lulus</span></td>
+            <td><span class="badge badge-complied">Lulus</span></td>
+            <td><span class="badge badge-complied">Lulus</span></td>
+            <td><span class="badge badge-complied">Lulus</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- STAGE 2 -->
+  <div class="eval-stage">
+    <div class="stage-hd">
+      <div class="stage-num s2">2</div>
+      <div>
+        <div class="stage-title">Tahap 2 — Penilaian Teknikal</div>
+        <div class="stage-sub">Pematuhan spesifikasi, pengalaman relevan, prestasi lalu Air Selangor</div>
+      </div>
+    </div>
+
+    <div class="card" style="overflow-x:auto;margin-bottom:10px;">
+      <div class="sec-hd">A. Pematuhan Keperluan Teknikal (Sijil SPAN)</div>
+      <table class="eval-tbl">
+        <thead>
+          <tr>
+            <th>Item Bahan</th>
+            <th>BH Bersatu</th><th>Bricomp</th><th>HSA</th><th>IAL</th><th>KNH</th><th>PBJV</th><th>SWC</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>MS Pipes (Paip Besi Keluli)</td><td class="tick">✓</td><td class="tick">✓</td><td class="cross">✕<sup>(1)</sup></td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+          <tr><td>MS Fittings (Penyambung BS)</td><td class="tick">✓</td><td class="tick">✓</td><td class="cross">✕<sup>(1)</sup></td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+          <tr><td>HDPE Fittings</td><td class="tick">✓</td><td class="tick">✓</td><td class="cross">✕<sup>(1)</sup></td><td class="tick">✓</td><td class="tick">✓</td><td class="cross">✕<sup>(1)</sup></td><td class="tick">✓</td></tr>
+          <tr><td>HDPE Pipe</td><td class="tick">✓</td><td class="tick">✓</td><td class="cross">✕<sup>(1)</sup></td><td class="cross">✕<sup>(1)</sup></td><td class="cross">✕<sup>(1)</sup></td><td class="cross">✕<sup>(2)</sup></td><td class="cross">✕<sup>(1)</sup></td></tr>
+          <tr><td>Scour Valve</td><td class="tick">✓</td><td class="tick">✓</td><td class="cross">✕<sup>(1)</sup></td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+          <tr><td>Sluice Valve</td><td class="tick">✓</td><td class="tick">✓</td><td class="cross">✕<sup>(1)</sup></td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+          <tr><td>Air Valve</td><td class="tick">✓</td><td class="tick">✓</td><td class="cross">✕<sup>(1)</sup></td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+          <tr><td>Electromagnetic Flowmeter</td><td class="note">✕<sup>(1)</sup></td><td class="note">✕<sup>(1)</sup></td><td class="cross">✕<sup>(1)</sup></td><td class="cross">✕<sup>(2)</sup></td><td class="tick">✓ Siemens</td><td class="cross">✕<sup>(2)</sup></td><td class="cross">✕<sup>(2)</sup></td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:8.5px;color:var(--muted);margin-top:8px;">Nota: <sup>(1)</sup> = Perlu kemukakan cadangan jenama — dijelas pada 22.12.2025 &nbsp;·&nbsp; <sup>(2)</sup> = Perlu kemukakan cadangan jenama untuk EMF &nbsp;·&nbsp; ✕ kuning = dikemukakan semasa penjelasan</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="sec-hd">B. Pengalaman Relevan (5 Tahun)</div>
+        <div class="kv"><span class="kk">BH Bersatu Bina</span><span class="badge badge-complied">Relevan</span></div>
+        <div class="kv"><span class="kk">Bricomp Lestari</span><span class="badge badge-complied">Relevan</span></div>
+        <div class="kv"><span class="kk">HSA Setiamurni</span><span class="badge badge-disqual">Tidak Relevan</span></div>
+        <div class="kv"><span class="kk">IAL Enterprise</span><span class="badge badge-complied">Relevan</span></div>
+        <div class="kv"><span class="kk">KNH Technology</span><span class="badge badge-complied">Relevan</span></div>
+        <div class="kv"><span class="kk">PBJV Group</span><span class="badge badge-noted">Dalam Penilaian</span></div>
+        <div class="kv"><span class="kk">Strength Wheel</span><span class="badge badge-complied">Relevan</span></div>
+      </div>
+      <div class="card">
+        <div class="sec-hd">C. Prestasi Lalu di Air Selangor</div>
+        <div class="kv"><span class="kk">BH Bersatu Bina</span><span class="badge badge-complied">Ada Rekod AS</span></div>
+        <div class="kv"><span class="kk">Bricomp Lestari</span><span class="badge badge-complied">Rekod AS Kukuh</span></div>
+        <div class="kv"><span class="kk">HSA Setiamurni</span><span class="badge badge-disqual">Tiada Kerja AS</span></div>
+        <div class="kv"><span class="kk">IAL Enterprise</span><span class="badge badge-complied">Ada Rekod AS</span></div>
+        <div class="kv"><span class="kk">KNH Technology</span><span class="badge badge-complied">Ada Rekod AS</span></div>
+        <div class="kv"><span class="kk">PBJV Group</span><span class="badge badge-noted">Dalam Penilaian</span></div>
+        <div class="kv"><span class="kk">Strength Wheel</span><span class="badge badge-complied">Rekod AS Kukuh</span></div>
+      </div>
+    </div>
+
+    <div class="summary-grid mt12">
+      <div class="sum-box"><div class="sum-num" style="color:var(--green);">6</div><div class="sum-lbl">Layak Tahap 2</div></div>
+      <div class="sum-box"><div class="sum-num" style="color:var(--amber);">1</div><div class="sum-lbl">Tertakluk Penilaian</div></div>
+      <div class="sum-box"><div class="sum-num" style="color:var(--red);">1</div><div class="sum-lbl">HSA — Isu Pengalaman</div></div>
+      <div class="sum-box"><div class="sum-num" style="color:var(--teal);">22 Des</div><div class="sum-lbl">Tarikh Penjelasan</div></div>
+    </div>
+  </div>
+
+  <!-- STAGE 3 -->
+  <div class="eval-stage">
+    <div class="stage-hd">
+      <div class="stage-num s3">3</div>
+      <div>
+        <div class="stage-title">Tahap 3 — Penilaian Komersial</div>
+        <div class="stage-sub">FOT, BQ, keupayaan kewangan, ralat aritmetik, TACLO</div>
+      </div>
+    </div>
+    <div class="card" style="border-color:var(--amber);border-style:dashed;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <span style="font-size:20px;">⏳</span>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--amber);">Tertakluk Kelulusan MPC</div>
+          <div style="font-size:9.5px;color:var(--muted);margin-top:2px;">Tawaran komersial hanya akan dibuka selepas MPC meluluskan senarai pembida yang layak secara teknikal daripada Tahap 2</div>
+        </div>
+      </div>
+      <div class="kv"><span class="kk">Kaedah Penilaian</span><span class="kv-val">2-Tier — Teknikal dahulu, kemudian Komersial</span></div>
+      <div class="kv"><span class="kk">Kriteria TACLO</span><span class="kv-val">Technically Acceptable &amp; Commercially Lowest Offer</span></div>
+      <div class="kv"><span class="kk">Ralat Aritmetik &gt;±20%</span><span class="kv-val">Boleh dicadangkan untuk disqualifikasi</span></div>
+      <div class="kv"><span class="kk">Variasi daripada Anggaran AS &gt;±25%</span><span class="kv-val">Penjelasan komersial boleh dijalankan dengan pembida yang dicadangkan</span></div>
+      <div class="kv"><span class="kk">Modal Kerja Rasional Minimum</span><span class="kv-val">3% daripada Harga Tender</span></div>
+    </div>
+  </div>
+
+  <!-- STAGE 4 -->
+  <div class="eval-stage">
+    <div class="stage-hd">
+      <div class="stage-num" style="background:var(--panel3);border:1px solid var(--border2);color:var(--muted);">4</div>
+      <div>
+        <div class="stage-title">Tahap 4 — Laporan Pemilikan &amp; Pengarah</div>
+        <div class="stage-sub">Potensi kolusi &amp; syarikat berkaitan</div>
+      </div>
+    </div>
+    <div class="card" style="border-color:rgba(255,255,255,.1);border-style:dashed;">
+      <p style="font-size:10px;color:var(--muted);line-height:1.6;">Akan dijalankan ke atas pembida yang disyorkan selepas Tahap 3. Laporan ini mengenal pasti syarikat berkaitan dan potensi kolusi di antara pembida sebelum pemberian kontrak.</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════ COMMITTEE ══════════════ -->
+<section class="section" id="committee">
+  <div class="sec-hd">Jawatankuasa Penilaian Tender (TEC)</div>
+  <div class="row-gap">
+    <div class="tec-card">
+      <div class="tec-avatar chair">AI</div>
+      <div class="tec-info">
+        <div class="t1">Amir Ismail Bin Abdul Kadar</div>
+        <div class="t2">Pengerusi TEC</div>
+        <div class="t3">Naib Presiden II</div>
+        <div class="t4">Jabatan Perolehan (Procurement Department)</div>
+        <span class="role-badge role-chair">Pengerusi</span>
+      </div>
+    </div>
+    <div class="tec-card">
+      <div class="tec-avatar">MF</div>
+      <div class="tec-info">
+        <div class="t1">Ir. Mohd Farizol Abdul Ghani</div>
+        <div class="t2">Ahli TEC</div>
+        <div class="t3">Penolong Naib Presiden I (AVP I)</div>
+        <div class="t4">Jabatan Perancangan &amp; Kerja Modal (PCW)</div>
+        <span class="role-badge role-member">Ahli</span>
+      </div>
+    </div>
+    <div class="tec-card">
+      <div class="tec-avatar">SH</div>
+      <div class="tec-info">
+        <div class="t1">Shukri B. Hamden</div>
+        <div class="t2">Ahli TEC</div>
+        <div class="t3">Penolong Naib Presiden II (AVP II)</div>
+        <div class="t4">Jabatan Kewangan &amp; Strategi (FSD)</div>
+        <span class="role-badge role-member">Ahli</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-hd mt16">Cadangan Kepada MPC</div>
+  <div class="rec-box">
+    <div class="rec-hd">Cadangan Jawatankuasa Penilaian Tender (TEC)</div>
+    <div class="rec-body">
+      <strong>Jawatankuasa Penilaian Tender (TEC)</strong> ingin mendapatkan sokongan dan cadangan Jawatankuasa Perolehan Pengurusan (MPC) bagi tender <strong>'Proposed Pipe Laying and Improvement Works for Hospital Serdang and Hospital Sultan Idris Shah (Blok Pusat Kardiologi)'</strong> (No. Tender: <strong>PN0000023850</strong>) seperti berikut:
+    </div>
+    <ul class="rec-steps">
+      <li>
+        <div class="rec-step-num">1</div>
+        <div class="rec-step-txt"><strong>Persetujuan Keputusan Tahap 2 (Teknikal):</strong> MPC dimohon untuk meluluskan senarai pembida yang layak secara teknikal dan tidak layak berdasarkan penilaian Tahap 1 dan Tahap 2 yang telah dijalankan oleh TEC.</div>
+      </li>
+      <li>
+        <div class="rec-step-num">2</div>
+        <div class="rec-step-txt"><strong>Kebenaran Membuka Tawaran Komersial:</strong> Setelah senarai pembida layak diluluskan, TEC memohon kebenaran MPC untuk membuka tawaran komersial (FOT &amp; BQ) pembida-pembida yang layak secara teknikal sahaja.</div>
+      </li>
+      <li>
+        <div class="rec-step-num">3</div>
+        <div class="rec-step-txt"><strong>Pengesahan Kriteria TACLO:</strong> MPC dimohon mengesahkan bahawa pemberian kontrak akan menggunakan kaedah Technically Acceptable &amp; Commercially Lowest Offer (TACLO) dengan penyemakan item-item utama berdasarkan anggaran Air Selangor.</div>
+      </li>
+      <li>
+        <div class="rec-step-num">4</div>
+        <div class="rec-step-txt"><strong>Tempoh Sah Tender:</strong> MPC dimaklumkan bahawa tempoh sah tender adalah sehingga <strong>28 Februari 2026</strong>. Sebarang kelewatan perlu diuruskan dengan jangkaan penyelarasan tempoh sah.</div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="sec-hd mt16">Pengesahan &amp; Tandatangan</div>
+  <div class="approval-box">
+    <div class="a1">Laporan penilaian ini disediakan dan dikemukakan oleh Jawatankuasa Penilaian Tender (TEC) kepada Jawatankuasa Perolehan Pengurusan (MPC) untuk pertimbangan dan kelulusan.</div>
+    <div class="sig-row">
+      <div class="sig-box">
+        <div class="sig-line"></div>
+        <div class="sig-name">AMIR ISMAIL BIN ABDUL KADAR</div>
+        <div class="sig-title">Naib Presiden II</div>
+        <div class="sig-dept">Jabatan Perolehan</div>
+        <div style="font-size:8px;color:var(--teal);margin-top:4px;font-weight:600;">PENGERUSI TEC</div>
+      </div>
+      <div class="sig-box">
+        <div class="sig-line"></div>
+        <div class="sig-name">IR. MOHD FARIZOL ABDUL GHANI</div>
+        <div class="sig-title">Penolong Naib Presiden I</div>
+        <div class="sig-dept">PCW</div>
+        <div style="font-size:8px;color:var(--muted);margin-top:4px;font-weight:600;">AHLI TEC</div>
+      </div>
+      <div class="sig-box">
+        <div class="sig-line"></div>
+        <div class="sig-name">SHUKRI B. HAMDEN</div>
+        <div class="sig-title">Penolong Naib Presiden II</div>
+        <div class="sig-dept">FSD</div>
+        <div style="font-size:8px;color:var(--muted);margin-top:4px;font-weight:600;">AHLI TEC</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-sm mt12" style="text-align:center;border-color:var(--border);">
+    <div style="font-size:9px;color:var(--muted);line-height:1.6;">Laporan ini disediakan oleh <strong style="color:#fff;">DPI Konsult Sdn Bhd</strong> (Perunding Sivil &amp; Struktur) bagi pihak Pengurusan Air Selangor Sdn Bhd.<br>
+    Tender No. PN0000023850 &nbsp;·&nbsp; Dokumen sulit — untuk kegunaan Jawatankuasa Perolehan Pengurusan (MPC) sahaja.</div>
+  </div>
+</section>
+
+</main>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.ntab').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  document.getElementById('main').scrollTop = 0;
+}
+</script>
+</body>
+</html>

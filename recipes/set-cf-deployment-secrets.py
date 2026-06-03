@@ -39,6 +39,7 @@ import json
 import os
 import subprocess
 import sys
+import urllib.request
 from pathlib import Path
 
 
@@ -68,15 +69,37 @@ def envelope(status: str, data: dict, message: str,
 # ── Vault reading ──────────────────────────────────────────────────────────────
 
 def read_vault(vault_path: str) -> tuple[dict | None, str | None]:
-    """Return (vault_data, error_message). error_message is None on success."""
+    """Return (flat name→value dict, error_message). error_message is None on success."""
     p = Path(vault_path)
     if not p.exists():
         return None, f"vault file not found: {vault_path}"
     try:
-        data = json.loads(p.read_text("utf-8"))
+        raw = json.loads(p.read_text("utf-8-sig"))
     except Exception as e:
         return None, f"could not parse vault JSON: {e}"
+    # Support both flat dict and {keys: [{name, value, ...}]} array schema
+    if isinstance(raw, dict) and "keys" in raw and isinstance(raw["keys"], list):
+        data = {entry["name"]: entry.get("value", "") for entry in raw["keys"] if "name" in entry}
+    else:
+        data = raw
     return data, None
+
+
+def fetch_cf_account_id(api_token: str) -> tuple[str | None, str | None]:
+    """Return (account_id, error_message) by querying the Cloudflare API."""
+    req = urllib.request.Request(
+        "https://api.cloudflare.com/client/v4/accounts",
+        headers={"Authorization": f"Bearer {api_token}", "Content-Type": "application/json"},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            body = json.loads(resp.read())
+    except Exception as e:
+        return None, f"CF API request failed: {e}"
+    accounts = body.get("result", [])
+    if not accounts:
+        return None, "CF API returned no accounts for this token"
+    return accounts[0]["id"], None
 
 
 # ── gh CLI helpers ─────────────────────────────────────────────────────────────
@@ -180,21 +203,28 @@ def main() -> None:
     evidence.append({"step": "read_vault", "status": "success", "path": args.vault})
 
     # 3. Extract credentials
-    missing = []
     api_token  = vault_data.get(VAULT_KEY_API_TOKEN)
     account_id = vault_data.get(VAULT_KEY_ACCOUNT_ID)
     if not api_token:
-        missing.append(f"vault key not found or empty: {VAULT_KEY_API_TOKEN!r}")
-    if not account_id:
-        missing.append(f"vault key not found or empty: {VAULT_KEY_ACCOUNT_ID!r}")
-    if missing:
         print(json.dumps(envelope(
             "failure", data,
-            "Required vault keys missing",
-            errors=missing,
+            "Required vault key missing",
+            errors=[f"vault key not found or empty: {VAULT_KEY_API_TOKEN!r}"],
             warnings=["Available keys: " + ", ".join(str(k) for k in vault_data)],
         ), indent=2))
         sys.exit(1)
+    # account_id not in vault — fetch from CF API
+    if not account_id:
+        account_id, cf_err = fetch_cf_account_id(api_token)
+        if cf_err:
+            print(json.dumps(envelope(
+                "failure", data,
+                "cloudflare_account_id not in vault and CF API lookup failed",
+                errors=[cf_err],
+            ), indent=2))
+            sys.exit(1)
+        evidence.append({"step": "fetch_cf_account_id", "status": "success",
+                         "account_id": account_id})
     evidence.append({"step": "extract_credentials", "status": "success",
                      "keys_found": [VAULT_KEY_API_TOKEN, VAULT_KEY_ACCOUNT_ID]})
 

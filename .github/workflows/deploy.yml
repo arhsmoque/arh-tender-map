@@ -1,4 +1,4 @@
-name: Deploy to Cloudflare Pages
+name: Deploy to Cloudflare Workers
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: deploy-cf-pages
+  group: deploy-cf-workers
   cancel-in-progress: false
 
 jobs:
@@ -20,14 +20,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Create Cloudflare Pages project (first-run only)
-        run: npx wrangler@latest pages project create dpiktender --production-branch=main || true
+      - name: Deploy main briefing worker
+        run: npx wrangler@latest deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
-      - name: Deploy to Cloudflare Pages
-        run: npx wrangler@latest pages deploy . --project-name=dpiktender --branch=main
+      - name: Deploy hub worker
+        run: npx wrangler@latest deploy --config wrangler-hub.jsonc
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

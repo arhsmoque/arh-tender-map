@@ -1,0 +1,13 @@
+{
+  // DPI Konsult Project Hub — client + colleague-facing project directory
+  // Deploys independently from the briefing engine (wrangler.jsonc)
+  // To deploy manually: npx wrangler deploy --config wrangler-hub.jsonc
+  "name": "dpik-brief-hub",
+  "compatibility_date": "2026-06-03",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "./hub"
+  }
+}
