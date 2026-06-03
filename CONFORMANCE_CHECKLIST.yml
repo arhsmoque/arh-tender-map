@@ -1,0 +1,90 @@
+# CONFORMANCE_CHECKLIST.yml — arh-tender-map
+# UBAP v1.6 conformance checklist
+# Update this file when architecture, deployment, or workflow changes.
+
+protocol: UBAP
+version: "1.6"
+project: arh-tender-map
+risk_class: local_mutation
+target_level: Level 1 (Operable)
+
+checklist:
+
+  # --- Base/Adapter separation ---
+  base_adapter_separation:
+    - id: BA-01
+      check: index.html contains no hardcoded project-specific values
+      status: pass
+      notes: All project values come from APP_CONFIG in config.js
+    - id: BA-02
+      check: mobile.html contains no hardcoded project-specific values
+      status: pass
+      notes: All project values come from APP_CONFIG in config.js
+    - id: BA-03
+      check: qr.html contains no hardcoded project-specific values
+      status: pass
+      notes: All project values come from APP_CONFIG in config.js
+    - id: BA-04
+      check: config.js is the only file that changes between deployments
+      status: pass
+      notes: Assets (logos, photos) also change, which is acceptable
+
+  # --- Structural integrity ---
+  structural:
+    - id: ST-01
+      check: config.js is valid JavaScript (node --check config.js passes)
+      status: pass
+      notes: ""
+    - id: ST-02
+      check: All asset references use relative paths (assets/...)
+      status: pass
+      notes: No absolute paths or CDN references for local assets
+    - id: ST-03
+      check: JUNC coordinate order documented (known inconsistency lon/lat vs lat/lon)
+      status: deferred
+      notes: "Pending ARCH_REVIEW_PLAN.md Task 2.1 — coordinate consolidation"
+
+  # --- Documentation ---
+  documentation:
+    - id: DOC-01
+      check: AGENTS.md present and current
+      status: pass
+      notes: Updated in arch-review branch
+    - id: DOC-02
+      check: CLAUDE.md present
+      status: pass
+      notes: Added in arch-review branch
+    - id: DOC-03
+      check: README.md present
+      status: pass
+      notes: ""
+    - id: DOC-04
+      check: ARCH_REVIEW_PLAN.md present with task statuses
+      status: pass
+      notes: Added in arch-review branch
+
+  # --- Automation (pending tasks) ---
+  automation:
+    - id: AUTO-01
+      check: recipes/ubap-check.py exists and passes
+      status: pending
+      notes: "Pending ARCH_REVIEW_PLAN.md Task 3.1"
+    - id: AUTO-02
+      check: recipes/provision-new-tender-deployment.py exists
+      status: pending
+      notes: "Pending ARCH_REVIEW_PLAN.md Task 3.2"
+    - id: AUTO-03
+      check: recipes/sync-base-engine-to-tender-branches.py exists
+      status: pending
+      notes: "Pending ARCH_REVIEW_PLAN.md Task 3.3"
+
+  # --- Deployment ---
+  deployment:
+    - id: DEP-01
+      check: wrangler.jsonc present and project name correct
+      status: pass
+      notes: name=arh-tender-map, assets directory=.
+    - id: DEP-02
+      check: Multi-branch tender deployment configured
+      status: pending
+      notes: "Pending ARCH_REVIEW_PLAN.md Task 4.1 — currently single-branch"
