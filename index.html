@@ -1,521 +1,530 @@
 <!DOCTYPE html>
-<html lang="ms">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#060d18">
-<title>Route Map</title>
+<title>Project Brief</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="locales/ui.js"></script>
 <script src="config.js"></script>
 <style>
 :root{
-  --bg:#060d18;--panel:#0b1524;--p2:#0f1d30;--p3:#14253e;
-  --bd:rgba(255,255,255,.07);--bd2:rgba(255,255,255,.13);--bd3:rgba(255,255,255,.22);
-  --tx:#ddeeff;--mu:#6a88a8;--faint:#1e3a58;
-  --teal:#009B9B;--teal2:rgba(0,155,155,.12);--teal3:rgba(0,155,155,.06);--teal4:rgba(0,155,155,.3);
-  --am:#FFB800;--rd:#ff4455;--gr:#22c87a;--cy:#33ccff;--mg:#ff33cc;--or:#ff7733;
-  --rad:7px;
+  --bg:#f0f6fc;--panel:#fff;--p2:#e8f2fa;--p3:#d4e9f7;
+  --bd:rgba(0,120,190,0.12);--bd2:rgba(0,120,190,0.25);
+  --tx:#0d2137;--mu:#4d7a9a;--ft:#b5d4ea;
+  --ac:#0099D4;--ac2:rgba(0,153,212,0.10);--ac3:rgba(0,153,212,0.05);
+  --am:#F5A623;--gn:#22aa66;--mg:#cc22aa;--or:#e07020;
+  --hdr:58px;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);}
-button{cursor:pointer;font-family:'Inter',sans-serif;}
-a{color:var(--teal);text-decoration:none;}
-::-webkit-scrollbar{width:4px;height:4px;}
-::-webkit-scrollbar-thumb{background:var(--faint);border-radius:2px;}
+html,body{height:100%;font-family:'Inter',sans-serif;color:var(--tx);background:var(--bg);overflow:hidden;}
 
-/* ── HEADER ──────────────────────────────────────── */
-#hdr{
-  background:var(--panel);border-bottom:2px solid var(--teal4);
-  height:62px;display:flex;align-items:stretch;flex-shrink:0;
-  position:relative;z-index:300;
-}
-.hb{display:flex;align-items:center;gap:10px;padding:0 14px;border-right:1px solid var(--bd2);flex-shrink:0;}
-.hb img{height:38px;width:auto;object-fit:contain;}
-.hb-t .b1{font-size:12px;font-weight:800;color:#fff;letter-spacing:.3px;}
-.hb-t .b2{font-size:9px;color:rgba(255,255,255,.45);margin-top:1px;}
-.hm{flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 14px;min-width:0;}
-.hm-title{font-size:11.5px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.hm-sub{font-size:9px;color:var(--mu);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.hc{display:flex;align-items:center;gap:8px;padding:0 14px;border-left:1px solid var(--bd2);flex-shrink:0;}
-.hc img{height:24px;width:auto;}
-.hc-t .c1{font-size:9px;font-weight:700;color:#fff;text-align:right;}
-.hc-t .c2{font-size:8px;color:var(--mu);text-align:right;}
-.ha{display:flex;align-items:center;padding:0 12px;border-left:1px solid var(--bd2);flex-shrink:0;}
-.btn-rpt{
-  font-size:9.5px;font-weight:700;padding:6px 12px;border-radius:5px;
-  background:var(--teal2);color:var(--teal);border:1px solid var(--teal4);
-  letter-spacing:.3px;transition:all .15s;white-space:nowrap;text-decoration:none;
-}
-.btn-rpt:hover{background:var(--teal);color:#000;}
+#hdr{height:var(--hdr);background:var(--panel);border-bottom:3px solid var(--ac);
+  display:flex;align-items:center;padding:0 16px;gap:12px;flex-shrink:0;
+  position:relative;z-index:200;box-shadow:0 2px 12px rgba(0,120,190,0.10);}
+.hdr-brand{display:flex;align-items:center;gap:9px;flex-shrink:0;}
+.hdr-brand img{height:34px;width:auto;}
+.hdr-brand-t .b1{font-size:11.5px;font-weight:700;color:var(--tx);}
+.hdr-brand-t .b2{font-size:9px;color:var(--mu);}
+.hdr-div{width:1px;height:30px;background:var(--bd2);flex-shrink:0;}
+.hdr-title{flex:1;min-width:0;}
+.hdr-proj{font-size:12px;font-weight:700;color:var(--tx);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2;}
+.hdr-chips{display:flex;gap:6px;margin-top:4px;}
+.chip{font-size:9px;font-weight:600;padding:2px 8px;border-radius:10px;
+  background:var(--ac2);color:var(--ac);border:1px solid rgba(0,153,212,0.22);white-space:nowrap;}
+.chip.am{background:rgba(245,166,35,0.10);color:var(--am);border-color:rgba(245,166,35,0.25);}
 
-/* ── LAYOUT ──────────────────────────────────────── */
-#layout{display:flex;height:calc(100vh - 62px);}
+#main{display:flex;height:calc(100vh - var(--hdr));overflow:hidden;}
+#map-pane{flex:0 0 60%;position:relative;}
+#map{position:absolute;inset:0;}
+#sidebar{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg);border-left:1px solid var(--bd2);}
 
-/* ── SIDEBAR ─────────────────────────────────────── */
-#sb{
-  width:330px;flex-shrink:0;background:var(--panel);
-  border-right:1px solid var(--bd2);display:flex;flex-direction:column;overflow:hidden;
-}
-#stabs{display:flex;border-bottom:1px solid var(--bd2);flex-shrink:0;}
-.stab{
-  flex:1;padding:9px 4px;font-size:9px;font-weight:700;letter-spacing:.5px;
-  text-transform:uppercase;color:var(--mu);border:none;background:transparent;
-  border-bottom:2px solid transparent;transition:all .15s;
-}
-.stab:hover{color:var(--tx);}
-.stab.active{color:var(--teal);border-bottom-color:var(--teal);}
-#spanel{flex:1;overflow-y:auto;padding:12px 11px;}
-.spane{display:none;animation:fin .15s ease;}
-.spane.active{display:block;}
-@keyframes fin{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+#tabs{display:flex;background:var(--panel);border-bottom:1px solid var(--bd2);flex-shrink:0;}
+.tab{flex:1;padding:11px 4px;font-size:11px;font-weight:600;color:var(--mu);
+  background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;
+  transition:all .15s;font-family:'Inter',sans-serif;}
+.tab:hover{color:var(--ac);background:var(--ac3);}
+.tab.active{color:var(--ac);border-bottom-color:var(--ac);}
 
-/* Sidebar atoms */
-.sh{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--teal);padding-bottom:6px;border-bottom:1px solid var(--bd);margin-bottom:9px;}
-.sh+.sh,.card+.sh{margin-top:12px;}
-.card{background:var(--p2);border:1px solid var(--bd);border-radius:var(--rad);padding:10px 12px;margin-bottom:7px;}
-.krow{display:flex;justify-content:space-between;align-items:baseline;padding:4px 0;border-bottom:1px solid var(--bd);}
-.krow:last-child{border-bottom:none;padding-bottom:0;}
-.kk{font-size:9.5px;color:var(--mu);}
-.kv{font-size:10px;font-weight:600;color:var(--tx);text-align:right;flex:1;margin-left:8px;}
-.kv.hl{color:var(--teal);}
-.kpi2{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;}
-.kpi{background:var(--p2);border:1px solid var(--bd);border-radius:var(--rad);padding:10px;text-align:center;}
-.kpi-v{font-size:20px;font-weight:800;color:var(--teal);line-height:1;}
-.kpi-l{font-size:8px;color:var(--mu);margin-top:3px;}
-.bgp{font-size:10px;line-height:1.65;color:var(--tx);}
-.bgp p{margin-top:7px;}
-.bgp p:first-child{margin-top:0;}
-.al{background:var(--p2);border:1px solid var(--bd);border-left:3px solid var(--am);border-radius:var(--rad);padding:9px 11px;margin-bottom:6px;}
-.al.info{border-left-color:var(--teal);}
-.al-hd{font-size:9px;font-weight:700;color:var(--am);margin-bottom:3px;}
-.al.info .al-hd{color:var(--teal);}
-.al-bd{font-size:9.5px;line-height:1.5;color:var(--tx);}
-.si{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--bd);}
-.si:last-child{border-bottom:none;padding-bottom:0;}
-.sdot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:3px;}
-.stxt{font-size:10px;line-height:1.5;color:var(--tx);}
-.vtbl{width:100%;border-collapse:collapse;font-size:9px;}
-.vtbl th{padding:4px 7px;background:var(--p3);color:var(--mu);text-align:left;font-weight:600;font-size:8px;letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid var(--bd2);}
-.vtbl td{padding:4px 7px;border-bottom:1px solid var(--bd);vertical-align:top;}
-.vtbl tr:last-child td{border-bottom:none;}
-.vtbl td:first-child{color:var(--teal);font-weight:600;}
-.meth{background:var(--p2);border:1px solid var(--bd);border-radius:var(--rad);padding:9px 11px;margin-bottom:5px;cursor:pointer;transition:border-color .15s;}
-.meth:hover{border-color:var(--bd2);}
-.meth-hd{display:flex;align-items:center;gap:8px;}
-.meth-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
-.meth-lbl{font-size:10px;font-weight:600;color:#fff;}
-.meth-ch{font-size:8.5px;color:var(--mu);margin-top:2px;}
-.meth-bd{font-size:9.5px;color:var(--mu);line-height:1.55;margin-top:7px;padding-top:7px;border-top:1px solid var(--bd);display:none;}
-.meth.open .meth-bd{display:block;}
-.cg{margin-bottom:5px;}
-.cg-hd{font-size:9.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--teal);padding:8px 10px;background:var(--teal2);border-radius:var(--rad) var(--rad) 0 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;border:1px solid var(--teal4);}
-.cg-body{background:var(--p2);border:1px solid var(--bd);border-top:none;border-radius:0 0 var(--rad) var(--rad);display:none;}
-.cg.open .cg-hd{border-radius:var(--rad) var(--rad) 0 0;}
-.cg.open .cg-body{display:block;}
-.cmem{padding:8px 10px;border-bottom:1px solid var(--bd);}
-.cmem:last-child{border-bottom:none;}
-.cm-n{font-size:11px;font-weight:500;color:#fff;}
-.cm-t{font-size:9px;color:var(--mu);margin-top:1px;}
-.route-chip{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid var(--bd);}
-.route-chip:last-child{border-bottom:none;}
-.rline{width:22px;height:3px;border-radius:2px;flex-shrink:0;}
-.rlbl{font-size:10px;color:var(--tx);}
+.panel{display:none;flex:1;overflow-y:auto;flex-direction:column;}
+.panel.active{display:flex;}
+.pg{padding:14px;display:flex;flex-direction:column;gap:12px;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--ft);border-radius:3px;}
 
-/* ── MAP PANE ─────────────────────────────────────── */
-#mapp{flex:1;position:relative;}
-#map{position:absolute;inset:0;z-index:0;}
+.card{background:var(--panel);border:1px solid var(--bd);border-radius:10px;overflow:hidden;}
+.card-hd{padding:9px 13px;border-bottom:1px solid var(--bd);background:var(--p2);}
+.card-hd-t{font-size:9.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--mu);}
+.card-body{padding:10px 13px;}
+.row{display:flex;justify-content:space-between;align-items:baseline;
+  padding:5px 0;border-bottom:1px solid var(--bd);}
+.row:last-child{border-bottom:none;}
+.rk{font-size:11px;color:var(--mu);}
+.rv{font-size:12px;font-weight:600;color:var(--tx);text-align:right;flex:1;margin-left:8px;}
+.rv.ac{color:var(--ac);}
 
-/* Map controls */
-.mc{position:absolute;top:10px;right:10px;z-index:500;display:flex;flex-direction:column;gap:4px;}
-.mb{
-  background:rgba(11,21,36,.92);border:1px solid var(--bd2);color:var(--tx);
-  font-size:10.5px;font-weight:600;padding:6px 11px;border-radius:6px;
-  box-shadow:0 2px 8px rgba(0,0,0,.45);white-space:nowrap;
-}
-.mb:hover{background:var(--p3);}
-.mb.on{background:var(--teal);color:#000;border-color:var(--teal);}
-.mb.qn{font-size:9.5px;background:rgba(0,155,155,.1);color:var(--teal);border-color:var(--teal4);}
-.mb.qn:hover{background:var(--teal);color:#000;}
+.qnav-row{display:flex;flex-wrap:wrap;gap:6px;}
+.qbtn{font-size:10px;font-weight:600;padding:6px 10px;border-radius:6px;
+  background:var(--ac2);color:var(--ac);border:1px solid rgba(0,153,212,0.28);
+  cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
+.qbtn:hover{background:var(--ac);color:#fff;}
 
-/* Legend */
-#leg{
-  position:absolute;bottom:10px;left:10px;z-index:500;
-  background:rgba(11,21,36,.92);border:1px solid var(--bd2);border-radius:8px;padding:7px 10px;
-}
-.ll{display:flex;align-items:center;gap:5px;font-size:9px;color:var(--tx);margin-bottom:3px;}
-.ll:last-child{margin-bottom:0;}
-.lline{height:2px;width:18px;border-radius:1px;flex-shrink:0;}
-.ldot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.legend{display:flex;flex-direction:column;gap:7px;}
+.leg-item{display:flex;align-items:center;gap:9px;}
+.leg-swatch{width:30px;height:6px;border-radius:3px;flex-shrink:0;}
+.leg-label{font-size:11px;color:var(--tx);font-weight:500;}
+.leg-sub{font-size:9.5px;color:var(--mu);margin-left:39px;margin-top:-3px;}
 
-/* Leaflet overrides */
-.leaflet-popup-content-wrapper{background:var(--panel)!important;border:1px solid var(--bd2)!important;border-radius:9px!important;box-shadow:0 8px 32px rgba(0,0,0,.6)!important;color:var(--tx)!important;font-family:'Inter',sans-serif!important;}
-.leaflet-popup-tip{background:var(--panel)!important;}
-.leaflet-popup-content{margin:0!important;padding:0!important;}
-.pw{padding:10px;min-width:190px;max-width:260px;}
-.pch{font-size:8px;color:var(--teal);font-weight:700;letter-spacing:.8px;margin-bottom:3px;}
-.ptl{font-size:12px;font-weight:600;color:#fff;line-height:1.3;}
-.pbd{font-size:9.5px;color:var(--mu);margin-top:5px;line-height:1.5;}
+.route-card{border-radius:10px;overflow:hidden;border:2px solid;}
+.route-card-hd{padding:11px 13px;display:flex;align-items:center;gap:10px;}
+.route-badge{font-size:10px;font-weight:800;padding:4px 9px;border-radius:5px;color:#fff;flex-shrink:0;}
+.route-hd-t .rt{font-size:12.5px;font-weight:700;}
+.route-hd-t .rs{font-size:10px;opacity:.7;margin-top:2px;}
+.route-card-body{padding:10px 13px;background:var(--panel);}
+
+.mbd{display:flex;flex-direction:column;gap:6px;}
+.mbd-item{display:flex;align-items:center;gap:8px;}
+.mbd-label{font-size:10.5px;color:var(--mu);flex:0 0 200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mbd-bar-wrap{flex:1;height:10px;background:var(--p3);border-radius:5px;overflow:hidden;}
+.mbd-bar{height:100%;border-radius:5px;}
+.mbd-pct{font-size:10px;font-weight:700;width:28px;text-align:right;}
+.mbd-m{font-size:9px;color:var(--ft);width:55px;text-align:right;}
+
+.method-card{background:var(--panel);border:1px solid var(--bd);border-radius:9px;overflow:hidden;}
+.method-hd{display:flex;align-items:center;gap:10px;padding:10px 13px;cursor:pointer;user-select:none;}
+.method-hd:hover{background:var(--ac3);}
+.method-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
+.method-label{font-size:12px;font-weight:600;flex:1;}
+.method-meta{font-size:9.5px;color:var(--mu);white-space:nowrap;}
+.method-chev{font-size:9px;color:var(--mu);transition:transform .2s;margin-left:4px;}
+.method-body{display:none;padding:11px 13px;border-top:1px solid var(--bd);background:var(--ac3);}
+.method-body.open{display:block;}
+.method-body .ch-tag{font-size:9.5px;font-weight:700;color:var(--ac);background:var(--ac2);
+  padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:8px;}
+.method-body p{font-size:11.5px;line-height:1.68;color:var(--mu);}
+
+.story-card{background:var(--panel);border:1px solid var(--bd);border-radius:10px;padding:14px;}
+.story-hd{display:flex;align-items:center;gap:9px;margin-bottom:9px;}
+.story-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;font-size:15px;flex-shrink:0;}
+.story-title{font-size:12.5px;font-weight:700;}
+.story-body{font-size:11.5px;line-height:1.72;color:var(--mu);}
+
+.fac-card{background:var(--panel);border:1px solid var(--bd);border-radius:10px;padding:12px;
+  display:flex;gap:11px;align-items:flex-start;}
+.fac-marker{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;
+  justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;}
+.fac-name{font-size:12.5px;font-weight:700;line-height:1.2;}
+.fac-role{font-size:8.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  padding:2px 7px;border-radius:4px;margin:4px 0 6px;display:inline-block;}
+.fac-role.primary{background:rgba(0,153,212,0.12);color:var(--ac);}
+.fac-role.extended{background:rgba(245,166,35,0.12);color:var(--am);}
+.fac-role.existing{background:rgba(34,170,102,0.12);color:var(--gn);}
+.fac-detail{font-size:11px;line-height:1.65;color:var(--mu);}
+
+.team-card{background:var(--panel);border:1px solid var(--bd);border-radius:10px;padding:14px;
+  display:flex;gap:13px;align-items:center;}
+.team-logo{height:38px;width:auto;max-width:90px;object-fit:contain;}
+.team-logo-ph{width:38px;height:38px;border-radius:9px;background:var(--p2);
+  display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--ac);}
+.team-role{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--mu);margin-bottom:3px;}
+.team-name{font-size:13px;font-weight:700;}
+.team-detail{font-size:10.5px;color:var(--mu);margin-top:3px;}
+
+.sec-title{font-size:9.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--mu);padding:2px 0;}
+.auth-table{width:100%;border-collapse:collapse;font-size:11px;background:var(--panel);border-radius:10px;overflow:hidden;border:1px solid var(--bd);}
+.auth-table th{text-align:left;font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--mu);padding:7px 10px;background:var(--p2);border-bottom:1px solid var(--bd2);}
+.auth-table td{padding:8px 10px;border-bottom:1px solid var(--bd);vertical-align:top;}
+.auth-table tr:last-child td{border-bottom:none;}
+.auth-table td:first-child{font-weight:600;font-size:11.5px;}
+.auth-badge{font-size:8.5px;font-weight:700;padding:2px 7px;border-radius:4px;
+  background:var(--ac2);color:var(--ac);display:inline-block;margin-bottom:3px;}
+.auth-sub{font-size:9.5px;color:var(--mu);margin-top:2px;}
+
+.lf-popup .leaflet-popup-content-wrapper{background:var(--panel);border-radius:10px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.13);border:1px solid var(--bd2);padding:0;}
+.lf-popup .leaflet-popup-content{margin:0;font-family:'Inter',sans-serif;}
+.lf-popup .leaflet-popup-tip{background:var(--panel);}
+.popup-inner{padding:13px 15px;min-width:210px;max-width:290px;}
+.popup-lbl{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--mu);margin-bottom:4px;}
+.popup-title{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:6px;}
+.popup-body{font-size:11px;line-height:1.65;color:var(--mu);}
+.popup-ch{font-size:10px;font-weight:600;color:var(--ac);margin-top:7px;}
+
+/* Drawing snippet lightbox */
+#dwg-lb{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.84);z-index:9999;
+  align-items:center;justify-content:center;padding:16px;}
+#dwg-lb.open{display:flex;}
+#dwg-lb-box{background:#0d2137;border-radius:12px;overflow:hidden;
+  max-width:min(96vw,1080px);box-shadow:0 12px 48px rgba(0,0,0,0.65);
+  display:flex;flex-direction:column;}
+#dwg-lb-hdr{display:flex;align-items:center;gap:10px;padding:10px 14px;flex-shrink:0;}
+#dwg-lb-title{font-size:12px;font-weight:700;color:#fff;flex:1;line-height:1.3;}
+#dwg-lb-ch{font-size:9.5px;color:rgba(255,255,255,0.5);white-space:nowrap;flex-shrink:0;}
+#dwg-lb-close{background:rgba(255,255,255,0.12);border:none;color:#fff;font-size:13px;
+  cursor:pointer;padding:5px 9px;border-radius:5px;line-height:1;flex-shrink:0;
+  font-family:'Inter',sans-serif;}
+#dwg-lb-close:hover{background:rgba(255,255,255,0.28);}
+#dwg-lb-img{max-width:100%;max-height:80vh;object-fit:contain;display:block;
+  background:#f4f8fb;}
+.dwg-pin{background:#0d2137;color:#fff;border-radius:5px;padding:4px 8px;
+  font-size:9px;font-weight:800;font-family:'Inter',sans-serif;letter-spacing:.3px;
+  border:1.5px solid rgba(255,255,255,0.22);cursor:pointer;pointer-events:all;
+  white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.35);
+  display:flex;align-items:center;gap:5px;user-select:none;}
+.dwg-pin:hover{background:#0073a8;border-color:rgba(255,255,255,0.5);}
+.dwg-pin-dot{width:7px;height:7px;border-radius:50%;background:#F5A623;flex-shrink:0;}
 </style>
 </head>
 <body>
+<script>
+if(/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||
+   (window.innerWidth<=900&&'ontouchstart' in window)){
+  window.location.replace('mobile.html');
+}
+</script>
 
-<!-- HEADER -->
-<div id="hdr">
-  <div class="hb">
-    <img id="d-clogo" src="" alt="">
-    <div class="hb-t">
-      <div class="b1" id="d-cname"></div>
-      <div class="b2" id="d-csub"></div>
+<header id="hdr">
+  <div class="hdr-brand">
+    <img id="client-logo" src="" alt="Client">
+    <div class="hdr-brand-t">
+      <div class="b1" id="client-name"></div>
+      <div class="b2" id="client-sub"></div>
     </div>
   </div>
-  <div class="hm">
-    <div class="hm-title" id="d-title"></div>
-    <div class="hm-sub" id="d-sub"></div>
+  <div class="hdr-div"></div>
+  <div class="hdr-title">
+    <div class="hdr-proj" id="proj-title"></div>
+    <div class="hdr-chips" id="stat-chips"></div>
   </div>
-  <div class="hc">
-    <div class="hc-t">
-      <div class="c2" data-i18n="prepared_by">Disediakan oleh:</div>
-      <div class="c1" id="d-cons"></div>
+  <div class="hdr-div"></div>
+  <div class="hdr-brand" style="justify-content:flex-end;">
+    <div class="hdr-brand-t" style="text-align:right;">
+      <div class="b1" id="consult-name"></div>
+      <div class="b2" id="consult-sub"></div>
     </div>
-    <img id="d-cnslogo" src="" alt="">
+    <img id="consult-logo" src="" alt="Consultant" style="height:28px;width:auto;" onerror="this.style.display='none'">
   </div>
-  <div class="ha">
-    <a href="tender-report.html" class="btn-rpt" data-i18n="report_btn">Laporan Penilaian →</a>
-  </div>
-</div>
+</header>
 
-<!-- LAYOUT -->
-<div id="layout">
-
-  <!-- SIDEBAR -->
-  <div id="sb">
-    <div id="stabs">
-      <button class="stab active" onclick="showTab('projek',this)" data-i18n="tab_project">Projek</button>
-      <button class="stab" onclick="showTab('skop',this)" data-i18n="tab_scope">Skop</button>
-      <button class="stab" onclick="showTab('kaedah',this)" data-i18n="tab_methods">Kaedah</button>
-      <button class="stab" onclick="showTab('pasukan',this)" data-i18n="tab_team">Pasukan</button>
+<div id="main">
+  <div id="map-pane"><div id="map"></div></div>
+  <div id="sidebar">
+    <div id="tabs">
+      <button class="tab active" data-tab="t-map">🗺 Map</button>
+      <button class="tab" data-tab="t-scope">📋 Scope</button>
+      <button class="tab" data-tab="t-bg">ℹ Background</button>
+      <button class="tab" data-tab="t-team">👥 Team</button>
     </div>
-    <div id="spanel">
-      <div class="spane active" id="tab-projek"></div>
-      <div class="spane" id="tab-skop"></div>
-      <div class="spane" id="tab-kaedah"></div>
-      <div class="spane" id="tab-pasukan"></div>
-    </div>
+    <div id="t-map" class="panel active"><div class="pg" id="map-panel"></div></div>
+    <div id="t-scope" class="panel"><div class="pg" id="scope-panel"></div></div>
+    <div id="t-bg" class="panel"><div class="pg" id="bg-panel"></div></div>
+    <div id="t-team" class="panel"><div class="pg" id="team-panel"></div></div>
   </div>
-
-  <!-- MAP PANE -->
-  <div id="mapp">
-    <div id="map"></div>
-    <div class="mc">
-      <button class="mb on" id="btn-osm" onclick="setBase('osm')" data-i18n="btn_map">Peta</button>
-      <button class="mb" id="btn-sat" onclick="setBase('sat')" data-i18n="btn_satellite">Satelit</button>
-      <button class="mb" onclick="flyFull()" data-i18n="btn_all">↔ Semua</button>
-      <div id="qnav"></div>
-    </div>
-    <div id="leg">
-      <div id="leg-routes"></div>
-      <div class="ll"><div class="ldot" style="background:#ff4455;"></div><span data-i18n="legend_key_nodes">Nod Utama</span></div>
-      <div class="ll"><div class="ldot" style="background:#ffcc00;border:1px solid rgba(0,0,0,.2);"></div><span data-i18n="legend_chainage">Tanda Chainage</span></div>
-    </div>
-  </div>
-
 </div>
 
 <script>
-// ── Mobile redirect ───────────────────────────────────
-if(/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||
-   (window.innerWidth<=768&&'ontouchstart' in window)){
-  window.location.replace('mobile.html');
-}
-// ── Theme ─────────────────────────────────────────────
-(function(){
-  const t=APP_CONFIG.theme||{},r=document.documentElement;
-  const map={bg:'--bg',panel:'--panel',panel2:'--p2',panel3:'--p3',
-    border:'--bd',border2:'--bd2',text:'--tx',muted:'--mu',
-    accent:'--teal',accent2:'--teal2',amber:'--am'};
-  Object.entries(map).forEach(([k,v])=>{if(t[k])r.style.setProperty(v,t[k]);});
-})();
-const UI = (window.LOCALES||{})[APP_CONFIG.lang||'ms'] || (window.LOCALES||{}).ms || {};
-document.querySelectorAll('[data-i18n]').forEach(el => {
-  const k = el.getAttribute('data-i18n');
-  if (UI[k] !== undefined) el.textContent = UI[k];
+const C=APP_CONFIG, T=C.theme||{};
+
+/* CSS token override from theme */
+const tv={'--bg':T.bg,'--panel':T.panel,'--p2':T.panel2,'--p3':T.panel3,
+  '--bd':T.border,'--bd2':T.border2,'--tx':T.text,'--mu':T.muted,'--ft':T.faint,
+  '--ac':T.accent,'--ac2':T.accent2,'--am':T.amber,'--gn':T.green,'--mg':T.magenta,'--or':T.orange};
+Object.entries(tv).forEach(([k,v])=>v&&document.documentElement.style.setProperty(k,v));
+
+/* Header */
+document.title=C.pageTitle||'Project Brief';
+const $=id=>document.getElementById(id);
+$('client-logo').src=C.client.logo;
+$('client-name').textContent=C.client.name;
+$('client-sub').textContent=C.client.subname||'';
+$('consult-logo').src=C.consultant.logo;
+$('consult-name').textContent=C.consultant.name;
+$('consult-sub').textContent=C.consultant.subname||'';
+$('proj-title').textContent=C.project.title;
+const chips=$('stat-chips');
+[[`${C.stats.totalLengthKm} km Pipeline`,''],[`${C.stats.hospitalsServed} Hospitals`,'am']].forEach(([t,c])=>{
+  const s=document.createElement('span');s.className='chip'+(c?' '+c:'');
+  s.textContent=t;chips.appendChild(s);
 });
 
-// ── Header ────────────────────────────────────────────
-const C=APP_CONFIG;
-document.title=C.pageTitle||C.project.title;
-document.getElementById('d-clogo').src=C.client.logo||'';
-document.getElementById('d-cname').textContent=C.client.name||'';
-document.getElementById('d-csub').textContent=C.client.subname||'';
-document.getElementById('d-title').textContent=C.project.title||'';
-document.getElementById('d-sub').textContent=C.project.subtitle||C.project.tenderNumber||'';
-document.getElementById('d-cons').textContent=C.consultant.name||'';
-document.getElementById('d-cnslogo').src=C.consultant.logo||'';
+/* Tab switching */
+document.querySelectorAll('.tab').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    b.classList.add('active');
+    document.getElementById(b.dataset.tab).classList.add('active');
+  });
+});
 
-// ── Geo data — support both nested (geo.*) and legacy top-level ──
-const GEO=C.geo||{};
-const POLY=C.POLY||GEO.poly||(C.routes||[]).flatMap(r=>r.poly)||[];
-const CH_PTS=C.CH_PTS||GEO.chPts||[];
-const JUNC=C.JUNC||GEO.junc||[];
-const PROP=C.PROP||GEO.prop||[];
-
-// ── Map init ──────────────────────────────────────────
-const mc=C.map||{center:[3.0,101.7],zoom:13};
-const map=L.map('map',{center:mc.center,zoom:mc.zoom,zoomControl:false});
-L.control.zoom({position:'bottomright'}).addTo(map);
-const OSM=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19});
-const SAT=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'© Esri',maxZoom:19});
-OSM.addTo(map);
-
-const lgRoute=L.layerGroup().addTo(map);
-const lgCh=L.layerGroup().addTo(map);
-const lgJunc=L.layerGroup().addTo(map);
-const lgProp=L.layerGroup().addTo(map);
-
-// ── Interp along POLY (chainage distance → lat/lon) ───
+/* interp: chainage → [lat,lon] */
 function interp(d){
-  if(!POLY.length)return null;
-  let cum=0;
-  for(let i=0;i<POLY.length-1;i++){
-    const[la1,lo1]=POLY[i],[la2,lo2]=POLY[i+1];
-    const R=6371000,p1=la1*Math.PI/180,p2=la2*Math.PI/180;
-    const dp=(la2-la1)*Math.PI/180,dl=(lo2-lo1)*Math.PI/180;
-    const a=Math.sin(dp/2)**2+Math.cos(p1)*Math.cos(p2)*Math.sin(dl/2)**2;
-    const seg=2*R*Math.asin(Math.sqrt(a));
-    if(cum+seg>=d){const f=(d-cum)/seg;return[la1+f*(la2-la1),lo1+f*(lo2-lo1)];}
-    cum+=seg;
+  const p=C.POLY;
+  function hav(a,b){
+    const R=6371000,f1=a[0]*Math.PI/180,f2=b[0]*Math.PI/180,
+      df=(b[0]-a[0])*Math.PI/180,dl=(b[1]-a[1])*Math.PI/180,
+      s=Math.sin(df/2),c=Math.sin(dl/2),aa=s*s+Math.cos(f1)*Math.cos(f2)*c*c;
+    return R*2*Math.atan2(Math.sqrt(aa),Math.sqrt(1-aa));
   }
-  return POLY[POLY.length-1];
-}
-
-// ── Routes (method-coloured segments when defined) ────
-if((C.methodSegments||[]).length&&POLY.length){
-  C.methodSegments.forEach(seg=>{
-    const pts=[];
-    for(let d=seg.fromCh;d<seg.toCh;d+=10){const p=interp(d);if(p)pts.push(p);}
-    const last=interp(seg.toCh);if(last)pts.push(last);
-    if(pts.length<2)return;
-    const hx=seg.color.replace('#',''),cr=parseInt(hx.slice(0,2),16),cg=parseInt(hx.slice(2,4),16),cb=parseInt(hx.slice(4,6),16);
-    L.polyline(pts,{color:`rgba(${cr},${cg},${cb},0.14)`,weight:16,opacity:1,lineJoin:'round'}).addTo(lgRoute);
-    L.polyline(pts,{color:seg.color,weight:4,opacity:.9,lineJoin:'round'}).addTo(lgRoute);
-  });
-} else {
-  (C.routes||[]).forEach(r=>{
-    L.polyline(r.poly,{color:r.glowColor||r.color,weight:16,opacity:.18,lineJoin:'round'}).addTo(lgRoute);
-    L.polyline(r.poly,{color:r.color,weight:4,opacity:.9,lineJoin:'round'}).addTo(lgRoute);
-  });
-}
-
-// ── Legend routes / methods ───────────────────────────
-const legR=document.getElementById('leg-routes');
-if((C.methodSegments||[]).length){
-  const seen=new Set();
-  const mLabel={pipejacking:'Pipe Jacking',hdd:'HDD',opentrench:'Open Trench'};
-  C.methodSegments.forEach(seg=>{
-    const key=seg.color+seg.method;
-    if(seen.has(key))return;seen.add(key);
-    const route=C.routes.find(r=>r.color===seg.color);
-    const label=seg.method==='opentrench'&&route?`Open Trench (${route.id==='r1'?'400mm':'200mm'})`:mLabel[seg.method]||seg.method;
-    const d=document.createElement('div');d.className='ll';
-    d.innerHTML=`<div class="lline" style="background:${seg.color};"></div><span>${label}</span>`;
-    legR.appendChild(d);
-  });
-} else {
-  (C.routes||[]).forEach(r=>{
-    const d=document.createElement('div');d.className='ll';
-    d.innerHTML=`<div class="lline" style="background:${r.color};"></div><span>${r.label}</span>`;
-    legR.appendChild(d);
-  });
-}
-
-// ── Chainage marks ────────────────────────────────────
-CH_PTS.forEach(([ch,lat,lon])=>{
-  if(ch===0)return;
-  if(ch%500===0){
-    const km=Math.floor(ch/1000),m=String(ch%1000).padStart(3,'0');
-    const lbl=ch>=1000?`${km}+${m}`:`0+${m}`;
-    L.marker([lat,lon],{icon:L.divIcon({className:'',
-      html:`<div style="background:#ffcc00;color:#000;font-family:Inter,sans-serif;font-size:9px;font-weight:800;padding:2px 6px;border-radius:3px;white-space:nowrap;box-shadow:0 1px 5px rgba(0,0,0,.5);border:1px solid rgba(0,0,0,.2);">${lbl}</div>`,
-      iconAnchor:[0,8]}),zIndexOffset:50}).addTo(lgCh);
-  } else if(ch%100===0){
-    L.circleMarker([lat,lon],{radius:2.5,color:'rgba(255,255,255,.6)',fillColor:'rgba(255,255,255,.35)',fillOpacity:1,weight:1}).addTo(lgCh);
+  let acc=0;
+  for(let i=1;i<p.length;i++){
+    const seg=hav(p[i-1],p[i]);
+    if(acc+seg>=d){
+      const f=(d-acc)/seg;
+      return[p[i-1][0]+(p[i][0]-p[i-1][0])*f,p[i-1][1]+(p[i][1]-p[i-1][1])*f];
+    }
+    acc+=seg;
   }
-});
-
-// ── Junction markers A/B/C/D ──────────────────────────
-// NOTE: JUNC format is [ch, label, name, desc, LON, LAT] — lon/lat reversed vs all other arrays
-const jS=JUNC.length?JUNC[0][0]:null,jE=JUNC.length?JUNC[JUNC.length-1][0]:null;
-JUNC.forEach(([ch,lbl,name,desc,lon,lat])=>{
-  const isS=ch===jS,isE=ch===jE;
-  const bg=isS?(C.theme.accent||'#009B9B'):isE?(C.theme.amber||'#FFB800'):'#ff4455';
-  const fmt=ch>=1000?`${Math.floor(ch/1000)}+${String(ch%1000).padStart(3,'0')}`:`0+${String(ch).padStart(3,'0')}`;
-  const m=L.marker([lat,lon],{icon:L.divIcon({className:'',
-    html:`<div style="width:30px;height:30px;border-radius:50%;background:${bg};color:${isS||isE?'#000':'#fff'};display:flex;align-items:center;justify-content:center;font-family:Inter,sans-serif;font-size:11px;font-weight:800;box-shadow:0 2px 10px rgba(0,0,0,.55);border:2px solid rgba(255,255,255,.25);">${lbl}</div>`,
-    iconSize:[30,30],iconAnchor:[15,15]}),zIndexOffset:100});
-  m.bindPopup(`<div class="pw"><div class="pch">CH ${fmt}</div><div class="ptl">${name}</div><div class="pbd">${desc}</div></div>`,{maxWidth:280});
-  m.addTo(lgJunc);
-});
-
-// ── Proposed structure markers ────────────────────────
-const propCol={jacking:'#ff8833',hdd:'#ff33cc',scada:'#33ccff'};
-PROP.forEach(([ch,name,desc,type])=>{
-  const pos=interp(+ch);
-  if(!pos)return;
-  const col=propCol[type]||'#aaff00';
-  const pm=L.circleMarker(pos,{radius:7,color:col,fillColor:col,fillOpacity:.9,weight:2,zIndexOffset:80});
-  pm.bindPopup(`<div class="pw"><div class="pch" style="color:${col};">${(type||'').toUpperCase()}</div><div class="ptl">${name}</div><div class="pbd">${desc}</div></div>`,{maxWidth:260});
-  pm.addTo(lgProp);
-});
-
-// ── Base layer toggle ─────────────────────────────────
-function setBase(b){
-  if(b==='osm'){SAT.remove();OSM.addTo(map);}
-  else{OSM.remove();SAT.addTo(map);}
-  document.getElementById('btn-osm').classList.toggle('on',b==='osm');
-  document.getElementById('btn-sat').classList.toggle('on',b==='sat');
+  return p[p.length-1];
 }
 
-// ── Fit full extent ───────────────────────────────────
-function flyFull(){
-  if(mc.bounds)map.flyToBounds(mc.bounds,{padding:[20,20],animate:true,duration:1.2});
-  else map.flyTo(mc.center,mc.zoom,{animate:true,duration:1.2});
-}
+/* Map */
+const map=L.map('map',{zoomControl:true}).setView(C.map.center,C.map.zoom);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+  attribution:'© OpenStreetMap contributors',maxZoom:19}).addTo(map);
+const lg=L.layerGroup().addTo(map);
 
-// ── Quick-nav buttons ─────────────────────────────────
-const qnEl=document.getElementById('qnav');
-(C.quickNav||[]).forEach(q=>{
-  const b=document.createElement('button');b.className='mb qn';
-  b.textContent=q.label;
-  b.onclick=()=>map.flyTo([q.lat,q.lon],q.zoom||17,{animate:true,duration:1.2});
-  qnEl.appendChild(b);
+(C.methodSegments||[]).forEach(seg=>{
+  const pts=[];
+  for(let d=seg.fromCh;d<seg.toCh;d+=10){const p=interp(d);if(p)pts.push(p);}
+  const last=interp(seg.toCh);if(last)pts.push(last);
+  if(pts.length<2)return;
+  const hx=seg.color.replace('#',''),
+    cr=parseInt(hx.slice(0,2),16),cg=parseInt(hx.slice(2,4),16),cb=parseInt(hx.slice(4,6),16);
+  L.polyline(pts,{color:`rgba(${cr},${cg},${cb},0.12)`,weight:18,opacity:1,lineJoin:'round'}).addTo(lg);
+  L.polyline(pts,{color:seg.color,weight:5,opacity:.88,lineJoin:'round'}).addTo(lg);
 });
 
-// ── Sidebar tab switch ────────────────────────────────
-function showTab(id,btn){
-  document.querySelectorAll('.spane').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.stab').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+id).classList.add('active');
-  btn.classList.add('active');
+const jClr={A:T.green||'#22aa66',B:T.orange||'#e07020',C:T.accent||'#0099D4',D:T.amber||'#F5A623'};
+(C.JUNC||[]).forEach(j=>{
+  const[ch,lbl,title,detail,lon,lat]=j;
+  const clr=jClr[lbl]||T.accent;
+  const icon=L.divIcon({className:'',html:
+    `<div style="width:28px;height:28px;border-radius:50%;background:${clr};color:#fff;
+      display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;
+      box-shadow:0 2px 8px rgba(0,0,0,0.22);border:2px solid #fff;">${lbl}</div>`,
+    iconSize:[28,28],iconAnchor:[14,14]});
+  L.marker([lat,lon],{icon}).addTo(lg)
+    .bindPopup(`<div class="popup-inner">
+      <div class="popup-lbl">Node ${lbl}</div>
+      <div class="popup-title">${title}</div>
+      <div class="popup-body">${detail}</div>
+      <div class="popup-ch">CH ${String((ch/1000).toFixed(3)).replace('.','+')}</div>
+    </div>`,{className:'lf-popup'});
+});
+
+/* MAP PANEL */
+const mp=$('map-panel');
+mp.insertAdjacentHTML('beforeend',`
+  <div class="card">
+    <div class="card-hd"><div class="card-hd-t">Quick Navigation</div></div>
+    <div class="card-body"><div class="qnav-row" id="qnav"></div></div>
+  </div>`);
+(C.quickNav||[]).forEach(qn=>{
+  const b=document.createElement('button');b.className='qbtn';b.textContent=qn.label;
+  b.onclick=()=>map.setView([qn.lat,qn.lon],qn.zoom||17);
+  $('qnav').appendChild(b);
+});
+
+const legData=[
+  {c:T.accent||'#0099D4',  l:'Route 1 — 400mm MSCL',       s:'IOI Conezion → Hospital Serdang, 1,452m'},
+  {c:T.amber||'#F5A623',   l:'Route 2 — 200mm MSCL / 250mm HDPE',s:'Hospital Serdang → Hospital Veterinar, 746m'},
+  {c:T.orange||'#ff8833',  l:'Pipe Jacking',               s:'SKVE crossing + 2 smaller crossings'},
+  {c:T.magenta||'#cc22aa', l:'Horizontal Directional Drilling',s:'108m bore · FT 345 utility corridor'},
+];
+let legHtml=`<div class="card"><div class="card-hd"><div class="card-hd-t">Legend</div></div><div class="card-body"><div class="legend">`;
+legData.forEach(li=>{
+  legHtml+=`<div class="leg-item"><div class="leg-swatch" style="background:${li.c};"></div>
+    <div class="leg-label">${li.l}</div></div>
+    <div class="leg-sub">${li.s}</div>`;
+});
+legHtml+=`</div></div></div>`;
+mp.insertAdjacentHTML('beforeend',legHtml);
+
+/* SCOPE PANEL */
+const sp=$('scope-panel');
+const r1c=T.accent||'#0099D4', r2c=T.amber||'#F5A623';
+sp.insertAdjacentHTML('beforeend',`
+  <div class="route-card" style="border-color:${r1c};">
+    <div class="route-card-hd" style="background:${r1c}12;color:${r1c};">
+      <span class="route-badge" style="background:${r1c};">R1</span>
+      <div class="route-hd-t">
+        <div class="rt">400mm MSCL — Route 1</div>
+        <div class="rs">IOI Conezion → Hospital Serdang</div>
+      </div>
+    </div>
+    <div class="route-card-body">
+      <div class="row"><span class="rk">Length</span><span class="rv">1,452.45 m</span></div>
+      <div class="row"><span class="rk">Pipe Specification</span><span class="rv">400mm Ø MSCL</span></div>
+      <div class="row"><span class="rk">Key Method</span><span class="rv">Twin Pipe Jacking (SKVE)</span></div>
+      <div class="row"><span class="rk">End Point</span><span class="rv">HSIS Bulk Meter</span></div>
+    </div>
+  </div>
+  <div class="route-card" style="border-color:${r2c};">
+    <div class="route-card-hd" style="background:${r2c}18;color:${r2c};">
+      <span class="route-badge" style="background:${r2c};">R2</span>
+      <div class="route-hd-t">
+        <div class="rt">200mm MSCL / 250mm HDPE — Route 2</div>
+        <div class="rs">Hospital Serdang → Hospital Veterinar</div>
+      </div>
+    </div>
+    <div class="route-card-body">
+      <div class="row"><span class="rk">Length</span><span class="rv">746.40 m</span></div>
+      <div class="row"><span class="rk">Pipe Specification</span><span class="rv">200mm MSCL + 250mm HDPE (HDD)</span></div>
+      <div class="row"><span class="rk">Key Method</span><span class="rv">HDD (FT 345 corridor, 108m)</span></div>
+      <div class="row"><span class="rk">End Point</span><span class="rv">Hospital Veterinar UPM</span></div>
+    </div>
+  </div>`);
+
+if(C.methodBreakdown&&C.methodBreakdown.length){
+  let h=`<div class="card"><div class="card-hd"><div class="card-hd-t">Construction Method Breakdown</div></div>
+    <div class="card-body"><div class="mbd">`;
+  C.methodBreakdown.forEach(m=>{
+    h+=`<div class="mbd-item">
+      <div class="mbd-label">${m.method}</div>
+      <div class="mbd-bar-wrap"><div class="mbd-bar" style="width:${m.pct}%;background:${m.color};"></div></div>
+      <div class="mbd-pct" style="color:${m.color};">${m.pct}%</div>
+      <div class="mbd-m">${m.metres.toLocaleString()}m</div>
+    </div>`;
+  });
+  sp.insertAdjacentHTML('beforeend',h+`</div></div></div>`);
 }
 
-// ── Tab: Projek ───────────────────────────────────────
-(function(){
-  const p=C.project,s=C.stats||{};
-  const bgCard=((C.contextCards||[]).find(c=>c.type==='text')||{}).body||'';
-  const bgHtml=bgCard
-    ? bgCard.split('\n\n').map(par=>`<p>${par.replace(/\n/g,'<br>')}</p>`).join('')
-    : '';
-  document.getElementById('tab-projek').innerHTML=`
-    <div class="sh">${UI.sh_project_summary}</div>
-    <div class="kpi2">
-      <div class="kpi"><div class="kpi-v">${s.lengthKm||'2.07'}</div><div class="kpi-l">${UI.kpi_total_pipe}</div></div>
-      <div class="kpi"><div class="kpi-v">${s.constructionDurationMonths||p.durationMonths||24}</div><div class="kpi-l">${UI.kpi_months}</div></div>
+sp.insertAdjacentHTML('beforeend',`<div class="sec-title">Construction Methods</div>`);
+(C.constructionMethods||[]).forEach((m,i)=>{
+  const el=document.createElement('div');el.className='method-card';
+  el.innerHTML=`
+    <div class="method-hd" onclick="this.nextElementSibling.classList.toggle('open');
+      this.querySelector('.method-chev').style.transform=this.nextElementSibling.classList.contains('open')?'rotate(180deg)':'';">
+      <div class="method-dot" style="background:${m.color};"></div>
+      <div class="method-label">${m.label}</div>
+      <div class="method-meta">${m.total}</div>
+      <div class="method-chev">▼</div>
     </div>
-    ${p.designStandard?`
-    <div class="card">
-      <div class="krow"><div class="kk">${UI.lbl_design_standard}</div><div class="kv">${p.designStandard}</div></div>
-    </div>`:''}
-    ${p.programme?`
-    <div class="card" style="padding:8px 12px;">
-      <div style="font-size:9px;color:var(--mu);margin-bottom:3px;">${UI.stat_construction_duration||'Programme'}</div>
-      <div style="font-size:10px;color:var(--tx);">${p.programme}</div>
-    </div>`:''}
+    <div class="method-body${i===0?' open':''}">
+      <div class="ch-tag">📍 ${m.chainage}</div>
+      <p>${m.detail}</p>
+    </div>`;
+  sp.appendChild(el);
+});
 
-    ${bgHtml?`<div class="sh">${UI.sh_background}</div><div class="card"><div class="bgp">${bgHtml}</div></div>`:''}
-    ${(C.alerts||[]).map(a=>`
-      <div class="al${a.type==='info'?' info':''}">
-        <div class="al-hd">${a.title}</div>
-        <div class="al-bd">${a.body}</div>
-      </div>`).join('')}
-    <div class="sh">${UI.sh_pipeline_routes}</div>
-    <div class="card">
-      ${(C.routes||[]).map(r=>`
-        <div class="route-chip">
-          <div class="rline" style="background:${r.color};"></div>
-          <div class="rlbl">${r.label}</div>
-        </div>`).join('')}
-    </div>
-  `;
-})();
+if(C.designStandards&&C.designStandards.length){
+  let h=`<div class="card"><div class="card-hd"><div class="card-hd-t">Design Standards</div></div>
+    <div class="card-body">`;
+  C.designStandards.forEach(r=>{
+    h+=`<div class="row"><span class="rk">${r.parameter}${r.unit&&r.unit!=='—'?` (${r.unit})`:''}</span>
+      <span class="rv">${r.value}</span></div>`;
+  });
+  sp.insertAdjacentHTML('beforeend',h+`</div></div>`);
+}
 
-// ── Tab: Skop ─────────────────────────────────────────
-(function(){
-  const scope=C.scope||[];
-  const ds=C.designStandards||[];
-  const permits=((C.contextCards||[]).find(c=>c.columns&&c.columns[0]===UI.permit_col_first)||{}).rows||[];
-  document.getElementById('tab-skop').innerHTML=`
-    <div class="sh">${UI.sh_work_scope}</div>
-    <div class="card">
-      ${scope.map(s=>`
-        <div class="si">
-          <div class="sdot" style="background:${s.color};"></div>
-          <div class="stxt">${s.text}</div>
-        </div>`).join('')}
-    </div>
-    ${ds.length?`
-      <div class="sh">${UI.sh_design_standards_tbl}</div>
-      <div class="card" style="padding:0;overflow:hidden;">
-        <table class="vtbl">
-          <thead><tr><th>Parameter</th><th>Nilai</th><th>Unit</th></tr></thead>
-          <tbody>
-            ${ds.map(d=>`<tr><td>${d.parameter}</td><td>${d.value}</td><td style="color:var(--mu);">${d.unit}</td></tr>`).join('')}
-          </tbody>
-        </table>
-      </div>`:''}
-    ${permits.length?`
-      <div class="sh">${UI.sh_permits}</div>
-      <div class="card" style="padding:0;overflow:hidden;">
-        <table class="vtbl">
-          <tbody>
-            ${permits.map(row=>`<tr><td>${row[0]}</td><td style="color:var(--mu);">${row[1]}</td></tr>`).join('')}
-          </tbody>
-        </table>
-      </div>`:''}
-  `;
-})();
+/* BACKGROUND PANEL */
+const bp=$('bg-panel');
+const stories=[
+  {i:'⚠️',bg:'rgba(224,112,32,0.09)',t:'The Problem',b:C.rationale.problem},
+  {i:'💡',bg:'rgba(0,153,212,0.09)', t:'The Solution',b:C.rationale.solution},
+  {i:'✅',bg:'rgba(34,170,102,0.09)',t:'The Outcome', b:C.rationale.outcome}
+];
+stories.forEach(s=>{
+  bp.insertAdjacentHTML('beforeend',
+    `<div class="story-card">
+      <div class="story-hd">
+        <div class="story-icon" style="background:${s.bg};">${s.i}</div>
+        <div class="story-title">${s.t}</div>
+      </div>
+      <div class="story-body">${s.b}</div>
+    </div>`);
+});
 
-// ── Tab: Kaedah ───────────────────────────────────────
-(function(){
-  const methods=C.constructionMethods||[];
-  document.getElementById('tab-kaedah').innerHTML=`
-    <div class="sh">${UI.sh_construction_methods}</div>
-    ${methods.map(m=>`
-      <div class="meth" onclick="this.classList.toggle('open')">
-        <div class="meth-hd">
-          <div class="meth-dot" style="background:${m.color};"></div>
-          <div>
-            <div class="meth-lbl">${m.fullLabel||m.shortLabel}</div>
-            <div class="meth-ch">${m.chainage||''}</div>
-          </div>
-        </div>
-        <div class="meth-bd">${m.detail||''}</div>
-      </div>`).join('')}
-  `;
-})();
+bp.insertAdjacentHTML('beforeend',`<div class="sec-title">Facilities Served</div>`);
+const fclr={primary:T.accent||'#0099D4',extended:T.amber||'#F5A623',existing:T.green||'#22aa66'};
+(C.facilities||[]).forEach(f=>{
+  const c=fclr[f.tag]||T.accent;
+  bp.insertAdjacentHTML('beforeend',
+    `<div class="fac-card">
+      <div class="fac-marker" style="background:${c};">${f.marker}</div>
+      <div>
+        <div class="fac-name">${f.name}</div>
+        <span class="fac-role ${f.tag}">${f.role}</span>
+        <div class="fac-detail">${f.detail}</div>
+      </div>
+    </div>`);
+});
 
-// ── Tab: Pasukan ──────────────────────────────────────
-(function(){
-  const contacts=C.contacts||[];
-  document.getElementById('tab-pasukan').innerHTML=`
-    <div class="sh">${UI.sh_project_team}</div>
-    ${contacts.map(cg=>`
-      <div class="cg" onclick="this.classList.toggle('open')">
-        <div class="cg-hd"><span>${cg.label}</span><span>▾</span></div>
-        <div class="cg-body">
-          ${(cg.members||[]).map(m=>`
-            <div class="cmem">
-              <div class="cm-n">${m.name}</div>
-              <div class="cm-t">${m.title||''}</div>
-              ${m.email&&m.email!=='—'?`<div class="cm-t" style="color:var(--cy);">${m.email}</div>`:''}
-            </div>`).join('')}
-        </div>
-      </div>`).join('')}
-  `;
-})();
+/* TEAM PANEL */
+const tp=$('team-panel');
+(C.projectTeam||[]).forEach(t=>{
+  const logo=t.logo
+    ?`<img class="team-logo" src="${t.logo}" alt="${t.abbr}" onerror="this.parentNode.innerHTML='<div class=team-logo-ph>${t.abbr.slice(0,3)}</div>'">`
+    :`<div class="team-logo-ph">${(t.abbr||t.name).slice(0,3)}</div>`;
+  tp.insertAdjacentHTML('beforeend',
+    `<div class="team-card">${logo}
+      <div>
+        <div class="team-role">${t.role}</div>
+        <div class="team-name">${t.name}</div>
+        <div class="team-detail">${t.detail||''}</div>
+      </div>
+    </div>`);
+});
+
+if(C.governingAuthorities&&C.governingAuthorities.length){
+  tp.insertAdjacentHTML('beforeend',`<div class="sec-title">Road & Permit Authorities</div>`);
+  let h=`<table class="auth-table"><thead><tr>
+    <th>Authority</th><th>Chainage Zone</th><th>Roads & Landmarks</th></tr></thead><tbody>`;
+  C.governingAuthorities.forEach(a=>{
+    h+=`<tr>
+      <td><div class="auth-badge">${a.abbr}</div><br>${a.name}<br>
+          <span style="font-size:9.5px;color:var(--mu);">${a.type}</span></td>
+      <td><span class="auth-sub" style="font-weight:600;font-size:11px;">${a.chainageLabel}</span></td>
+      <td>${a.roads}<div class="auth-sub">${a.landmarks}</div></td>
+    </tr>`;
+  });
+  h+=`</tbody></table>`;
+  tp.insertAdjacentHTML('beforeend',h);
+}
+/* Drawing snippets — map pins + lightbox */
+function openDwg(img,title,ch){
+  document.getElementById('dwg-lb-img').src=img;
+  document.getElementById('dwg-lb-title').textContent=title;
+  document.getElementById('dwg-lb-ch').textContent=ch||'';
+  document.getElementById('dwg-lb').classList.add('open');
+}
+document.getElementById('dwg-lb').addEventListener('click',function(e){
+  if(e.target===this)this.classList.remove('open');
+});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape')document.getElementById('dwg-lb').classList.remove('open');
+});
+document.addEventListener('click',function(e){
+  const el=e.target.closest('.dwg-pin');
+  if(el)openDwg(el.dataset.img,el.dataset.title,el.dataset.ch);
+});
+(C.dwgSnippets||[]).forEach(d=>{
+  const safeTitle=d.title.replace(/"/g,'&quot;');
+  const safeCh=(d.ch||'').replace(/"/g,'&quot;');
+  const icon=L.divIcon({className:'',
+    html:`<div class="dwg-pin" data-img="${d.img}" data-title="${safeTitle}" data-ch="${safeCh}"><div class="dwg-pin-dot"></div>📐 ${d.label}</div>`,
+    iconSize:[null,null],iconAnchor:[0,14]});
+  L.marker([d.lat,d.lon],{icon,interactive:false,keyboard:false}).addTo(lg);
+});
 </script>
+
+<div id="dwg-lb">
+  <div id="dwg-lb-box">
+    <div id="dwg-lb-hdr">
+      <span id="dwg-lb-title"></span>
+      <span id="dwg-lb-ch"></span>
+      <button id="dwg-lb-close" onclick="document.getElementById('dwg-lb').classList.remove('open')">✕ Close</button>
+    </div>
+    <img id="dwg-lb-img" src="" alt="Drawing Snippet">
+  </div>
+</div>
+
 </body>
 </html>
