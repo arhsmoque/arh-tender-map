@@ -77,7 +77,7 @@ const APP_CONFIG = {
       "role": "Extended Beneficiary",
       "tag": "extended",
       "detail": "Added to scope during design development to amplify the project's strategic benefit. Route 2 (200mm MSCL / 250mm HDPE) proceeds westward from HSIS along FT 345, transitions via HDD under the utility corridor, and connects to the existing 200mm supply at Hospital Veterinar via hot tapping at CH 2+073.",
-      "lat": 2.975776, "lon": 101.712320,
+      "lat": 2.976714, "lon": 101.711815,
       "marker": "D"
     }
   ],
@@ -87,7 +87,7 @@ const APP_CONFIG = {
     "zoom": 14,
     "bounds": [
       [2.9640, 101.7090],
-      [2.9780, 101.7250]
+      [2.9780, 101.7230]
     ]
   },
 
@@ -96,12 +96,11 @@ const APP_CONFIG = {
     {"fromCh":15,   "toCh":60,   "color":"#ff8833","method":"pipejacking"},
     {"fromCh":60,   "toCh":819,  "color":"#0099D4","method":"opentrench"},
     {"fromCh":819,  "toCh":972,  "color":"#ff8833","method":"pipejacking"},
-    {"fromCh":972,  "toCh":1422, "color":"#0099D4","method":"opentrench"},
-    {"fromCh":1422, "toCh":1463, "color":"#ff8833","method":"pipejacking"},
-    {"fromCh":1463, "toCh":1486, "color":"#0099D4","method":"opentrench"},
-    {"fromCh":1486, "toCh":1873, "color":"#F5A623","method":"opentrench"},
-    {"fromCh":1873, "toCh":1958, "color":"#ff33cc","method":"hdd"},
-    {"fromCh":1958, "toCh":2073, "color":"#F5A623","method":"opentrench"}
+    {"fromCh":972,  "toCh":1438, "color":"#0099D4","method":"opentrench"},
+    {"fromCh":1438, "toCh":1492, "color":"#ff8833","method":"pipejacking"},
+    {"fromCh":1492, "toCh":1972, "color":"#F5A623","method":"opentrench"},
+    {"fromCh":1972, "toCh":2080, "color":"#ff33cc","method":"hdd"},
+    {"fromCh":2080, "toCh":2225, "color":"#F5A623","method":"opentrench"}
   ],
 
   "methodBreakdown": [
@@ -217,7 +216,7 @@ const APP_CONFIG = {
     {"label": "Start — IOI",  "lat": 2.966963, "lon": 101.721050, "zoom": 17},
     {"label": "SKVE Jacking","lat": 2.974198, "lon": 101.722521, "zoom": 17},
     {"label": "HSIS Off-take","lat": 2.975669, "lon": 101.717638, "zoom": 17},
-    {"label": "HVet End",    "lat": 2.975776, "lon": 101.712320, "zoom": 17}
+    {"label": "HVet End",    "lat": 2.976714, "lon": 101.711815, "zoom": 17}
   ],
 
   "theme": {
@@ -294,30 +293,34 @@ const APP_CONFIG = {
       "title": "Hot Tap — Existing 150mm MS Pipe (Hospital Veterinar)",
       "ch":    "CH 2+073 · Route 2 End",
       "img":   "assets/drawings/hot-tapping-hvet.png",
-      "lat":   2.975776, "lon": 101.712320
+      "lat":   2.976726, "lon": 101.711796
     }
   ],
 
   "geo": {
     "poly": [
-      [2.966963, 101.721050],
-      [2.966886, 101.721276],
-      [2.967127, 101.721634],
-      [2.968116, 101.722050],
-      [2.970429, 101.722582],
-      [2.971866, 101.722956],
-      [2.973374, 101.722689],
-      [2.974198, 101.722521],
-      [2.974667, 101.720524],
-      [2.974919, 101.719579],
-      [2.974996, 101.719524],
-      [2.975384, 101.717580],
-      [2.975669, 101.717638],
-      [2.975393, 101.717547],
-      [2.975618, 101.715984],
-      [2.975600, 101.713985],
-      [2.975519, 101.713117],
-      [2.975776, 101.712320]
+      [2.966930, 101.721100],
+      [2.966888, 101.721243],
+      [2.966882, 101.721309],
+      [2.967083, 101.721609],
+      [2.967679, 101.721927],
+      [2.971794, 101.722915],
+      [2.973205, 101.722734],
+      [2.973463, 101.722607],
+      [2.974241, 101.721538],
+      [2.974924, 101.719534],
+      [2.974978, 101.719310],
+      [2.975301, 101.717744],
+      [2.975595, 101.717810],
+      [2.975580, 101.717901],
+      [2.975644, 101.717990],
+      [2.975597, 101.717813],
+      [2.975305, 101.717741],
+      [2.975517, 101.716552],
+      [2.975515, 101.713421],
+      [2.975609, 101.712447],
+      [2.976677, 101.711923],
+      [2.976714, 101.711815]
     ],
 
     "chPts": [
@@ -340,9 +343,9 @@ const APP_CONFIG = {
       [1600, 2.975637, 101.716612],
       [1700, 2.975616, 101.715712],
       [1800, 2.975608, 101.714811],
-      [1900, 2.975593, 101.713911],
-      [2000, 2.975550, 101.713019],
-      [2073, 2.975776, 101.712320]
+      [1900, 2.975517, 101.714069],
+      [2000, 2.975539, 101.713169],
+      [2073, 2.975603, 101.712510]
     ],
 
     "sPos": [],
@@ -359,7 +362,7 @@ const APP_CONFIG = {
        101.717638, 2.975669],
       [2073, "D", "Hospital Veterinar — Route 2 End",
        "CH 2+073. Hot tap on the existing 200mm supply to Hospital Veterinar UPM. Final connection point of the new pipeline.",
-       101.712320, 2.975776]
+       101.711815, 2.976714]
     ],
 
     "prop": [
@@ -378,7 +381,7 @@ const APP_CONFIG = {
       {"id":"CP1","name":"IOI Conezion — Start Route 1",       "lat":2.966963,"lon":101.721050,"url":""},
       {"id":"CP2","name":"SKVE Pipe Jacking Zone",             "lat":2.974198,"lon":101.722521,"url":""},
       {"id":"CP3","name":"Hospital Serdang (HSIS) Bulk Meter", "lat":2.975669,"lon":101.717638,"url":""},
-      {"id":"CP4","name":"Hospital Veterinar — End Route 2",   "lat":2.975776,"lon":101.712320,"url":""}
+      {"id":"CP4","name":"Hospital Veterinar — End Route 2",   "lat":2.976714,"lon":101.711815,"url":""}
     ]
   }
 };
