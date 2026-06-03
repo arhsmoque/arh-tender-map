@@ -1,5 +1,7 @@
 {
-  "name": "arh-tender-map",
+  // "name" = Cloudflare Pages project name. Shared across all tender branches.
+  // Changing this value changes the live URL — do not change after first deploy.
+  "name": "dpiktender",
   "compatibility_date": "2026-06-02",
   "observability": {
     "enabled": true
