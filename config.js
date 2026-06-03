@@ -35,12 +35,12 @@ const APP_CONFIG = {
     "name": "PENGURUSAN AIR SELANGOR",
     "subname": "SDN BHD",
     "url": "https://www.airselangor.com",
-    "logo": "https://iconape.com/wp-content/png_logo_vector/air-selangor-logo.png"
+    "logo": "https://i.imgur.com/zPDIZvW.png"
   },
 
   "consultant": {
     "name": "DPI Konsult Sdn Bhd",
-    "subname": "Perunding Sivil & Struktur",
+    "subname": "Civil & Structural Consultant",
     "logo": "assets/logos/consultant-logo.png"
   },
 
@@ -67,8 +67,8 @@ const APP_CONFIG = {
     {
       "id": "r1",
       "label": "Route 1 — 400mm MSCL (IOI Conezion → HSIS)",
-      "color": "#009B9B",
-      "glowColor": "rgba(0,155,155,0.14)",
+      "color": "#0099D4",
+      "glowColor": "rgba(0,153,212,0.14)",
       "kmzSegments": ["HOSP SDG PATH"],
       "poly": [
         [2.966963, 101.721050],
@@ -89,8 +89,8 @@ const APP_CONFIG = {
     {
       "id": "r2",
       "label": "Route 2 — 200mm MSCL/HDPE (HSIS → Hospital Veterinar)",
-      "color": "#FFB800",
-      "glowColor": "rgba(255,184,0,0.14)",
+      "color": "#F5A623",
+      "glowColor": "rgba(245,166,35,0.14)",
       "kmzSegments": ["MS200 VET"],
       "poly": [
         [2.975393, 101.717547],
@@ -105,16 +105,16 @@ const APP_CONFIG = {
   "photos": [],
 
   "scope": [
-    {"color": "#009B9B", "text": "Route 1 — Pasang 400mm ND MSCL (IOI Conezion → Hospital Serdang, ~1.49km)"},
-    {"color": "#FFB800", "text": "Route 2 — Pasang 200mm ND MSCL / HDPE (HSIS → Hospital Veterinar, ~0.59km)"},
-    {"color": "#ff8833", "text": "Twin Pipe Jacking di bawah SKVE (~150m alignment, 300m paip)"},
-    {"color": "#ff33cc", "text": "Horizontal Directional Drilling (HDD) — koridor utiliti FT 345"},
-    {"color": "#aaff00", "text": "Bekalan & pasang injap (butterfly, sluice, air, scour) + bilik injap"},
-    {"color": "#ffaa00", "text": "Pasang electromagnetic flowmeter, RTU panel & sistem SCADA telemetri"},
-    {"color": "#22cc77", "text": "Hot tapping — sambungan ke paip sedia 900mm (IOI City Reservoir) & 200mm (HVet)"},
-    {"color": "#ff4455", "text": "Pipe bridge / overcrossing di lokasi berkenaan"},
-    {"color": "#7a84a0", "text": "Ujian tekanan & kebocoran, sterilisasi, dan pembebasan (commissioning)"},
-    {"color": "#7a84a0", "text": "Kerja-kerja reinstatement jalan (sementara & kekal, kaedah mill & pave)"}
+    {"color": "#0099D4", "text": "Route 1 — Install 400mm ND MSCL Pipe (IOI Conezion → Hospital Serdang, ~1.49km)"},
+    {"color": "#F5A623", "text": "Route 2 — Install 200mm ND MSCL/HDPE Pipe (HSIS → Hospital Veterinar, ~0.59km)"},
+    {"color": "#ff8833", "text": "Twin Pipe Jacking beneath SKVE (~150m alignment, 300m pipe)"},
+    {"color": "#ff33cc", "text": "Horizontal Directional Drilling (HDD) — FT 345 Utility Corridor"},
+    {"color": "#aaff00", "text": "Supply & install valves (butterfly, sluice, air, scour) + valve chamber"},
+    {"color": "#ffaa00", "text": "Install electromagnetic flowmeter, RTU panel & SCADA telemetry system"},
+    {"color": "#22cc77", "text": "Hot tapping — connection to existing 900mm pipe (IOI City Reservoir) & 200mm (HVet)"},
+    {"color": "#ff4455", "text": "Pipe bridge / overcrossing at relevant locations"},
+    {"color": "#7a84a0", "text": "Pressure & leakage testing, sterilisation, and commissioning"},
+    {"color": "#7a84a0", "text": "Road reinstatement works (temporary & permanent, mill & pave method)"}
   ],
 
   "designStandards": [
@@ -127,8 +127,8 @@ const APP_CONFIG = {
     {"parameter": "Pipe Jacking Tolerance (H)","unit": "mm",   "value": "±75"},
     {"parameter": "Pipe Jacking Tolerance (V)","unit": "mm",   "value": "±25"},
     {"parameter": "Field Pressure Test",       "unit": "bar",  "value": "15 (10 min)"},
-    {"parameter": "Leakage Test Pressure",     "unit": "bar",  "value": "12 (24 jam)"},
-    {"parameter": "Chlorination Concentration","unit": "mg/L", "value": "40 (min. 24 jam)"}
+    {"parameter": "Leakage Test Pressure",     "unit": "bar",  "value": "12 (24 hr)"},
+    {"parameter": "Chlorination Concentration","unit": "mg/L", "value": "40 (min. 24 hr)"}
   ],
 
   "constructionMethods": [
@@ -138,7 +138,7 @@ const APP_CONFIG = {
       "fullLabel": "Twin Pipe Jacking — SKVE Crossing",
       "color": "#ff8833",
       "chainage": "CH 0+887 – CH 1+114",
-      "detail": "Dua paip 400mm MSCL selari dijackingkan di bawah lebuhraya SKVE. Jacking pit di selatan, receiving pit di utara. Panjang alignment ~150m (jumlah paip ~300m). Tiada penutupan SKVE dijangkakan — operasi dari jacking pit sahaja. Pemantauan enapan berterusan diperlukan."
+      "detail": "Two 400mm MSCL pipes are jacked in parallel beneath the SKVE expressway. Jacking pit to the south, receiving pit to the north. Alignment ~150m (total pipe ~300m). No SKVE closure expected — operations from jacking pit only. Continuous settlement monitoring required."
     },
     {
       "id": "hdd",
@@ -146,7 +146,7 @@ const APP_CONFIG = {
       "fullLabel": "Horizontal Directional Drilling (HDD)",
       "color": "#ff33cc",
       "chainage": "Route 2 · FT 345",
-      "detail": "HDD di bawah koridor utiliti sedia ada sepanjang FT 345. Paip produk HDPE PN10 200mm. Kedalaman minimum 3.0m. Entry angle 10°–18°, exit angle 10°–18°. Dilakukan dari jalan side-table."
+      "detail": "HDD beneath the existing utility corridor along FT 345. Product pipe: HDPE PN10 200mm. Minimum depth: 3.0m. Entry angle 10°–18°, exit angle 10°–18°. Executed from a side-table road."
     },
     {
       "id": "hottap",
@@ -154,67 +154,67 @@ const APP_CONFIG = {
       "fullLabel": "Hot Tapping — Live Connection",
       "color": "#22cc77",
       "chainage": "CH 0+000 & CH 2+073",
-      "detail": "Sambungan live ke paip sedia 900mm (IOI City Reservoir) di CH 0+000 dan paip 200mm (Hospital Veterinar) di CH 2+073. Dikoordinasikan sepenuhnya dengan Air Selangor Operations. Tiada gangguan bekalan berterusan ke hospital."
+      "detail": "Live connection to the existing 900mm pipe (IOI City Reservoir) at CH 0+000 and 200mm pipe (Hospital Veterinar) at CH 2+073. Fully coordinated with Air Selangor Operations. No interruption to continuous hospital water supply."
     },
     {
       "id": "opentrench",
       "shortLabel": "Open Trench",
       "fullLabel": "Open Trench Pipe Laying",
-      "color": "#009B9B",
+      "color": "#0099D4",
       "chainage": "CH 0+000 – CH 0+887 & CH 1+114 – CH 2+073",
-      "detail": "Kaedah open trench menggunakan ekskavator dengan penutupan semula (reinstatement) kaedah mill & pave mengikut standard JKR. Minimum pipe cover 1.2m. Koordinasi permit JKR Road Opening dan KUSEL utility corridor diperlukan."
+      "detail": "Open trench method using excavators with reinstatement via mill & pave to JKR standard. Minimum pipe cover 1.2m. Coordination of JKR Road Opening Permit and KUSEL utility corridor permit required."
     }
   ],
 
   "pipelineFlow": [
-    {"stage": "source",    "label": "IOI City Reservoir",   "detail": "Paip sedia 900mm",           "type": "existing"},
-    {"stage": "method",    "label": "Hot Tap",              "detail": "CH 0+000",                   "type": "method"},
-    {"stage": "route",     "label": "Open Trench",          "detail": "400mm MSCL · ~800m",         "type": "route"},
-    {"stage": "method",    "label": "Twin Pipe Jacking",    "detail": "SKVE · ~150m alignment",     "type": "method"},
-    {"stage": "route",     "label": "Open Trench",          "detail": "400mm MSCL · ~500m",         "type": "route"},
-    {"stage": "node",      "label": "Hospital Serdang",     "detail": "Bulk Meter · Flowmeter · SCADA", "type": "node"},
-    {"stage": "route",     "label": "Open Trench + HDD",    "detail": "200mm MSCL/HDPE · ~800m",    "type": "route"},
-    {"stage": "node",      "label": "Hospital Veterinar",   "detail": "Hot Tap · 200mm sedia",      "type": "node"}
+    {"stage": "source",    "label": "IOI City Reservoir",   "detail": "Existing 900mm Pipe",             "type": "existing"},
+    {"stage": "method",    "label": "Hot Tap",              "detail": "CH 0+000",                        "type": "method"},
+    {"stage": "route",     "label": "Open Trench",          "detail": "400mm MSCL · ~800m",              "type": "route"},
+    {"stage": "method",    "label": "Twin Pipe Jacking",    "detail": "SKVE · ~150m alignment",          "type": "method"},
+    {"stage": "route",     "label": "Open Trench",          "detail": "400mm MSCL · ~500m",              "type": "route"},
+    {"stage": "node",      "label": "Hospital Serdang",     "detail": "Bulk Meter · Flowmeter · SCADA",  "type": "node"},
+    {"stage": "route",     "label": "Open Trench + HDD",    "detail": "200mm MSCL/HDPE · ~800m",         "type": "route"},
+    {"stage": "node",      "label": "Hospital Veterinar",   "detail": "Hot Tap · Existing 200mm",        "type": "node"}
   ],
 
   "alerts": [
     {
       "type": "warning",
       "title": "⚠ Twin Pipe Jacking Under SKVE",
-      "body": "Kerja pipe jacking di bawah SKVE memerlukan permit LLM/PLUS dan pemantauan enapan berterusan. Tiada penutupan SKVE dijangka — operasi dari jacking pit sahaja."
+      "body": "Pipe jacking works beneath SKVE require LLM/PLUS permit and continuous settlement monitoring. No SKVE closure expected — operations from jacking pit only."
     },
     {
       "type": "info",
-      "title": "ℹ Bekalan Sedia Dikekalkan",
-      "body": "Bekalan asal dari Semenyih Balancing Reservoir dikekalkan sepanjang pembinaan. Sambungan baru melalui <strong>hot tapping</strong> atau scheduled shut-down yang dikoordinasikan bersama Air Selangor Operations."
+      "title": "ℹ Existing Supply Maintained",
+      "body": "The existing supply from Semenyih Balancing Reservoir is maintained throughout construction. New connections are made via <strong>hot tapping</strong> or scheduled shut-down coordinated with Air Selangor Operations."
     }
   ],
 
   "contacts": [
     {
-      "label": "Pemilik Projek — Air Selangor",
+      "label": "Project Owner — Air Selangor",
       "members": [
         {"name": "Pengurusan Air Selangor Sdn Bhd", "title": "Superintending Officer (S.O.)", "email": "—"}
       ]
     },
     {
-      "label": "Perunding — DPI Konsult Sdn Bhd",
+      "label": "Consultant — DPI Konsult Sdn Bhd",
       "members": [
-        {"name": "DPI Konsult Sdn Bhd", "title": "Perunding Sivil & Struktur", "email": "—"}
+        {"name": "DPI Konsult Sdn Bhd", "title": "Civil & Structural Consultant", "email": "—"}
       ]
     },
     {
-      "label": "Pihak Berkuasa — Kelulusan & Permit",
+      "label": "Authorities — Approvals & Permits",
       "members": [
-        {"name": "SPAN",       "title": "Pematuhan bahan & pendaftaran kontraktor", "email": "—"},
-        {"name": "JKR",        "title": "Road opening permit, standard reinstatement", "email": "—"},
-        {"name": "LLM / PLUS", "title": "Permit kerja bawah SKVE",                   "email": "—"},
-        {"name": "KUSEL",      "title": "Permit koridor utiliti, watermain crossing", "email": "—"}
+        {"name": "SPAN",       "title": "Materials compliance & contractor registration", "email": "—"},
+        {"name": "JKR",        "title": "Road opening permit & standard reinstatement",   "email": "—"},
+        {"name": "LLM / PLUS", "title": "Works under SKVE highway permit",               "email": "—"},
+        {"name": "KUSEL",      "title": "Utility corridor & watermain crossing permit",   "email": "—"}
       ]
     }
   ],
 
-  "contactsTabLabel": "Pasukan",
+  "contactsTabLabel": "Team",
 
   "quickNav": [
     {"label": "SKVE Jacking",  "lat": 2.974198, "lon": 101.722521, "zoom": 17},
@@ -223,68 +223,68 @@ const APP_CONFIG = {
   ],
 
   "theme": {
-    "bg":      "#060d18",
-    "panel":   "#0b1524",
-    "panel2":  "#0f1d30",
-    "panel3":  "#14253e",
-    "border":  "rgba(255,255,255,0.07)",
-    "border2": "rgba(255,255,255,0.13)",
-    "text":    "#ddeeff",
-    "muted":   "#6a88a8",
-    "faint":   "#1e3a58",
-    "accent":  "#009B9B",
-    "accent2": "rgba(0,155,155,0.12)",
-    "accent3": "rgba(0,155,155,0.06)",
-    "amber":   "#FFB800",
-    "red":     "#ff4455",
-    "cyan":    "#33ccff",
-    "magenta": "#ff33cc",
-    "orange":  "#ff7733"
+    "bg":      "#f0f6fc",
+    "panel":   "#ffffff",
+    "panel2":  "#e4f0fa",
+    "panel3":  "#cce3f5",
+    "border":  "rgba(0,120,190,0.13)",
+    "border2": "rgba(0,120,190,0.26)",
+    "text":    "#0d2137",
+    "muted":   "#4d7a9a",
+    "faint":   "#b5d8f0",
+    "accent":  "#0099D4",
+    "accent2": "rgba(0,153,212,0.12)",
+    "accent3": "rgba(0,153,212,0.06)",
+    "amber":   "#F5A623",
+    "red":     "#e03040",
+    "cyan":    "#00AEEF",
+    "magenta": "#5544aa",
+    "orange":  "#e06020"
   },
 
   "contextCards": [
     {
-      "title": "Latar Belakang Projek",
+      "title": "Project Background",
       "open": true,
       "type": "text",
-      "body": "Hospital Serdang (Hospital Sultan Idris Shah / HSIS) dan Hospital Veterinar UPM bergantung kepada bekalan air daripada sistem grid sedia ada melalui paip 900mm dari IOI City Reservoir. Kapasiti semasa tidak mencukupi untuk memenuhi keperluan operasi blok Pusat Kardiologi baru yang sedang dibina.\n\nProjek ini bertujuan mewujudkan redundansi bekalan air dengan membina laluan paip baru dari IOI Conezion (CH0+000) melalui kawasan perumahan Lebuh IRC, merentasi SKVE menggunakan kaedah twin pipe jacking, dan menyambung ke off-take di HSIS. Route 2 kemudian menyambung dari HSIS ke Hospital Veterinar.\n\nKontraktor bertanggungjawab untuk semua kerja pembinaan, ujian, dan commissioning termasuk koordinasi dengan Air Selangor Operations bagi penjadualan shut-down dan hot-tapping."
+      "body": "Hospital Serdang (Hospital Sultan Idris Shah / HSIS) and Hospital Veterinar UPM currently rely on the existing grid supply via a 900mm pipe from IOI City Reservoir. The current capacity is insufficient to meet the operational requirements of the new Cardiology Centre Block under construction.\n\nThis project aims to establish water supply redundancy by constructing a new pipeline from IOI Conezion (CH0+000) through the Lebuh IRC residential area, crossing the SKVE via twin pipe jacking, and connecting to the off-take at HSIS. Route 2 then connects from HSIS to Hospital Veterinar.\n\nThe Contractor is responsible for all construction, testing, and commissioning works, including coordination with Air Selangor Operations for shut-down scheduling and hot-tapping."
     },
     {
-      "title": "Aliran Paip & Kaedah Pembinaan",
+      "title": "Pipeline Flow & Construction Methods",
       "open": false,
       "type": "flow"
     },
     {
-      "title": "Kaedah Pembinaan Khusus",
+      "title": "Specialised Construction Methods",
       "open": false,
       "type": "methods"
     },
     {
-      "title": "Skop Kerja Ringkas",
+      "title": "Work Scope Summary",
       "open": false,
       "type": "scope"
     },
     {
-      "title": "Piawai Rekabentuk",
+      "title": "Design Standards",
       "open": false,
       "type": "table",
       "source": "designStandards"
     },
     {
-      "title": "Permit & Kebenaran Diperlukan",
+      "title": "Required Permits & Approvals",
       "open": false,
       "type": "table",
-      "columns": ["Pihak Berkuasa", "Jenis Permit"],
+      "columns": ["Authority", "Permit Type"],
       "rows": [
-        ["SPAN",                    "Pendaftaran kontraktor & pematuhan bahan"],
+        ["SPAN",                    "Contractor registration & materials compliance"],
         ["JKR",                     "Road Opening Permit & standard reinstatement"],
         ["LLM / PLUS",              "Works Under Highway Permit (SKVE)"],
-        ["KUSEL",                   "Permit koridor utiliti & watermain crossing"],
-        ["Air Selangor Operations", "Penjadualan shut-down & hot-tap koordinasi"]
+        ["KUSEL",                   "Utility corridor & watermain crossing permit"],
+        ["Air Selangor Operations", "Shut-down scheduling & hot-tap coordination"]
       ]
     },
     {
-      "title": "Gambar Tapak",
+      "title": "Site Photos",
       "open": false,
       "type": "photo-grid",
       "photos": []
@@ -293,10 +293,10 @@ const APP_CONFIG = {
 
   "qrPage": {
     "badge":    "PENGURUSAN AIR SELANGOR SDN BHD",
-    "title":    "Hospital Serdang Water Supply — Peta Interaktif",
-    "subtitle": "Imbas kod QR untuk akses peta laluan paip, kaedah pembinaan (pipe jacking & HDD), dan lokasi tapak kerja",
+    "title":    "Hospital Serdang Water Supply — Interactive Map",
+    "subtitle": "Scan QR code to access the pipeline route map, construction methods (pipe jacking & HDD), and site work locations",
     "chips":    ["📱 Mobile Friendly", "🔵 Air Selangor PN0000023850"],
-    "note":     "Selepas imbas → peta projek dibuka secara terus.<br>Klik setiap node → butiran teknikal laluan dan kaedah pembinaan.",
+    "note":     "After scanning → project map opens directly.<br>Click each node → technical details on route and construction method.",
     "url":      "https://dpiktender.arh-homelab.workers.dev"
   },
 
@@ -350,29 +350,29 @@ const APP_CONFIG = {
     "sPos": [],
 
     "junc": [
-      [0,    "A", "IOI Conezion — Hot Tap pada 900mm Main",
-       "CH 0+000 (Route 1 mula). Hot tap live pada paip sedia 900mm diameter dari IOI City Reservoir. Bekalan redundan baru bermula di sini.",
+      [0,    "A", "IOI Conezion — Hot Tap on 900mm Main",
+       "CH 0+000 (Route 1 Start). Live hot tap on the existing 900mm pipe from IOI City Reservoir. New redundant water supply begins here.",
        101.721050, 2.966963],
       [887,  "B", "SKVE Crossing — Twin Pipe Jacking",
-       "CH ~0+887 hingga CH ~1+114. Twin pipe jacking di bawah South Klang Valley Expressway (SKVE). Dua paip 400mm MSCL selari. Jacking pit di selatan, receiving pit di utara SKVE.",
+       "CH ~0+887 to CH ~1+114. Twin pipe jacking beneath the South Klang Valley Expressway (SKVE). Two parallel 400mm MSCL pipes. Jacking pit to the south, receiving pit to the north of SKVE.",
        101.722521, 2.974198],
       [1486, "C", "Hospital Serdang (HSIS) — Bulk Meter Off-Take",
-       "CH 1+486 (Route 1 tamat / Route 2 mula). Bulk meter dan off-take ke Hospital Serdang. Electromagnetic flowmeter, RTU panel, dan sistem SCADA telemetri dipasang di sini.",
+       "CH 1+486 (Route 1 End / Route 2 Start). Bulk meter and off-take to Hospital Serdang. Electromagnetic flowmeter, RTU panel, and SCADA telemetry system installed here.",
        101.717638, 2.975669],
-      [2073, "D", "Hospital Veterinar (HVet) — Route 2 Tamat",
-       "CH 2+073 (Hujung Route 2). Hot tap pada paip sedia 200mm diameter bekalan Hospital Veterinar UPM. Paip produk HDPE PN10 atau MSCL 200mm melalui HDD dan open trench.",
+      [2073, "D", "Hospital Veterinar (HVet) — Route 2 End",
+       "CH 2+073 (Route 2 End). Hot tap on the existing 200mm supply pipe to Hospital Veterinar UPM. Product pipe: HDPE PN10 or MSCL 200mm via HDD and open trench.",
        101.712320, 2.975776]
     ],
 
     "prop": [
       [887,  "Twin Pipe Jacking — SKVE Crossing",
-       "Dua drive selari 400mm MSCL. Jacking pits di kedua-dua sisi SKVE. Tiada gangguan lalulintas SKVE dijangkakan. Pemantauan enapan berterusan sepanjang operasi.",
+       "Two parallel 400mm MSCL drives. Jacking pits on both sides of SKVE. No SKVE traffic disruption expected. Continuous settlement monitoring throughout operations.",
        "jacking"],
-      [1250, "HDD Crossing — Koridor Utiliti FT 345",
-       "Route 2: HDD di bawah koridor utiliti sedia ada sepanjang FT 345. Paip produk HDPE PN10 200mm. Kedalaman minimum 3.0m. Entry/exit angle: 10°–18°.",
+      [1250, "HDD Crossing — FT 345 Utility Corridor",
+       "Route 2: HDD beneath the existing utility corridor along FT 345. Product pipe: HDPE PN10 200mm. Minimum depth: 3.0m. Entry/exit angle: 10°–18°.",
        "hdd"],
-      [1486, "Flowmeter, RTU & SCADA Telemetri",
-       "Pasang electromagnetic flowmeter, RTU panel, dan sistem SCADA telemetri di off-take Hospital Serdang.",
+      [1486, "Flowmeter, RTU & SCADA Telemetry",
+       "Install electromagnetic flowmeter, RTU panel, and SCADA telemetry system at the Hospital Serdang off-take.",
        "scada"]
     ],
 
