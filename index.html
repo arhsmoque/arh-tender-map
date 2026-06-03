@@ -226,6 +226,11 @@ a{color:var(--teal);text-decoration:none;}
 </div>
 
 <script>
+// ── Mobile redirect ───────────────────────────────────
+if(/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||
+   (window.innerWidth<=768&&'ontouchstart' in window)){
+  window.location.replace('mobile.html');
+}
 // ── Theme ─────────────────────────────────────────────
 (function(){
   const t=APP_CONFIG.theme||{},r=document.documentElement;
@@ -271,34 +276,6 @@ const lgCh=L.layerGroup().addTo(map);
 const lgJunc=L.layerGroup().addTo(map);
 const lgProp=L.layerGroup().addTo(map);
 
-// ── Routes ────────────────────────────────────────────
-(C.routes||[]).forEach(r=>{
-  L.polyline(r.poly,{color:r.glowColor||r.color,weight:16,opacity:.18,lineJoin:'round'}).addTo(lgRoute);
-  L.polyline(r.poly,{color:r.color,weight:4,opacity:.9,lineJoin:'round'}).addTo(lgRoute);
-});
-
-// ── Legend routes ─────────────────────────────────────
-const legR=document.getElementById('leg-routes');
-(C.routes||[]).forEach(r=>{
-  const d=document.createElement('div');d.className='ll';
-  d.innerHTML=`<div class="lline" style="background:${r.color};"></div><span>${r.label}</span>`;
-  legR.appendChild(d);
-});
-
-// ── Chainage marks ────────────────────────────────────
-CH_PTS.forEach(([ch,lat,lon])=>{
-  if(ch===0)return;
-  if(ch%500===0){
-    const km=Math.floor(ch/1000),m=String(ch%1000).padStart(3,'0');
-    const lbl=ch>=1000?`${km}+${m}`:`0+${m}`;
-    L.marker([lat,lon],{icon:L.divIcon({className:'',
-      html:`<div style="background:#ffcc00;color:#000;font-family:Inter,sans-serif;font-size:9px;font-weight:800;padding:2px 6px;border-radius:3px;white-space:nowrap;box-shadow:0 1px 5px rgba(0,0,0,.5);border:1px solid rgba(0,0,0,.2);">${lbl}</div>`,
-      iconAnchor:[0,8]}),zIndexOffset:50}).addTo(lgCh);
-  } else if(ch%100===0){
-    L.circleMarker([lat,lon],{radius:2.5,color:'rgba(255,255,255,.6)',fillColor:'rgba(255,255,255,.35)',fillOpacity:1,weight:1}).addTo(lgCh);
-  }
-});
-
 // ── Interp along POLY (chainage distance → lat/lon) ───
 function interp(d){
   if(!POLY.length)return null;
@@ -314,6 +291,60 @@ function interp(d){
   }
   return POLY[POLY.length-1];
 }
+
+// ── Routes (method-coloured segments when defined) ────
+if((C.methodSegments||[]).length&&POLY.length){
+  C.methodSegments.forEach(seg=>{
+    const pts=[];
+    for(let d=seg.fromCh;d<seg.toCh;d+=10){const p=interp(d);if(p)pts.push(p);}
+    const last=interp(seg.toCh);if(last)pts.push(last);
+    if(pts.length<2)return;
+    const hx=seg.color.replace('#',''),cr=parseInt(hx.slice(0,2),16),cg=parseInt(hx.slice(2,4),16),cb=parseInt(hx.slice(4,6),16);
+    L.polyline(pts,{color:`rgba(${cr},${cg},${cb},0.14)`,weight:16,opacity:1,lineJoin:'round'}).addTo(lgRoute);
+    L.polyline(pts,{color:seg.color,weight:4,opacity:.9,lineJoin:'round'}).addTo(lgRoute);
+  });
+} else {
+  (C.routes||[]).forEach(r=>{
+    L.polyline(r.poly,{color:r.glowColor||r.color,weight:16,opacity:.18,lineJoin:'round'}).addTo(lgRoute);
+    L.polyline(r.poly,{color:r.color,weight:4,opacity:.9,lineJoin:'round'}).addTo(lgRoute);
+  });
+}
+
+// ── Legend routes / methods ───────────────────────────
+const legR=document.getElementById('leg-routes');
+if((C.methodSegments||[]).length){
+  const seen=new Set();
+  const mLabel={pipejacking:'Pipe Jacking',hdd:'HDD',opentrench:'Open Trench'};
+  C.methodSegments.forEach(seg=>{
+    const key=seg.color+seg.method;
+    if(seen.has(key))return;seen.add(key);
+    const route=C.routes.find(r=>r.color===seg.color);
+    const label=seg.method==='opentrench'&&route?`Open Trench (${route.id==='r1'?'400mm':'200mm'})`:mLabel[seg.method]||seg.method;
+    const d=document.createElement('div');d.className='ll';
+    d.innerHTML=`<div class="lline" style="background:${seg.color};"></div><span>${label}</span>`;
+    legR.appendChild(d);
+  });
+} else {
+  (C.routes||[]).forEach(r=>{
+    const d=document.createElement('div');d.className='ll';
+    d.innerHTML=`<div class="lline" style="background:${r.color};"></div><span>${r.label}</span>`;
+    legR.appendChild(d);
+  });
+}
+
+// ── Chainage marks ────────────────────────────────────
+CH_PTS.forEach(([ch,lat,lon])=>{
+  if(ch===0)return;
+  if(ch%500===0){
+    const km=Math.floor(ch/1000),m=String(ch%1000).padStart(3,'0');
+    const lbl=ch>=1000?`${km}+${m}`:`0+${m}`;
+    L.marker([lat,lon],{icon:L.divIcon({className:'',
+      html:`<div style="background:#ffcc00;color:#000;font-family:Inter,sans-serif;font-size:9px;font-weight:800;padding:2px 6px;border-radius:3px;white-space:nowrap;box-shadow:0 1px 5px rgba(0,0,0,.5);border:1px solid rgba(0,0,0,.2);">${lbl}</div>`,
+      iconAnchor:[0,8]}),zIndexOffset:50}).addTo(lgCh);
+  } else if(ch%100===0){
+    L.circleMarker([lat,lon],{radius:2.5,color:'rgba(255,255,255,.6)',fillColor:'rgba(255,255,255,.35)',fillOpacity:1,weight:1}).addTo(lgCh);
+  }
+});
 
 // ── Junction markers A/B/C/D ──────────────────────────
 // NOTE: JUNC format is [ch, label, name, desc, LON, LAT] — lon/lat reversed vs all other arrays
@@ -384,12 +415,16 @@ function showTab(id,btn){
       <div class="kpi"><div class="kpi-v">${s.lengthKm||'2.07'}</div><div class="kpi-l">${UI.kpi_total_pipe}</div></div>
       <div class="kpi"><div class="kpi-v">${s.constructionDurationMonths||p.durationMonths||24}</div><div class="kpi-l">${UI.kpi_months}</div></div>
     </div>
+    ${p.designStandard?`
     <div class="card">
-      <div class="krow"><div class="kk">No. Tender</div><div class="kv hl">${p.tenderNumber||'—'}</div></div>
-      <div class="krow"><div class="kk">Program</div><div class="kv">${p.programme||'—'}</div></div>
-      <div class="krow"><div class="kk">${UI.lbl_design_standard}</div><div class="kv">${p.designStandard||'—'}</div></div>
-      <div class="krow"><div class="kk">Status</div><div class="kv">${p.status||'—'}</div></div>
-    </div>
+      <div class="krow"><div class="kk">${UI.lbl_design_standard}</div><div class="kv">${p.designStandard}</div></div>
+    </div>`:''}
+    ${p.programme?`
+    <div class="card" style="padding:8px 12px;">
+      <div style="font-size:9px;color:var(--mu);margin-bottom:3px;">${UI.stat_construction_duration||'Programme'}</div>
+      <div style="font-size:10px;color:var(--tx);">${p.programme}</div>
+    </div>`:''}
+
     ${bgHtml?`<div class="sh">${UI.sh_background}</div><div class="card"><div class="bgp">${bgHtml}</div></div>`:''}
     ${(C.alerts||[]).map(a=>`
       <div class="al${a.type==='info'?' info':''}">

@@ -334,11 +334,23 @@ OSM.addTo(map);
 
 const lgA = L.layerGroup().addTo(map), lgC = L.layerGroup().addTo(map), lgJ = L.layerGroup().addTo(map), lgP = L.layerGroup().addTo(map), lgS = L.layerGroup().addTo(map), lgCP = L.layerGroup().addTo(map);
 
-// Route polylines — read from APP_CONFIG.routes, fall back to POLY
-(APP_CONFIG.routes || []).forEach(r => {
-  L.polyline(r.poly, {color: r.glowColor || r.color, weight: 16, opacity: 0.18, lineJoin: 'round'}).addTo(lgA);
-  L.polyline(r.poly, {color: r.color, weight: 4, opacity: 0.9, lineJoin: 'round'}).addTo(lgA);
-});
+// Route polylines — method-coloured when methodSegments defined
+if ((APP_CONFIG.methodSegments||[]).length && POLY.length) {
+  APP_CONFIG.methodSegments.forEach(seg => {
+    const pts = [];
+    for (let d = seg.fromCh; d < seg.toCh; d += 10) { const p = interp(d); if (p) pts.push(p); }
+    const last = interp(seg.toCh); if (last) pts.push(last);
+    if (pts.length < 2) return;
+    const hx = seg.color.replace('#',''), cr = parseInt(hx.slice(0,2),16), cg = parseInt(hx.slice(2,4),16), cb = parseInt(hx.slice(4,6),16);
+    L.polyline(pts, {color: `rgba(${cr},${cg},${cb},0.14)`, weight: 16, opacity: 1, lineJoin: 'round'}).addTo(lgA);
+    L.polyline(pts, {color: seg.color, weight: 4, opacity: 0.9, lineJoin: 'round'}).addTo(lgA);
+  });
+} else {
+  (APP_CONFIG.routes || []).forEach(r => {
+    L.polyline(r.poly, {color: r.glowColor || r.color, weight: 16, opacity: 0.18, lineJoin: 'round'}).addTo(lgA);
+    L.polyline(r.poly, {color: r.color, weight: 4, opacity: 0.9, lineJoin: 'round'}).addTo(lgA);
+  });
+}
 // Dynamic legend route rows
 const legendRoutes = document.getElementById('legend-routes');
 (APP_CONFIG.routes || []).forEach(r => {

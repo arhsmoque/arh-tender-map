@@ -103,6 +103,19 @@ const APP_CONFIG = {
     }
   ],
 
+  "methodSegments": [
+    {"fromCh":0,    "toCh":15,   "color":"#0099D4","method":"opentrench"},
+    {"fromCh":15,   "toCh":60,   "color":"#ff8833","method":"pipejacking"},
+    {"fromCh":60,   "toCh":824,  "color":"#0099D4","method":"opentrench"},
+    {"fromCh":824,  "toCh":975,  "color":"#ff8833","method":"pipejacking"},
+    {"fromCh":975,  "toCh":1375, "color":"#0099D4","method":"opentrench"},
+    {"fromCh":1375, "toCh":1425, "color":"#ff8833","method":"pipejacking"},
+    {"fromCh":1425, "toCh":1486, "color":"#0099D4","method":"opentrench"},
+    {"fromCh":1486, "toCh":1813, "color":"#F5A623","method":"opentrench"},
+    {"fromCh":1813, "toCh":1958, "color":"#ff33cc","method":"hdd"},
+    {"fromCh":1958, "toCh":2073, "color":"#F5A623","method":"opentrench"}
+  ],
+
   "photos": [],
 
   "scope": [
