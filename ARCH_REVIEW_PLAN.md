@@ -64,9 +64,15 @@ These changes cost almost nothing to implement and immediately make the repo saf
 
 ## Priority 2 — Structural fix to config.js
 
-### Task 2.1 — Consolidate geospatial arrays into APP_CONFIG `[ ]`
+### Task 2.1 — Consolidate geospatial arrays into APP_CONFIG `[~]`
 
-**What:** Move `APP_CONFIG.POLY`, `APP_CONFIG.CH_PTS`, `APP_CONFIG.SPOS`, `APP_CONFIG.JUNC`, `APP_CONFIG.PROP`, `APP_CONFIG.CPS` from post-object assignments (lines ~160–end of file) into the `APP_CONFIG` object body as named keys.
+**Status note (2026-06-03):** Partial implementation exists on two branches:
+- `claude/tender-presentation-creation-r0Xa6`: previous agent added `routes`, `contextCards`, `kmzPath`, `chainageInterval`, `quickNav` keys to the APP_CONFIG body. Geospatial arrays still in Zone 2 (post-object assignments).
+- `claude/tender-map-arch-review-igsDF` (this branch): config.js updated with HOSP SDG PATH KMZ coordinates, Air Selangor teal theme (`#009B9B`), JKR `client2`, photo-grid contextCard type, and Python-computed 100m chainage marks. Geospatial arrays still in Zone 2.
+
+**Full task definition remains:** Move `APP_CONFIG.POLY`, `APP_CONFIG.CH_PTS`, etc. into the APP_CONFIG object body as `geo:{}` sub-object, fix JUNC coordinate naming inconsistency, update all HTML readers.
+
+**What:** Move `APP_CONFIG.POLY`, `APP_CONFIG.CH_PTS`, `APP_CONFIG.SPOS`, `APP_CONFIG.JUNC`, `APP_CONFIG.PROP`, `APP_CONFIG.CPS` from post-object assignments into the `APP_CONFIG` object body as named keys.
 
 **Current structure (broken into two zones):**
 ```js
@@ -76,11 +82,10 @@ const APP_CONFIG = {
   // object closes here
 };
 
-// Then separately, ~80 lines of:
+// Then separately:
 APP_CONFIG.POLY = [ ... ];
 APP_CONFIG.CH_PTS = [ ... ];
-APP_CONFIG.SPOS = [];
-APP_CONFIG.JUNC = [ ... ];  // BUG: coordinate order is [ch, id, name, desc, LON, LAT]
+APP_CONFIG.JUNC = [ ... ];  // WARNING: [ch, id, name, desc, LON, LAT] — LON before LAT
 APP_CONFIG.PROP = [ ... ];
 APP_CONFIG.CPS  = [ ... ];
 ```
@@ -92,25 +97,24 @@ const APP_CONFIG = {
   ...
   geo: {
     poly:   [ [lat, lon], ... ],
-    chPts:  [ { ch, lat, lon }, ... ],
+    chPts:  [ [ch, lat, lon], ... ],
     sPos:   [],
-    junc:   [ { ch, id, name, desc, lat, lon }, ... ],  // FIX coordinate order
-    prop:   [ { ch, name, desc, type }, ... ],
+    junc:   [ [ch, id, name, desc, lon, lat], ... ],  // keep LON,LAT order — matches HTML renderer
+    prop:   [ [ch, name, desc, type], ... ],
     cps:    [ { id, name, lat, lon, url }, ... ],
   },
 };
 ```
 
-**Coordinate order bug to fix:** `JUNC` entries currently have `lon` at index 4 and `lat` at index 5 (i.e., `[ch, id, name, desc, lon, lat]`), while all other arrays use `[lat, lon]` order. Fix this when consolidating — use consistent `lat, lon` everywhere, or use named keys `{ lat, lon }` to make order irrelevant.
+**JUNC coordinate order warning:** `JUNC` entries use `[ch, id, name, desc, LON, LAT]` — LON at index 4, LAT at index 5. This is intentional: the HTML renderer uses `JUNC.forEach(([ch,num,name,desc,lon,lat])=>{...marker([lat,lon])})`. Do NOT change the order without updating the HTML renderer simultaneously.
 
-**Files changed:** `config.js`, `index.html` (update any references to JUNC[4]/JUNC[5] coordinate reads), `mobile.html` (same)
+**Files changed:** `config.js`, `index.html` (update any `geo.` path references if restructuring)
 
 **Agent instructions:**
 1. Read `config.js` fully before editing.
-2. Read all `APP_CONFIG.JUNC` references in `index.html` and `mobile.html` — check which index the HTML uses for lat and lon on JUNC entries.
+2. Read all `APP_CONFIG.JUNC` references in `index.html` — check which index the HTML uses for lat and lon.
 3. Make the structural change, keeping all values identical.
-4. Fix JUNC coordinate order to match `[lat, lon]` convention — update the HTML readers at the same time.
-5. Browser-smoke `index.html` locally after the change: map must render, all junction markers must appear at correct locations.
+4. Run `node --check config.js` after the change.
 
 ---
 
@@ -162,15 +166,9 @@ All recipes use the uv standalone script pattern:
 - Python syntax check on all `recipes/*.py`
 - JS syntax check on `config.js` (`node --check config.js`)
 - Catalog refs in `recipes/index.yml` point to existing files
-- No hardcoded project-specific strings in `index.html` / `mobile.html` / `qr.html` (check for the current tender number as a regression guard)
+- No hardcoded project-specific strings in `index.html` (check for tender number as a regression guard)
 
 **Output:** JSON UBAP envelope, non-zero exit on failure.
-
-**Usage after adding:**
-```bash
-# Add to AGENTS.md Quick Commands:
-uv run --script recipes/ubap-check.py
-```
 
 **Files changed:** `recipes/ubap-check.py` (new), `recipes/index.yml` (new), `AGENTS.md` (update Quick Commands)
 
@@ -180,19 +178,20 @@ uv run --script recipes/ubap-check.py
 
 **What:** Automated provisioner. Takes an input JSON, generates `config.js`, creates `tender/<slug>` branch, commits, pushes.
 
-**Modelled on:** `arh-fnb-webapp/recipes/provision-new-store-deployment.py` — strip Firebase/WhatsApp/Imgur steps, add geospatial validation.
+**Modelled on:** `arh-fnb-webapp/recipes/provision-new-store-deployment.py`
 
 **Steps the script performs:**
 1. Read and validate input JSON against schema (Task 2.2)
-2. Generate `config.js` from template, filling in all APP_CONFIG fields
-3. Check that `tender/<slug>` branch does not already exist on origin
-4. Create branch from `main`
-5. Write generated `config.js` to branch
-6. Commit with message `config(<slug>): initial tender adapter`
-7. Push to origin
-8. Print deployment URL
+2. Parse KMZ from `geo.kmzPath` if provided — extract polyline, compute 100m chainage marks
+3. Generate `config.js` from template (jinja2), filling in all APP_CONFIG fields
+4. Check that `tender/<slug>` branch does not already exist on origin
+5. Create branch from `main`
+6. Write generated `config.js` to branch
+7. Commit with message `config(<slug>): initial tender adapter`
+8. Push to origin
+9. Print deployment URL
 
-**Dry-run flag:** `--dry-run` prints what would happen without touching git.
+**Dependencies:** `jinja2>=3.1`, `pyyaml>=6.0`; optionally `folium>=0.17` for `--preview` map
 
 **Usage:**
 ```bash
@@ -200,7 +199,7 @@ uv run --script recipes/provision-new-tender-deployment.py --input recipes/input
 uv run --script recipes/provision-new-tender-deployment.py --dry-run --input recipes/inputs/<tender>.json
 ```
 
-**Files changed:** `recipes/provision-new-tender-deployment.py` (new), `recipes/` directory
+**Files changed:** `recipes/provision-new-tender-deployment.py` (new)
 
 ---
 
@@ -210,7 +209,7 @@ uv run --script recipes/provision-new-tender-deployment.py --dry-run --input rec
 
 **Modelled on:** `arh-fnb-webapp/recipes/sync-base-engine-to-store-branches.py`
 
-**BASE_ENGINE_FILES** for tender-map:
+**BASE_ENGINE_FILES:**
 ```python
 BASE_ENGINE_FILES = ["index.html", "mobile.html", "qr.html"]
 ```
@@ -232,38 +231,28 @@ uv run --script recipes/sync-base-engine-to-tender-branches.py --apply --push
 
 ### Task 4.1 — Switch to multi-tender branch architecture `[ ]`
 
-**What:** Adopt FNB's multi-branch deployment pattern. Each tender lives on `tender/<slug>`, auto-deployed by Cloudflare Pages from the shared project.
-
-**Current state:** Single project `arh-tender-map`, deployed from `main`. Works for one tender. Does not scale.
+**What:** Adopt FNB's multi-branch deployment pattern. Each tender lives on `tender/<slug>`, auto-deployed by Cloudflare Pages.
 
 **Target state:**
 ```
-main                     → base engine (no config.js adapter)
-tender/hospital-serdang  → config.js for PN0000023850
-tender/next-project      → config.js for next tender
-...
+main                       → base engine (blank template config.js)
+tender/hospital-serdang    → config.js for PN0000023850
+tender/next-project        → config.js for next tender
 ```
 
 **Cloudflare Pages setup (one-time):**
-- Project name: `tender-map` (shared across all tenders)
-- Connect to GitHub repo
-- Branch: `tender/*` (wildcard)
-- Build command: none
-- Build output: `/`
-
-**Deployment URL pattern:**
-- `tender-hospital-serdang-tender-map.pages.dev` (auto from CF Pages)
-- Or custom domain per tender
+- Project name: `tender-map` (shared across all tenders, do not change per project)
+- Branch pattern: `tender/*` (wildcard)
+- Build command: none; Build output: `/`
 
 **Steps:**
-1. Create `tender/hospital-serdang` branch from current `main`
-2. Move current `config.js` to that branch; strip any hardcoded values from `main`'s `config.js` (make it a blank template)
+1. Create `tender/hospital-serdang` from current `main` (or from `claude/tender-map-arch-review-igsDF`)
+2. Strip hardcoded values from `main`'s `config.js` (blank template)
 3. Update `wrangler.jsonc` name to `tender-map`
-4. Connect Cloudflare Pages project to the repo with wildcard branch rule
+4. Connect CF Pages to repo with wildcard branch rule
 5. Update `AGENTS.md` deployment section
-6. Add `AGENTS.md` note: `main` branch's `config.js` is a blank template, not a deployment
 
-**Files changed:** `wrangler.jsonc` (name change), `config.js` on `main` (blank template), `AGENTS.md` (deployment section)
+**Files changed:** `wrangler.jsonc`, `config.js` on `main`, `AGENTS.md`
 
 ---
 
@@ -271,11 +260,7 @@ tender/next-project      → config.js for next tender
 
 **What:** Short-link Worker for tender QR codes. Mirrors `arh-fnb-webapp/shortener/`.
 
-**Why:** QR codes printed on physical tender documents need a stable short URL. A Cloudflare Worker with KV provides `links.arh-homelab.workers.dev/hospital-serdang` → long deployment URL.
-
 **When to implement:** When there are 2+ active tender deployments with printed QR codes.
-
-**Modelled on:** `arh-fnb-webapp/shortener/worker.js` + `shortener/wrangler.jsonc`
 
 **Files to add:** `shortener/worker.js`, `shortener/wrangler.jsonc`
 
@@ -283,11 +268,9 @@ tender/next-project      → config.js for next tender
 
 ## Execution order for a single agent session
 
-If executing sequentially in one session:
-
 ```
-1. Tasks 1.1–1.3: already done on this branch (files committed)
-2. Task 2.1: consolidate config.js — do this before writing the provisioner
+1. Tasks 1.1–1.3: already done on this branch
+2. Task 2.1: consolidate config.js — do before writing provisioner
 3. Task 2.2: write schema after 2.1 so field names match
 4. Task 3.1: write ubap-check.py — needs recipes/ and index.yml
 5. Task 3.2: write provisioner — depends on schema (2.2) and config.js structure (2.1)
@@ -300,8 +283,8 @@ If executing sequentially in one session:
 
 - Always read `AGENTS.md` first.
 - For any Task 2.x or 3.x: read `config.js` fully before editing.
-- For Task 2.1 (config consolidation): read ALL coordinate reads in `index.html` and `mobile.html` before changing JUNC format — the HTML has readers that depend on array index positions.
+- For Task 2.1: read ALL JUNC references in `index.html` before changing coordinate format — HTML destructures as `[ch,num,name,desc,lon,lat]`, LON at index 4.
 - For Task 3.x recipes: use `uv run --script` pattern only; see `arh-fnb-webapp/recipes/ubap-check.py` as the canonical example.
-- Run `node --check config.js` after any config.js change to verify JS syntax.
-- No build step. No npm. No package.json. Browser-smoke the HTML files after changes.
-- Commit and push automatically after completing a task. No manual push needed.
+- Run `node --check config.js` after any config.js change.
+- No build step. No npm. No package.json. Browser-smoke HTML files after changes.
+- Commit and push automatically after completing a task.
