@@ -37,12 +37,6 @@ const APP_CONFIG = {
     "url": "https://www.airselangor.com",
     "logo": "https://iconape.com/wp-content/png_logo_vector/air-selangor-logo.png"
   },
-  "client2": {
-    "name": "JABATAN KERJA RAYA",
-    "subname": "MALAYSIA",
-    "logo": "assets/logos/jkr-logo.png",
-    "url": "https://www.jkr.gov.my"
-  },
   "consultant": {
     "name": "DPI Konsult Sdn Bhd",
     "subname": "Perunding Sivil & Struktur",
