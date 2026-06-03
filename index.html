@@ -179,6 +179,13 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--tx);background:
   display:flex;align-items:center;gap:5px;user-select:none;}
 .dwg-pin:hover{background:#0073a8;border-color:rgba(255,255,255,0.5);}
 .dwg-pin-dot{width:7px;height:7px;border-radius:50%;background:#F5A623;flex-shrink:0;}
+.photo-pin{background:#1a1a2e;color:#fff;border-radius:6px;padding:4px 8px;
+  font-size:9px;font-weight:700;font-family:'Inter',sans-serif;
+  border:1.5px solid rgba(100,200,255,0.35);cursor:pointer;pointer-events:all;
+  white-space:nowrap;box-shadow:0 2px 10px rgba(0,0,0,0.4);
+  display:flex;align-items:center;gap:5px;user-select:none;}
+.photo-pin:hover{background:#0073a8;border-color:rgba(100,200,255,0.7);}
+.photo-pin-icon{font-size:11px;flex-shrink:0;}
 </style>
 </head>
 <body>
@@ -310,7 +317,7 @@ const lg=L.layerGroup().addTo(map);
   }
 });
 
-/* Chainage markers every 100m */
+/* Chainage markers every 100m — subtle tick + 60% transparent text */
 const totalCh=2198.85;
 for(let ch=0;ch<=totalCh;ch+=100){
   const pt=interp(ch);if(!pt)continue;
@@ -319,8 +326,9 @@ for(let ch=0;ch<=totalCh;ch+=100){
   const label=isRouteB?'B'+displayCh:'A'+displayCh;
   const col=isRouteB?'#F5A623':'#0099D4';
   L.marker(pt,{icon:L.divIcon({className:'',html:
-    '<div style="font-size:8px;font-weight:700;color:'+col+';background:rgba(255,255,255,0.82);padding:1px 4px;border-radius:3px;border:1px solid '+col+';white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.12);">'+label+'</div>',
-    iconSize:[null,null],iconAnchor:[14,8]})}).addTo(lg);
+    '<div style="position:relative;width:1px;height:10px;background:'+col+';opacity:0.5;margin:0 auto;"></div>'+
+    '<div style="font-size:8px;font-weight:600;color:'+col+';opacity:0.45;text-align:center;white-space:nowrap;margin-top:1px;">'+label+'</div>',
+    iconSize:[32,22],iconAnchor:[16,5]})}).addTo(lg);
 }
 
 const jClr={A:'#22aa66',B:'#e07020',C:'#e07020',D:'#cc22aa',E:'#0099D4',F:'#ff33cc',G:'#F5A623'};
@@ -516,14 +524,14 @@ document.addEventListener('keydown',function(e){
   if(e.key==='Escape')document.getElementById('dwg-lb').classList.remove('open');
 });
 document.addEventListener('click',function(e){
-  const el=e.target.closest('.dwg-pin');
+  const el=e.target.closest('.dwg-pin, .photo-pin');
   if(el)openDwg(el.dataset.img,el.dataset.title,el.dataset.ch);
 });
 (C.dwgSnippets||[]).forEach(d=>{
   const safeTitle=d.title.replace(/"/g,'&quot;');
   const safeCh=(d.ch||'').replace(/"/g,'&quot;');
   const icon=L.divIcon({className:'',
-    html:`<div class="dwg-pin" data-img="${d.img}" data-title="${safeTitle}" data-ch="${safeCh}"><div class="dwg-pin-dot"></div>📐 ${d.label}</div>`,
+    html:`<div class="photo-pin" data-img="${d.img}" data-title="${safeTitle}" data-ch="${safeCh}"><span class="photo-pin-icon">📷</span> ${d.label}</div>`,
     iconSize:[null,null],iconAnchor:[0,14]});
   L.marker([d.lat,d.lon],{icon,interactive:false,keyboard:false}).addTo(lg);
 });
