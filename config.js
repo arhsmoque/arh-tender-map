@@ -23,7 +23,7 @@ const APP_CONFIG = {
 
   "project": {
     "title": "Proposed Pipe Laying and Improvement Works for Hospital Serdang and Hospital Sultan Idris Shah (Blok Pusat Kardiologi)",
-    "subtitle": "Route 1: IOI Conezion → HSIS (400mm MSCL, ~1.49km) · Route 2: HSIS → HVet (200mm MSCL/HDPE, ~0.59km)",
+    "subtitle": "Route 1: IOI Conezion → HSIS (400mm MSCL, 1.452km) · Route 2: HSIS → HVet (200mm MSCL/250mm HDPE, 0.746km)",
     "tenderNumber": "PN0000023850",
     "programme": "Air Selangor Emergency and Ad-Hoc Water Improvement Program",
     "durationMonths": 24,
@@ -46,9 +46,9 @@ const APP_CONFIG = {
   },
 
   "stats": {
-    "lengthKm": 2.07,
-    "route1LengthKm": 1.49,
-    "route2LengthKm": 0.59,
+    "lengthKm": 2.20,
+    "route1LengthKm": 1.452,
+    "route2LengthKm": 0.746,
     "constructionDurationMonths": 24
   },
 
@@ -67,7 +67,7 @@ const APP_CONFIG = {
   "routes": [
     {
       "id": "r1",
-      "label": "Route 1 — 400mm MSCL (IOI Conezion → HSIS)",
+      "label": "Route 1 — 400mm MSCL (IOI Conezion → HSIS, 1.452km)",
       "color": "#0099D4",
       "glowColor": "rgba(0,153,212,0.14)",
       "kmzSegments": ["HOSP SDG PATH"],
@@ -89,7 +89,7 @@ const APP_CONFIG = {
     },
     {
       "id": "r2",
-      "label": "Route 2 — 200mm MSCL/HDPE (HSIS → Hospital Veterinar)",
+      "label": "Route 2 — 200mm MSCL / 250mm HDPE (HSIS → Hospital Veterinar, 0.746km)",
       "color": "#F5A623",
       "glowColor": "rgba(245,166,35,0.14)",
       "kmzSegments": ["MS200 VET"],
@@ -106,13 +106,13 @@ const APP_CONFIG = {
   "methodSegments": [
     {"fromCh":0,    "toCh":15,   "color":"#0099D4","method":"opentrench"},
     {"fromCh":15,   "toCh":60,   "color":"#ff8833","method":"pipejacking"},
-    {"fromCh":60,   "toCh":824,  "color":"#0099D4","method":"opentrench"},
-    {"fromCh":824,  "toCh":975,  "color":"#ff8833","method":"pipejacking"},
-    {"fromCh":975,  "toCh":1375, "color":"#0099D4","method":"opentrench"},
-    {"fromCh":1375, "toCh":1425, "color":"#ff8833","method":"pipejacking"},
-    {"fromCh":1425, "toCh":1486, "color":"#0099D4","method":"opentrench"},
-    {"fromCh":1486, "toCh":1813, "color":"#F5A623","method":"opentrench"},
-    {"fromCh":1813, "toCh":1958, "color":"#ff33cc","method":"hdd"},
+    {"fromCh":60,   "toCh":819,  "color":"#0099D4","method":"opentrench"},
+    {"fromCh":819,  "toCh":972,  "color":"#ff8833","method":"pipejacking"},
+    {"fromCh":972,  "toCh":1422, "color":"#0099D4","method":"opentrench"},
+    {"fromCh":1422, "toCh":1463, "color":"#ff8833","method":"pipejacking"},
+    {"fromCh":1463, "toCh":1486, "color":"#0099D4","method":"opentrench"},
+    {"fromCh":1486, "toCh":1873, "color":"#F5A623","method":"opentrench"},
+    {"fromCh":1873, "toCh":1958, "color":"#ff33cc","method":"hdd"},
     {"fromCh":1958, "toCh":2073, "color":"#F5A623","method":"opentrench"}
   ],
 
@@ -120,7 +120,7 @@ const APP_CONFIG = {
 
   "scope": [
     {"color": "#0099D4", "text": "Route 1 — Install 400mm ND MSCL Pipe (IOI Conezion → Hospital Serdang, ~1.49km)"},
-    {"color": "#F5A623", "text": "Route 2 — Install 200mm ND MSCL/HDPE Pipe (HSIS → Hospital Veterinar, ~0.59km)"},
+    {"color": "#F5A623", "text": "Route 2 — Install 200mm ND MSCL / 250mm HDPE Pipe (HSIS → Hospital Veterinar, 0.746km)"},
     {"color": "#ff8833", "text": "Twin Pipe Jacking beneath SKVE (~150m alignment, 300m pipe)"},
     {"color": "#ff33cc", "text": "Horizontal Directional Drilling (HDD) — FT 345 Utility Corridor"},
     {"color": "#aaff00", "text": "Supply & install valves (butterfly, sluice, air, scour) + valve chamber"},
@@ -134,7 +134,7 @@ const APP_CONFIG = {
   "designStandards": [
     {"parameter": "Design Standard",           "unit": "—",    "value": "SYABAS SS 2007 / JKR SS 2014"},
     {"parameter": "Route 1 Pipe Diameter",     "unit": "mm ND","value": "400 (MSCL)"},
-    {"parameter": "Route 2 Pipe Diameter",     "unit": "mm ND","value": "200 (MSCL / HDPE)"},
+    {"parameter": "Route 2 Pipe Diameter",     "unit": "mm ND","value": "200 (MSCL) / 250 (HDPE — HDD)"},
     {"parameter": "Min. Pipe Cover",           "unit": "m",    "value": "1.2"},
     {"parameter": "HDD Min. Depth",            "unit": "m",    "value": "3.0"},
     {"parameter": "HDD Entry / Exit Angle",    "unit": "°",    "value": "10 – 18"},
@@ -159,8 +159,8 @@ const APP_CONFIG = {
       "shortLabel": "HDD",
       "fullLabel": "Horizontal Directional Drilling (HDD)",
       "color": "#ff33cc",
-      "chainage": "Route 2 · FT 345",
-      "detail": "HDD beneath the existing utility corridor along FT 345. Product pipe: HDPE PN10 200mm. Minimum depth: 3.0m. Entry angle 10°–18°, exit angle 10°–18°. Executed from a side-table road."
+      "chainage": "Route 2 · CH 492–600 (FT 345)",
+      "detail": "HDD beneath the existing utility corridor along FT 345. Product pipe: 250mm Ø HDPE PN10 (108m bore). Minimum depth: 3.0m. Entry angle 10°–18°, exit angle 10°–18°. Executed from a side-table road. Transition chamber at CH 492 and sluice valve at CH 600."
     },
     {
       "id": "hottap",
