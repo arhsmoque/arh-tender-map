@@ -22,7 +22,13 @@ const APP_CONFIG = {
   "project": {
     "title": "Proposed Pipe Laying and Improvement Works for Hospital Serdang and Hospital Sultan Idris Shah (Cardiology Block)",
     "subtitle": "New dedicated water supply pipeline · 2.20 km · 3 hospitals served",
-    "designStandard": "SYABAS Standard Specification 2007 / JKR Standard Specification 2014"
+    "designStandard": "SYABAS Standard Specification 2007 / JKR Standard Specification 2014",
+    "tenderNumber": "—",
+    "indicativePrice": "—",
+    "durationMonths": "—",
+    "cidbClass": "—",
+    "procurementMethod": "—",
+    "documentPrice": "—"
   },
 
   "client": {
@@ -38,6 +44,26 @@ const APP_CONFIG = {
     "logo": "assets/logos/consultant-logo.png"
   },
 
+  "alerts": [
+    {
+      "title": "Dual-Source Water Resilience",
+      "body": "On completion, this project establishes a contingency-fed water grid. The new IOI City Reservoir pipeline and the existing Semenyih Balancing Reservoir supply operate as mutually redundant sources — if either is disrupted, the alternate route sustains continuous supply to all three hospitals."
+    }
+  ],
+
+  "scope": [
+    {"color":"#0099D4","text":"Supply and lay 400mm Ø MS pipeline — Route A, IOI Conezion to Hospital Serdang (1,452.45m)"},
+    {"color":"#F5A623","text":"Supply and lay 200mm Ø MS pipeline — Route B, HSIS to Hospital Veterinar UPM (746.40m)"},
+    {"color":"#e06020","text":"Twin pipe jacking beneath SKVE at CH 800–950 (150m alignment · 300m pipe installed)"},
+    {"color":"#e06020","text":"Single pipe jacking at CH 15–60 (45m) and CH 1390–1430 (40m)"},
+    {"color":"#cc22aa","text":"HDD under FT 345 utility corridor, Route B CH 492–600 (108m bore · 250mm Ø HDPE PN10)"},
+    {"color":"#22aa66","text":"Three live hot tappings: IOI 900mm Ø MS source, HSIS bulk meter off-take, HVet 200mm Ø MS target"},
+    {"color":"#0099D4","text":"Electromagnetic flowmeter, bulk meter, RTU panel, instrument panel and SCADA at HSIS off-take"},
+    {"color":"#0099D4","text":"Road reinstatement via mill-and-pave to JKR Federal and MPS Sepang standards"}
+  ],
+
+  "contacts": [],
+
   "dates": {
     "advertisement": "—",
     "download":      "—",
@@ -50,9 +76,14 @@ const APP_CONFIG = {
 
   "stats": {
     "totalLengthKm": 2.20,
+    "lengthKm": 2.20,
     "route1LengthM": 1452,
     "route2LengthM": 746,
-    "hospitalsServed": 3
+    "hospitalsServed": 3,
+    "constructionDurationMonths": "—",
+    "landAcquisitionLots": "—",
+    "landAreaEkar": "—",
+    "landAreaSqm": "—"
   },
 
   "rationale": {
