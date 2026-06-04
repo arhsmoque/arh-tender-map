@@ -38,6 +38,16 @@ const APP_CONFIG = {
     "logo": "assets/logos/consultant-logo.png"
   },
 
+  "dates": {
+    "advertisement": "—",
+    "download":      "—",
+    "briefing":      "—",
+    "closing":       "—",
+    "active":        null
+  },
+
+  "photos": [],
+
   "stats": {
     "totalLengthKm": 2.20,
     "route1LengthM": 1452,
