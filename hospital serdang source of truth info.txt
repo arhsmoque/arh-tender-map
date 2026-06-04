@@ -1,0 +1,174 @@
+2.0	BACKGROUND
+
+2.1	Project Context & Authority Mandate
+
+This project is a critical intervention under Air Selangor's Emergency and Ad-Hoc Water Improvement Program, initiated in response to directives from state and regulatory authorities. Its objective is to secure a resilient water supply for essential national healthcare infrastructure.
+
+2.2	Facilities in Focus
+
+The project primarily serves Hospital Serdang, Malaysia's National Cardiology Referral Centre, and the new Cardiology Block at Hospital Sultan Idris Shah. Following a scope enhancement, the final design beneficially extends supply to Hospital Veterinar. These facilities represent a critical care nexus with a combined aggregate demand underpinning the design.
+ 
+2.3	Issue Identification and Root Cause Analysis
+
+Air Selangor's investigation, conducted in collaboration with hospital management, diagnosed the persistent low-pressure issue at Hospital Sultan Idris Shah's Cardiology Block. The technical assessment revealed a fundamental design discrepancy originating from the project's planning phase.
+ 
+The original suction tank's Top Water Level (TWL) was designed at 69.95m, based on bulk meter pressure readings of 79m ODL recorded in March 2020. Air Selangor's analysis concluded that this data reflected the abnormally low water usage characteristic of the strictest Movement Control Order (MCO) period. Under normal operational peak conditions, the actual supply pressure falls to approximately 69m ODL.
+ 
+This investigation revealed the core problem: the design TWL and the real-world operating pressure are equal, eliminating the hydraulic head required for effective gravity-fed supply and resulting in the documented low-pressure conditions.
+  
+
+2.4	Solution Strategy & Consultant Appointment
+ 
+Concluding that temporary mitigation was insufficient, Air Selangor defined the strategic solution: a new dedicated pipeline from the IOI Resort City Reservoir to establish a redundant supply. The initial scope involved a 1.45 km, 600 mm diameter pipeline to Hospital Serdang's bulk meter.
+ 
+To materialize this solution, Air Selangor issued a Purchase Order to appoint DPI Konsult Sdn Bhd as the Engineering Consultant for detailed design and construction supervision services, based on this defined scope.
+ 
+2.5	Final Adopted Configuration
+ 
+The final adopted scope comprises a new pipeline that resolves the pressure deficit for Hospitals Serdang and Sultan Idris Shah and has been strategically extended to supply Hospital Veterinar. This configuration achieves the primary objective of dual-source resilience for the cardiology hospitals while delivering added value by strengthening the local distribution network.
+
+2.6	Design Development & Value-Engineering Chronology
+ 
+The project scope was refined through a rigorous design review and value-    engineering process.
+ 
+PED & Initial DED Review:
+
+·	DPI Konsult Sdn Bhd validated that the initial 600mm pipeline design satisfied the primary operational criteria of residual pressure and headloss for the target 4 MLD demand.
+ 
+·	Their review identified that the resulting flow velocity would be below SPAN specifications, outlining a potential long-term sedimentation risk. The consultant clarified that this was a minor, manageable concern due to the project's non-flat terrain, where consistent downhill gradients promote natural scouring. They recommended the installation of scour valves at low points for periodic flushing as a reversible operational control.
+  
+
+·	Crucially, the consultant highlighted a significant margin for diameter optimization. They demonstrated that downsizing the main pipeline would increase flow velocity to achieve full compliance and could realize cost savings within the existing budget, all while maintaining the required pressure and headloss performance.
+
+Scope Enhancement Directive:
+
+Recognizing an opportunity to amplify the project's strategic benefit and leveraging the consultant's finding on diameter optimization, Air Selangor issued a directive to extend the pipeline route approximately 800 meters beyond the original endpoint to supply Hospital Veterinar. This decision targeted the broader goal of enhanced water grid resilience.
+ 
+ 
+Final Design Scope:
+ 
+·	The main pipeline diameter was downsized from 600mm to 400mm.
+ 
+·	An extension comprising a 200mm diameter pipeline was added to connect to Hospital Veterinar.
+ 
+·	The original supply from the Semenyih Balancing Reservoir is retained. The completed project will establish a contingency-fed water grid, where the new pipeline and the original line serve as redundant sources.
+ 
+·	In the event of a disruption to either source, the alternate route will sustain continuous water supply to these critical healthcare facilities, ensuring long-term water security.
+ 
+ 
+
+
+
+The proposed pipe laying and improvement works for Hospital Serdang and Hospital Sultan Idris Shah involve the installation of new water supply mains along two principal corridors: 
+ 
+(i) IOI Conezion to Hospital Serdang
+(ii) Hospital Serdang to Hospital Veterinar
+ 
+Route Description	Length	Main Pipe Size
+IOI Conezion → Hospital Serdang	1,452.45 m	400mm Ø MS
+Hospital Serdang → Hospital Veterinar	746.40 m	200mm Ø MS / 250mm Ø HDPE
+Combined Infrastructure	2,198.85 m	 
+ 
+The works encompass pipe jacking under major highways (SKVE), Horizontal Directional Drilling (HDD) under restricted zones, open-trench laying under paved roads and side tables, and the installation of associated appurtenances including isolation valves, scour valves, air valves, and flow metering device.
+
+Route: IOI Conezion to Hospital Serdang (HSIS)
+ 
+The alignment commences near IOI Conezion with an interconnection to the existing IOI City Reservoir 900mm Ø MS water main, traversing northeast through Lebuh IRC, crossing beneath the South Klang Valley Expressway (SKVE) via twin pipe jacking, and continuing along FT 345 (Jalan Hospital Serdang) before terminating at the Hospital Serdang off-take to the bulk meter.
+ 
+Route: Hospital Serdang to Hospital Veterinar (HVet)
+ 
+The route downsizes from Hospital Serdang 400mm pipeline, proceeding westward along FT 345 roadside corridor (side table), transitioning via HDD under existing utilities, and terminating at the Hospital Veterinar existing 200mm dia. water supply via hot tapping.
+
+
+3.2	Open Cut Sections
+Method	Pipe Specification	Chainage Range	Length
+Under Paved	400mm Ø MS Pipe	CH 0.00 – CH 15.00
+CH 60.00 – CH 800.00
+CH 950.00 – CH 1390.00
+CH 1430.00 – CH 1452.45	1,247.45 m
+Under Paved	200mm Ø MS Pipe	CH 600.00 – CH 746.40	146.40 m
+Side Table	200mm Ø MS Pipe 	CH 0.00 – CH 492.00	492.00 m
+ 
+3.3	Trenchless Laying Sections
+Chainage	Method	Length	Pipe Configuration
+CH 15.00 – CH 60.00	Single Pipe Jacking	45.00 m	400mm Ø MS Pipe within 600mm Ø RC Jacking Sleeve
+CH 1390.00 – CH 1430.00	Single Pipe Jacking	40.00 m	400mm Ø MS Pipe within 600mm Ø RC Jacking Sleeve
+CH 800.00 – CH 950.00	Twin Pipe Jacking	150.00 m	Two parallel lines of 400mm Ø MS Pipe, each in 600mm Ø RC Sleeve
+CH 492.00 – CH 600.00	HDD	108.00 m	250mm Ø HDPE Pipe
+ 
+Note: Twin Pipe Jacking represents 150m of construction alignment but installs 300m of actual pipe (two parallel lines).
+
+
+3.4	Valve Schedule and Appurtenances
+400mm MS Pipeline: IOI Conezion – HSIS
+Chainage	Type
+CH 0.00	Flow Meter (FM)
+CH 0.00	Scour Valve (SV)
+CH 15.00	Sluice Valve (SL)
+CH 60.00	Scour Valve (SV)
+~CH 75.00	Air Valve (AV)
+~CH 225.00	Air Valve (AV)
+~CH 350.00	Sluice Valve (SL)
+CH 800.00	Sluice Valves (x2)
+CH 950.00	Scour Valves (x2)
+~CH 1050.00	Air Valve (AV)
+CH 1390.00	Sluice Valve (SL)
+CH 1430.00	Scour Valve (SV)
+CH 1452.45	End Cap
+ 
+200mm MS Pipeline: HSIS – HVet
+Chainage	Type
+CH 0.00	Sluice Valve (SL)
+~CH 50.00	Scour Valve (SV)
+~CH 200.00	Air Valve (AV)
+CH 350.00	Sluice Valve (SL)
+CH 492.00	Transition Chamber
+CH 600.00	Sluice Valve (SL)
+~CH 725.00	Scour Valve (SV)
+CH 746.40	End Cap
+ 
+
+ 
+  
+
+3.5	Interconnection Points
+Chainage	Existing Pipe	Proposed Pipe	Method
+0	900mm Ø MS	400mm Ø MS	Hot Tapping
+1452.45	400mm Ø MS	400mm Ø MS	Hot Tapping
+746.4	200mm Ø MS	200mm Ø MS 	Hot Tapping
+ 
+3.6	Summary of Lengths per Laying Method
+Laying Method	Linear Metres	Percentage of Total
+Under Paved (Open Cut)	1,363.85 m	62.00%
+Side Table (Open Cut)	492.00 m	22.00%
+Pipe Jacking (Single)	85.00 m	4.00%
+Pipe Jacking (Twin) 	150.00 m	7.00%
+HDD	108.00 m	5.00%
+Total	2,198.85 m	100.00%
+ 
+Note: Twin Pipe Jacking represents 150m of construction alignment but installs 300m of actual pipe (two parallel lines).
+  
+
+3.7	Major Scope of Works
+
+1)	To supply and lay 200mm and 400mm ND MSCL straight pipe and short piece
+2)	To supply and lay mild steel cement lined fittings and specials including tees, bends, mechanical coupling, slip welded joint, collar joint, etc
+3)	To supply and install all valves and construction of valve chamber, washout pipework’s, typical above ground pipe crossing, pilling, concrete support, anchor and thrust block etc in connection with the pipelines
+4)	To supply and install pipe overcrossing using pipe bridge method. To include all foundation works, piling, concrete thrust block, anchor block and associated works to complete the whole construction pipe bridge
+5)	To carry out temporary and reinstatement works within the same pipelaying works working day and to the satisfaction of C.A and local authority
+6)	To carry out hot tapping works a required
+7)	To carry out pipe jacking works as required
+8)	To supply and install valves, electromagnetic flowmeter and chamber
+9)	To supply portable valve actuator
+10)	To supply and install weatherproof flowmeter panel, RTU panel and Instrument Panel for electromagnetic flowmeter
+11)	To supply, install, test and commissioning of SCADA systems for electromagnetic flowmeter
+12)	To supply and install fencing and fence gate for electromagnetic compound 
+13)	To carry out required electrical works for complete installation and functioning of electromagnetic flowmeter and telemetry works
+14)	To supply, install, test and commissioning of earthing system for electromagnetic flowmeter panel, RTU panel, instrument panel and electromagnetic flowmeter
+15)	To liase with relevant Authorities and to obtain approval for implementation of the works
+16)	To carry out pressure and leakage test for the new pipework’s (including fittings and specials) according to each section of the road in Table 1
+17)	To carry out restoration and reinstate of road pavement via mill and pave method after completion of item p and to the satisfaction of relevant authorities. This work shall be carried out once item p is conducted 
+18)	To sterilize the new pipework’s after completion of item q
+19)	To commission the whole new pipework’s
+20)	To carry out any additional works not detailed here but necessary for the completion of the works as may be ordered by the Employer or the C.A in accordance with the terms of the Contract
+
