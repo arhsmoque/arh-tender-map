@@ -8,8 +8,8 @@
  * Client  : Pengurusan Air Selangor Sdn Bhd
  * Prepared: DPI Konsult Sdn Bhd
  *
- * Route A (300mm HDPE): IOI Conezion → Hospital Serdang (HSIS), 1,452.45m
- * Route B (300mm HDPE / 250mm HDPE HDD): HSIS → Hospital Veterinar, 746.40m
+ * Route A (400mm Ø MS): IOI Conezion → Hospital Serdang (HSIS), 1,452.45m
+ * Route B (200mm Ø MS / 250mm Ø HDPE HDD): HSIS → Hospital Veterinar, 746.40m
  * Total: 2,198.85m
  *
  * SOURCE OF TRUTH: Tender Drawing AIS/2024(T)HS/KB/01–09, October 2025
@@ -78,7 +78,7 @@ const APP_CONFIG = {
       "abbr": "HVet",
       "role": "Extended Beneficiary",
       "tag": "extended",
-      "detail": "Added to scope during design development to amplify the project's strategic benefit. Route B (300mm HDPE / 250mm HDPE HDD) proceeds westward from HSIS along FT 345, transitions via HDD under the utility corridor (CH 492–600, Route B), and connects to the existing supply at Hospital Veterinar via hot tapping at CH 746 (Route B).",
+      "detail": "Added to scope during design development to amplify the project's strategic benefit. Route B (200mm Ø MS / 250mm Ø HDPE HDD section) proceeds westward from HSIS along FT 345, transitions via HDD under the utility corridor (Route B CH 492–600), and connects to the existing 200mm Ø MS supply at Hospital Veterinar via hot tapping at Route B CH 746.",
       "lat": 2.976714, "lon": 101.711815,
       "marker": "D"
     }
@@ -94,66 +94,70 @@ const APP_CONFIG = {
   },
 
   /* ── Method segments — cumulative chainage, aligned to tender drawing SOT ── */
+  /* Route A = 400mm Ø MS  |  Route B open-cut = 200mm Ø MS  |  HDD = 250mm Ø HDPE   */
   "methodSegments": [
-    {"fromCh":0,      "toCh":15,     "color":"#0099D4","method":"opentrench"},
-    {"fromCh":15,     "toCh":60,     "color":"#ff8833","method":"pipejacking"},
-    {"fromCh":60,     "toCh":725,    "color":"#0066aa","method":"underpaved"},
-    {"fromCh":725,    "toCh":800,    "color":"#0099D4","method":"opentrench"},
-    {"fromCh":800,    "toCh":950,    "color":"#e06020","method":"twinpipejacking"},
-    {"fromCh":950,    "toCh":1000,   "color":"#0099D4","method":"opentrench"},
-    {"fromCh":1000,   "toCh":1300,   "color":"#0066aa","method":"underpaved"},
-    {"fromCh":1300,   "toCh":1390,   "color":"#0099D4","method":"opentrench"},
-    {"fromCh":1390,   "toCh":1430,   "color":"#ff8833","method":"pipejacking"},
-    {"fromCh":1430,   "toCh":1452.45,"color":"#0099D4","method":"opentrench"},
-    /* Route B starts at cumulative CH 1452.45 */
-    {"fromCh":1452.45,"toCh":1802.45,"color":"#44AEDD","method":"opentrench"},
-    {"fromCh":1802.45,"toCh":1944.45,"color":"#44AEDD","method":"sidetable"},
-    {"fromCh":1944.45,"toCh":2052.45,"color":"#ff33cc","method":"hdd"},
-    {"fromCh":2052.45,"toCh":2177.45,"color":"#0066aa","method":"underpaved"},
-    {"fromCh":2177.45,"toCh":2198.85,"color":"#44AEDD","method":"opentrench"}
+    /* Route A — 400mm Ø MS (blue = #0099D4, jacking = #e06020) */
+    {"fromCh":0,       "toCh":15,     "color":"#0099D4","method":"underpaved"},
+    {"fromCh":15,      "toCh":60,     "color":"#e06020","method":"pipejacking"},
+    {"fromCh":60,      "toCh":800,    "color":"#0099D4","method":"underpaved"},
+    {"fromCh":800,     "toCh":950,    "color":"#e06020","method":"twinpipejacking"},
+    {"fromCh":950,     "toCh":1390,   "color":"#0099D4","method":"underpaved"},
+    {"fromCh":1390,    "toCh":1430,   "color":"#e06020","method":"pipejacking"},
+    {"fromCh":1430,    "toCh":1452.45,"color":"#0099D4","method":"underpaved"},
+    /* Route B — 200mm Ø MS open-cut (amber = #F5A623) / 250mm Ø HDPE HDD (magenta = #cc22aa) */
+    {"fromCh":1452.45, "toCh":1944.45,"color":"#F5A623","method":"sidetable"},
+    {"fromCh":1944.45, "toCh":2052.45,"color":"#cc22aa","method":"hdd"},
+    {"fromCh":2052.45, "toCh":2198.85,"color":"#F5A623","method":"underpaved"}
   ],
 
   "methodBreakdown": [
-    {"method":"Under Paved Road",                "metres":1090.00, "pct":50, "color":"#0066aa"},
-    {"method":"Open Trench",                     "metres":623.85,  "pct":28, "color":"#0099D4"},
-    {"method":"Side Table / Unpaved",            "metres":142.00,  "pct":6,  "color":"#44AEDD"},
+    {"method":"Under Paved Road (Open Cut)",     "metres":1363.85, "pct":62, "color":"#0099D4"},
+    {"method":"Side Table (Open Cut)",           "metres":492.00,  "pct":22, "color":"#F5A623"},
     {"method":"Twin Pipe Jacking (SKVE)",        "metres":150.00,  "pct":7,  "color":"#e06020"},
-    {"method":"Horizontal Directional Drilling", "metres":108.00,  "pct":5,  "color":"#ff33cc"},
-    {"method":"Single Pipe Jacking",             "metres":85.00,   "pct":4,  "color":"#ff7733"}
+    {"method":"Horizontal Directional Drilling", "metres":108.00,  "pct":5,  "color":"#cc22aa"},
+    {"method":"Single Pipe Jacking",             "metres":85.00,   "pct":4,  "color":"#e06020"}
   ],
 
   "constructionMethods": [
     {
-      "id": "opentrench",
-      "label": "Open Trench",
-      "color": "#0099D4",
-      "chainage": "Route A: CH 0–15, 725–800, 950–1000, 1300–1390, 1430–1452 · Route B: CH 0–492, 725–746 (route-relative)",
-      "total": "1,592.45 m · 72% of total",
-      "detail": "Open-cut excavation along road carriageways, side tables, and unpaved verges. Minimum pipe cover 1.2m. Road reinstatement via mill-and-pave to JKR standard. Temporary reinstatement within the same working day. Coordination required with Majlis Perbandaran Sepang (Lebuh IRC) and JKR Federal (FT 345)."
-    },
-    {
       "id": "underpaved",
-      "label": "Under Paved Road",
-      "color": "#0066aa",
-      "chainage": "Route A: CH 60–725, 1000–1300 · Route B: CH 600–725 (route-relative)",
-      "total": "390 m · 18% of total",
-      "detail": "Trench excavation beneath existing paved road surfaces. Mill-and-pave reinstatement to local authority standard. Includes coordination with road maintenance teams and traffic management plans."
+      "label": "Under Paved Road (Open Cut)",
+      "color": "#0099D4",
+      "chainage": "Route A: CH 0–15, 60–800, 950–1390, 1430–1452 · Route B: CH 600–746 (route-relative)",
+      "total": "1,363.85 m · 62% of total",
+      "detail": "Open-cut trench excavation beneath existing paved road surfaces and carriageways. Pipe: 400mm Ø MS (Route A) and 200mm Ø MS (Route B, CH 600–746). Minimum pipe cover 1.2m. Road reinstatement via mill-and-pave to JKR standard. Temporary reinstatement within the same working day."
     },
     {
-      "id": "jacking",
-      "label": "Pipe Jacking",
-      "color": "#ff8833",
-      "chainage": "Route A: CH 15–60 (single) · CH 800–950 (twin) · CH 1390–1430 (single)",
-      "total": "235 m alignment · 300mm pipe installed",
-      "detail": "Single pipe jacking at two smaller crossings on Route A (CH 15–60 and CH 1390–1430). Twin pipe jacking beneath the South Klang Valley Expressway (SKVE) at CH 800–950: two parallel 300mm HDPE pipes in RC jacking sleeves. No SKVE traffic disruption expected — operations from jacking pits only. Continuous settlement monitoring throughout."
+      "id": "sidetable",
+      "label": "Side Table (Open Cut)",
+      "color": "#F5A623",
+      "chainage": "Route B: CH 0–492 (route-relative) · Along FT 345 roadside corridor",
+      "total": "492 m · 22% of total",
+      "detail": "Open-cut excavation within the paved side table / road verge along Jalan Hospital Serdang (FT 345). Pipe: 200mm Ø MS. Minimum pipe cover 1.2m. Reinstatement to JKR Federal standard. Coordination required with JKR Federal."
+    },
+    {
+      "id": "twinpipejacking",
+      "label": "Twin Pipe Jacking — SKVE Crossing",
+      "color": "#e06020",
+      "chainage": "Route A: CH 800–950",
+      "total": "150 m construction alignment · 300 m pipe installed (2 parallel lines)",
+      "detail": "Twin pipe jacking beneath the South Klang Valley Expressway (SKVE) at CH 800–950. Two parallel 400mm Ø MS Pipes, each installed within a 600mm Ø RC Jacking Sleeve. Operations conducted from jacking pits only — no disruption to SKVE traffic. Continuous settlement monitoring throughout. LLM permit required."
+    },
+    {
+      "id": "pipejacking",
+      "label": "Single Pipe Jacking",
+      "color": "#e06020",
+      "chainage": "Route A: CH 15–60 (45m) · CH 1390–1430 (40m)",
+      "total": "85 m alignment · 2 crossings",
+      "detail": "Single pipe jacking at two crossings on Route A. CH 15–60: 45m drive beneath road/services near IOI Conezion. CH 1390–1430: 40m drive approaching FT 345. Pipe: 400mm Ø MS within a 600mm Ø RC Jacking Sleeve. Jacking pit and receiving pit at each location."
     },
     {
       "id": "hdd",
       "label": "Horizontal Directional Drilling",
-      "color": "#ff33cc",
-      "chainage": "Route B · CH 492–600 (route-relative)",
+      "color": "#cc22aa",
+      "chainage": "Route B: CH 492–600 (route-relative)",
       "total": "108 m bore",
-      "detail": "HDD beneath the existing utility corridor along Jalan Hospital Serdang (FT 345). Product pipe: 250mm Ø HDPE PN10. Minimum bore depth: 3.0m. Entry and exit angle: 10°–18°. Transition chamber at CH 492 connects the MS and HDPE sections; sluice valve at CH 600."
+      "detail": "HDD beneath the existing utility corridor along Jalan Hospital Serdang (FT 345). Product pipe: 250mm Ø HDPE PN10. Minimum bore depth: 3.0m. Entry and exit angle: 10°–18°. Transition chamber at Route B CH 492 connects the 200mm Ø MS and 250mm Ø HDPE sections; sluice valve at CH 600."
     },
     {
       "id": "hottap",
@@ -161,14 +165,14 @@ const APP_CONFIG = {
       "color": "#22cc77",
       "chainage": "CH 0+000 (Route A start) · CH 1+452 (Route A end / bulk meter) · CH 746 (Route B end)",
       "total": "3 live connections",
-      "detail": "Live tapping on the existing 900mm pipe from IOI City Reservoir at CH 0+000 (Route A). Bulk meter and electromagnetic flowmeter installation at CH 1+452 (Route A end). Live tapping on the existing 150mm MS pipe at Hospital Veterinar at CH 746 (Route B end). Works fully coordinated with Air Selangor Operations. No interruption to hospital water supply during connection works."
+      "detail": "Live tapping on the existing 900mm Ø MS pipe from IOI City Reservoir at CH 0+000 (Route A start). Bulk meter and electromagnetic flowmeter installation at the Hospital Serdang off-take, CH 1+452 (Route A end / Route B start). Live hot tapping on the existing 200mm Ø MS pipe at Hospital Veterinar UPM, Route B CH 746 (Route B end). All works coordinated with Air Selangor Operations. No interruption to hospital water supply during connection works."
     }
   ],
 
   "designStandards": [
     {"parameter": "Design Standard",           "unit": "—",    "value": "SYABAS SS 2007 / JKR SS 2014"},
-    {"parameter": "Route A Pipe Diameter",     "unit": "mm Ø","value": "300 (HDPE) — main · 900 (MS) — hot tap"},
-    {"parameter": "Route B Pipe Diameter",     "unit": "mm Ø","value": "300 (HDPE) — main · 250 (HDPE) — HDD · 150 (MS) — hot tap"},
+    {"parameter": "Route A Pipe Diameter",     "unit": "mm Ø","value": "400 (MS) — main · 900 (MS) — hot tap source"},
+    {"parameter": "Route B Pipe Diameter",     "unit": "mm Ø","value": "200 (MS) — main · 250 (HDPE) — HDD section · 200 (MS) — hot tap target"},
     {"parameter": "Min. Pipe Cover",           "unit": "m",    "value": "1.2"},
     {"parameter": "HDD Min. Depth",            "unit": "m",    "value": "3.0"},
     {"parameter": "HDD Entry / Exit Angle",    "unit": "°",    "value": "10 – 18"},
@@ -316,6 +320,46 @@ const APP_CONFIG = {
     }
   ],
 
+  /* ── Route cards — consumed by scope panel in index.html / mobile.html ── */
+  "routes": [
+    {
+      "id": "A",
+      "label": "Route A",
+      "pipeSpec": "400mm Ø MS",
+      "from": "IOI Conezion",
+      "to": "Hospital Serdang (HSIS)",
+      "color": "#0099D4",
+      "rows": [
+        {"k": "Length",            "v": "1,452.45 m"},
+        {"k": "Pipe Specification","v": "400mm Ø MS (main) · 900mm Ø MS (hot tap source)"},
+        {"k": "Key Method",        "v": "Under Paved Road + Twin Pipe Jacking (SKVE)"},
+        {"k": "End Point",         "v": "Hospital Serdang Bulk Meter · Electromagnetic Flowmeter · Hot Tap"}
+      ]
+    },
+    {
+      "id": "B",
+      "label": "Route B",
+      "pipeSpec": "200mm Ø MS / 250mm Ø HDPE",
+      "from": "Hospital Serdang (HSIS)",
+      "to": "Hospital Veterinar UPM",
+      "color": "#F5A623",
+      "rows": [
+        {"k": "Length",            "v": "746.40 m"},
+        {"k": "Pipe Specification","v": "200mm Ø MS (main) · 250mm Ø HDPE (HDD section) · 200mm Ø MS (hot tap target)"},
+        {"k": "Key Method",        "v": "Side Table + HDD (FT 345 utility corridor, 108m)"},
+        {"k": "End Point",         "v": "Hospital Veterinar UPM — Hot Tap on Existing 200mm Ø MS"}
+      ]
+    }
+  ],
+
+  /* ── Map legend — consumed by index.html / mobile.html ── */
+  "legend": [
+    {"color": "#0099D4", "label": "Route A — 400mm Ø MS",            "sub": "IOI Conezion → Hospital Serdang · 1,452m"},
+    {"color": "#F5A623", "label": "Route B — 200mm Ø MS / 250mm HDPE","sub": "Hospital Serdang → Hospital Veterinar · 746m"},
+    {"color": "#e06020", "label": "Pipe Jacking",                     "sub": "SKVE twin crossing + 2 single crossings · 400mm Ø MS in RC sleeves"},
+    {"color": "#cc22aa", "label": "Horizontal Directional Drilling",   "sub": "108m bore · FT 345 · 250mm Ø HDPE PN10"}
+  ],
+
   "geo": {
     "poly": [
       [2.966930, 101.721100],
@@ -375,13 +419,13 @@ const APP_CONFIG = {
        "CH 0+000 (Route A). Live hot tap on the existing 900mm Ø MS pipe from IOI City Reservoir. New redundant water supply path begins here.",
        101.721050, 2.966963],
       [37,     "B", "Pipe Jacking — Route A Start",
-       "CH 0+015 – 0+060 (Route A). Single pipe jacking. 300mm concrete base, pipe sleeve, jacking pit and receiving pit.",
+       "CH 0+015 – 0+060 (Route A). Single pipe jacking, 45m drive. Pipe: 400mm Ø MS within 600mm Ø RC Jacking Sleeve. Jacking pit at CH 15, receiving pit at CH 60.",
        101.721400, 2.967100],
       [875,    "C", "Twin Pipe Jacking — SKVE Crossing",
-       "CH 0+800 – 0+950 (Route A). Twin pipe jacking beneath the South Klang Valley Expressway (SKVE). Two parallel 300mm Ø HDPE pipes in RC sleeves. No SKVE traffic disruption expected.",
+       "CH 0+800 – 0+950 (Route A). Twin pipe jacking beneath the South Klang Valley Expressway (SKVE). Two parallel 400mm Ø MS Pipes, each within a 600mm Ø RC Jacking Sleeve. 150m construction drive · 300m total pipe installed. No SKVE traffic disruption — pit operations only. LLM permit required.",
        101.722521, 2.974198],
       [1410,   "D", "Pipe Jacking — HSIS Approach",
-       "CH 1+390 – 1+430 (Route A). Single pipe jacking near FT 345. Match line at CH 1+400.",
+       "CH 1+390 – 1+430 (Route A). Single pipe jacking, 40m drive. Pipe: 400mm Ø MS within 600mm Ø RC Jacking Sleeve. Final crossing before the Hospital Serdang off-take.",
        101.718200, 2.975300],
       [1452,   "E", "Hospital Serdang — Bulk Meter Off-Take",
        "CH 1+452 (Route A End / Route B Start). Bulk meter, electromagnetic flowmeter, and hot tap connection serving HSIS.",
@@ -390,28 +434,28 @@ const APP_CONFIG = {
        "CH 1+944 – 2+052 cumulative (Route B CH 492–600). HDD beneath FT 345. Product pipe: 250mm Ø HDPE PN10, 108m bore. Min. depth 3.0m.",
        101.714811, 2.975608],
       [2198,   "G", "Hospital Veterinar — Route B End",
-       "CH 2+198 cumulative (Route B CH 746). Hot tap on the existing 150mm Ø MS pipe to Hospital Veterinar UPM. Final connection point.",
+       "CH 2+198 cumulative (Route B CH 0+746). Hot tap on the existing 200mm Ø MS pipe at Hospital Veterinar UPM. 200mm Ø MS proposed pipe connects here. Final connection point.",
        101.711815, 2.976714]
     ],
 
     "prop": [
       [37,     "Single Pipe Jacking — Route A Start",
-       "CH 0+015 – 0+060. 45m drive. 300mm Ø HDPE in RC sleeve.",
+       "CH 0+015 – 0+060. 45m drive. 400mm Ø MS Pipe in 600mm Ø RC Jacking Sleeve.",
        "jacking"],
       [875,    "Twin Pipe Jacking — SKVE Crossing",
-       "CH 0+800 – 0+950. 150m twin drive. Two parallel 300mm Ø HDPE pipes in RC sleeves. Settlement monitoring required.",
+       "CH 0+800 – 0+950. 150m twin drive (300m pipe installed). Two parallel 400mm Ø MS Pipes in 600mm Ø RC Jacking Sleeves. Settlement monitoring required.",
        "jacking"],
       [1410,   "Single Pipe Jacking — HSIS Approach",
-       "CH 1+390 – 1+430. 40m drive. 300mm Ø HDPE in RC sleeve.",
+       "CH 1+390 – 1+430. 40m drive. 400mm Ø MS Pipe in 600mm Ø RC Jacking Sleeve.",
        "jacking"],
       [1998,   "HDD Crossing — FT 345 Utility Corridor",
-       "Route B CH 492–600. 108m bore. 250mm Ø HDPE PN10. Entry/exit angles 10°–18°. Transition chamber at CH 492.",
+       "Route B CH 492–600. 108m bore. 250mm Ø HDPE PN10. Entry/exit angles 10°–18°. Transition chamber at Route B CH 492.",
        "hdd"],
       [1452,   "Electromagnetic Flowmeter + Bulk Meter",
-       "Electromagnetic flowmeter and bulk meter installed at the Hospital Serdang off-take (CH 1+452, Route A End).",
+       "Electromagnetic flowmeter and bulk meter installed at the Hospital Serdang off-take (CH 1+452, Route A End / Route B Start).",
        "flowmeter"],
       [2177,   "Hot Tap — Hospital Veterinar",
-       "Live hot tap on existing 150mm Ø MS pipe at Hospital Veterinar UPM (Route B End).",
+       "Live hot tap on existing 200mm Ø MS pipe at Hospital Veterinar UPM (Route B End, CH 0+746).",
        "hottap"]
     ],
 

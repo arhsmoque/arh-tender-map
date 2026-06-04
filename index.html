@@ -317,18 +317,27 @@ const lg=L.layerGroup().addTo(map);
   }
 });
 
-/* Chainage markers every 100m — subtle tick + 60% transparent text */
+/* Chainage markers — major tick + label every 500m, minor tick every 100m */
 const totalCh=2198.85;
 for(let ch=0;ch<=totalCh;ch+=100){
   const pt=interp(ch);if(!pt)continue;
   const isRouteB=ch>=1452.45;
   const displayCh=Math.round(isRouteB?ch-1452.45:ch);
-  const label=isRouteB?'B'+displayCh:'A'+displayCh;
   const col=isRouteB?'#F5A623':'#0099D4';
-  L.marker(pt,{icon:L.divIcon({className:'',html:
-    '<div style="position:relative;width:1px;height:10px;background:'+col+';opacity:0.5;margin:0 auto;"></div>'+
-    '<div style="font-size:8px;font-weight:600;color:'+col+';opacity:0.45;text-align:center;white-space:nowrap;margin-top:1px;">'+label+'</div>',
-    iconSize:[32,22],iconAnchor:[16,5]})}).addTo(lg);
+  /* major = within 60m of a 500m boundary on the route-relative chainage */
+  const isMajor=(displayCh%500<60)||(displayCh===0);
+  const kmStr=(displayCh/1000).toFixed(3).replace(/\.?0+$/,'');
+  const label=(isRouteB?'B':'A')+'+'+(displayCh<1000?'0':'')+Math.floor(displayCh/1000)+'+'+(displayCh%1000).toString().padStart(3,'0');
+  if(isMajor){
+    L.marker(pt,{icon:L.divIcon({className:'',html:
+      '<div style="width:2px;height:14px;background:'+col+';opacity:0.75;margin:0 auto;border-radius:1px;"></div>'+
+      '<div style="font-size:9px;font-weight:700;color:'+col+';opacity:0.80;text-align:center;white-space:nowrap;margin-top:2px;letter-spacing:0.3px;text-shadow:0 1px 3px rgba(255,255,255,0.9);">'+label+'</div>',
+      iconSize:[48,26],iconAnchor:[24,7]})}).addTo(lg);
+  } else {
+    L.marker(pt,{icon:L.divIcon({className:'',html:
+      '<div style="width:1px;height:7px;background:'+col+';opacity:0.30;margin:0 auto;border-radius:1px;"></div>',
+      iconSize:[4,8],iconAnchor:[2,7]})}).addTo(lg);
+  }
 }
 
 const jClr={A:'#22aa66',B:'#e07020',C:'#e07020',D:'#cc22aa',E:'#0099D4',F:'#ff33cc',G:'#F5A623'};
@@ -362,12 +371,7 @@ mp.insertAdjacentHTML('beforeend',`
   $('qnav').appendChild(b);
 });
 
-const legData=[
-  {c:T.accent||'#0099D4',  l:'Route A — 300mm HDPE',       s:'IOI Conezion → Hospital Serdang, 1,452m'},
-  {c:T.amber||'#F5A623',   l:'Route B — 300mm HDPE / 250mm HDPE',s:'Hospital Serdang → Hospital Veterinar, 746m'},
-  {c:T.orange||'#ff8833',  l:'Pipe Jacking',               s:'SKVE crossing + 2 smaller crossings'},
-  {c:T.magenta||'#cc22aa', l:'Horizontal Directional Drilling',s:'108m bore · FT 345 utility corridor'},
-];
+const legData=(C.legend||[]).map(li=>({c:li.color,l:li.label,s:li.sub}));
 let legHtml=`<div class="card"><div class="card-hd"><div class="card-hd-t">Legend</div></div><div class="card-body"><div class="legend">`;
 legData.forEach(li=>{
   legHtml+=`<div class="leg-item"><div class="leg-swatch" style="background:${li.c};"></div>
@@ -379,38 +383,23 @@ mp.insertAdjacentHTML('beforeend',legHtml);
 
 /* SCOPE PANEL */
 const sp=$('scope-panel');
-const r1c=T.accent||'#0099D4', r2c=T.amber||'#F5A623';
-sp.insertAdjacentHTML('beforeend',`
-  <div class="route-card" style="border-color:${r1c};">
-    <div class="route-card-hd" style="background:${r1c}12;color:${r1c};">
-      <span class="route-badge" style="background:${r1c};">A</span>
-      <div class="route-hd-t">
-        <div class="rt">300mm HDPE — Route A</div>
-        <div class="rs">IOI Conezion → Hospital Serdang</div>
+(C.routes||[]).forEach(r=>{
+  const c=r.color;
+  const rowsHtml=(r.rows||[]).map(row=>
+    `<div class="row"><span class="rk">${row.k}</span><span class="rv">${row.v}</span></div>`
+  ).join('');
+  sp.insertAdjacentHTML('beforeend',`
+    <div class="route-card" style="border-color:${c};">
+      <div class="route-card-hd" style="background:${c}18;color:${c};">
+        <span class="route-badge" style="background:${c};">${r.id}</span>
+        <div class="route-hd-t">
+          <div class="rt">${r.pipeSpec} — Route ${r.id}</div>
+          <div class="rs">${r.from} → ${r.to}</div>
+        </div>
       </div>
-    </div>
-    <div class="route-card-body">
-      <div class="row"><span class="rk">Length</span><span class="rv">1,452.45 m</span></div>
-      <div class="row"><span class="rk">Pipe Specification</span><span class="rv">300mm Ø HDPE (main) · 900mm Ø MS (hot tap)</span></div>
-      <div class="row"><span class="rk">Key Method</span><span class="rv">Twin Pipe Jacking (SKVE) + Under Paved</span></div>
-      <div class="row"><span class="rk">End Point</span><span class="rv">HSIS Bulk Meter + Hot Tap</span></div>
-    </div>
-  </div>
-  <div class="route-card" style="border-color:${r2c};">
-    <div class="route-card-hd" style="background:${r2c}18;color:${r2c};">
-      <span class="route-badge" style="background:${r2c};">B</span>
-      <div class="route-hd-t">
-        <div class="rt">300mm HDPE / 250mm HDPE — Route B</div>
-        <div class="rs">Hospital Serdang → Hospital Veterinar</div>
-      </div>
-    </div>
-    <div class="route-card-body">
-      <div class="row"><span class="rk">Length</span><span class="rv">746.40 m</span></div>
-      <div class="row"><span class="rk">Pipe Specification</span><span class="rv">300mm Ø HDPE (main) · 250mm Ø HDPE (HDD) · 150mm Ø MS (hot tap)</span></div>
-      <div class="row"><span class="rk">Key Method</span><span class="rv">HDD (FT 345 corridor, 108m)</span></div>
-      <div class="row"><span class="rk">End Point</span><span class="rv">Hospital Veterinar UPM</span></div>
-    </div>
-  </div>`);
+      <div class="route-card-body">${rowsHtml}</div>
+    </div>`);
+});
 
 if(C.methodBreakdown&&C.methodBreakdown.length){
   let h=`<div class="card"><div class="card-hd"><div class="card-hd-t">Construction Method Breakdown</div></div>
