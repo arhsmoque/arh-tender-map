@@ -383,11 +383,8 @@ CH_PTS.forEach(([ch, lat, lon]) => {
 function interp(d) { let cum = 0; for (let i = 0; i < POLY.length - 1; i++) { const [la1, lo1] = POLY[i], [la2, lo2] = POLY[i + 1], R = 6371000, p1 = la1 * Math.PI / 180, p2 = la2 * Math.PI / 180, dp = (la2 - la1) * Math.PI / 180, dl = (lo2 - lo1) * Math.PI / 180, a = Math.sin(dp / 2) ** 2 + Math.cos(p1) * Math.cos(p2) * Math.sin(dl / 2) ** 2, seg = 2 * R * Math.asin(Math.sqrt(a)); if (cum + seg >= d) { const f = (d - cum) / seg; return [la1 + f * (la2 - la1), lo1 + f * (lo2 - lo1)]; } cum += seg; } return POLY[POLY.length - 1]; }
 
 // Junctions
-const juncStart = JUNC[0][0], juncEnd = JUNC[JUNC.length-1][0];
 JUNC.forEach(([ch, num, name, desc, lon, lat]) => {
-  const isS = ch === juncStart, isE = ch === juncEnd;
-  const bg = isS ? APP_CONFIG.theme.accent : isE ? APP_CONFIG.theme.amber : '#ff4455';
-  const tc = '#fff', lbl = isS ? 'S' : isE ? 'E' : num;
+  const bg = '#e06020', tc = '#fff', lbl = num;
   const m = L.marker([lat, lon], {icon: L.divIcon({className: '', html: `<div style="width:30px;height:30px;border-radius:50%;background:${bg};color:${tc};display:flex;align-items:center;justify-content:center;font-family:Inter,sans-serif;font-size:13px;font-weight:800;border:2.5px solid rgba(255,255,255,0.9);box-shadow:0 3px 12px rgba(0,0,0,0.6);cursor:pointer;">${lbl}</div>`, iconSize: [30, 30], iconAnchor: [15, 15]}), zIndexOffset: 300}).addTo(lgJ);
   const _chLbl = ch >= 1452.45
     ? 'Route B · CH '+String(((ch-1452.45)/1000).toFixed(3)).replace('.','+')
@@ -424,6 +421,15 @@ SPOS.forEach((pos, idx) => {
 // CPs
 CPS.forEach((cp, i) => {
   const mk = L.marker([cp.lat, cp.lon], {icon: L.divIcon({className: '', html: `<div style="background:#aaff00;color:#000;font-family:Inter,sans-serif;font-size:11px;font-weight:800;padding:4px 8px;border-radius:5px;border:2px solid rgba(0,0,0,0.4);box-shadow:0 3px 12px rgba(0,0,0,0.6);white-space:nowrap;cursor:pointer;">${cp.id}</div>`, iconAnchor: [20, 15]}), zIndexOffset: 400}).addTo(lgCP);
+  if (cp.detail) {
+    const _cpCh = cp.ch != null ? (cp.ch >= 1452 ? 'Route B · CH 0+'+String(Math.round(cp.ch-1452)).padStart(3,'0') : 'Route A · CH '+Math.floor(cp.ch/1000)+'+'+String(cp.ch%1000).padStart(3,'0')) : '';
+    mk.bindPopup(`<div style="padding:12px 14px;min-width:200px;max-width:260px;font-family:Inter,sans-serif;">
+      <div style="font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#aaff00;margin-bottom:4px;">${cp.id}</div>
+      <div style="font-size:13px;font-weight:700;color:#ddeeff;margin-bottom:6px;">${cp.name}</div>
+      <div style="font-size:11px;line-height:1.65;color:rgba(180,210,230,0.75);">${cp.detail}</div>
+      <div style="font-size:10px;font-weight:600;color:#aaff00;margin-top:8px;">${_cpCh}</div>
+    </div>`,{maxWidth:280,minWidth:200});
+  }
 });
 
 // Drawing snippet pins
@@ -458,7 +464,7 @@ const mAf = [];
 JUNC.forEach(([ch, num, name, desc, lon, lat]) => mAf.push({ch, label: name, sub: (UI.feat_junction_prefix||'Persimpangan J') + num, color: '#ff4455', lat, lon}));
 PROP.forEach(([ch, name, desc, type]) => { const [lat, lon] = interp(ch); mAf.push({ch, label: pnames[type] || name, sub: UI.feat_structure||'Cadangan Struktur', color: '#ff8833', lat, lon}); });
 SPOS.forEach((pos, i) => mAf.push({ch: pos.ch, label: pos.label, sub: pos.note + ' · ' + (UI.feat_site_photo_suffix||'Gambar Tapak'), color: '#33ccff', lat: pos.lat, lon: pos.lon, pi: i}));
-CPS.forEach(cp => mAf.push({ch: 0, label: cp.id + ': ' + cp.name, sub: UI.feat_cp_location||'Lokasi Lawatan Tapak', color: '#aaff00', lat: cp.lat, lon: cp.lon}));
+CPS.forEach(cp => mAf.push({ch: cp.ch||0, label: cp.id + ': ' + cp.name, sub: UI.feat_cp_location||'Lokasi Lawatan Tapak', color: '#aaff00', lat: cp.lat, lon: cp.lon}));
 mAf.sort((a, b) => a.ch - b.ch);
 mAf.forEach(f => {
   const cs = f.ch ? `CH ${Math.floor(f.ch / 1000)}+${String(f.ch % 1000).padStart(3, '0')}` : '—';

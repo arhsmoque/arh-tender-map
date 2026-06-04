@@ -455,28 +455,20 @@ const APP_CONFIG = {
 
     "sPos": [],
 
+    /* Engineering nodes only — start/end points are in cps[] below */
     "junc": [
-      [0,      "A", "IOI Conezion — Route A Start",
-       "CH 0+000 (Route A). Live hot tap on the existing 900mm Ø MS pipe from IOI City Reservoir. New redundant water supply path begins here.",
-       101.721050, 2.966963],
-      [37,     "B", "Pipe Jacking — Route A Start",
-       "CH 0+015 – 0+060 (Route A). Single pipe jacking, 45m drive. Pipe: 400mm Ø MS within 600mm Ø RC Jacking Sleeve. Jacking pit at CH 15, receiving pit at CH 60.",
+      [37,     "B", "Single Pipe Jacking — Route A (CH 15–60)",
+       "CH 0+015 – 0+060 (Route A). Single pipe jacking, 45m drive. 400mm Ø MS Pipe within 600mm Ø RC Jacking Sleeve. Jacking pit at CH 15, receiving pit at CH 60.",
        101.721400, 2.967100],
-      [875,    "C", "Twin Pipe Jacking — SKVE Crossing",
-       "CH 0+800 – 0+950 (Route A). Twin pipe jacking beneath the South Klang Valley Expressway (SKVE). Two parallel 400mm Ø MS Pipes, each within a 600mm Ø RC Jacking Sleeve. 150m construction drive · 300m total pipe installed. No SKVE traffic disruption — pit operations only. LLM permit required.",
+      [875,    "C", "Twin Pipe Jacking — SKVE Crossing (CH 800–950)",
+       "CH 0+800 – 0+950 (Route A). Twin pipe jacking beneath the South Klang Valley Expressway (SKVE). Two parallel lines of 400mm Ø MS Pipe, each in 600mm Ø RC Sleeve. 150m construction drive · 300m total pipe installed. No SKVE surface disruption — pit operations only. LLM permit required.",
        101.722521, 2.974198],
-      [1410,   "D", "Pipe Jacking — HSIS Approach",
-       "CH 1+390 – 1+430 (Route A). Single pipe jacking, 40m drive. Pipe: 400mm Ø MS within 600mm Ø RC Jacking Sleeve. Final crossing before the Hospital Serdang off-take.",
+      [1410,   "D", "Single Pipe Jacking — HSIS Approach (CH 1390–1430)",
+       "CH 1+390 – 1+430 (Route A). Single pipe jacking, 40m drive. 400mm Ø MS Pipe within 600mm Ø RC Jacking Sleeve. Final trenchless crossing before the Hospital Serdang off-take.",
        101.718200, 2.975300],
-      [1452,   "E", "Hospital Serdang — Bulk Meter Off-Take",
-       "CH 1+452 (Route A End / Route B Start). Bulk meter, electromagnetic flowmeter, and hot tap connection serving HSIS.",
-       101.717638, 2.975669],
       [1998,   "F", "HDD Crossing — FT 345 Utility Corridor",
-       "CH 1+944 – 2+052 cumulative (Route B CH 492–600). HDD beneath FT 345. Product pipe: 250mm Ø HDPE PN10, 108m bore. Min. depth 3.0m.",
-       101.714811, 2.975608],
-      [2198,   "G", "Hospital Veterinar — Route B End",
-       "CH 2+198 cumulative (Route B CH 0+746). Hot tap on the existing 200mm Ø MS pipe at Hospital Veterinar UPM. 200mm Ø MS proposed pipe connects here. Final connection point.",
-       101.711815, 2.976714]
+       "Route B CH 492–600 (cumulative CH 1+944 – 2+052). HDD beneath FT 345 utility corridor. 250mm Ø HDPE Pipe, 108m bore. Min. depth 3.0m. Entry/exit angle 10°–18°. Transition chamber at Route B CH 492.",
+       101.714811, 2.975608]
     ],
 
     "prop": [
@@ -501,10 +493,30 @@ const APP_CONFIG = {
     ],
 
     "cps": [
-      {"id":"CP1","name":"IOI Conezion — Start Route A",       "lat":2.966963,"lon":101.721050,"url":""},
-      {"id":"CP2","name":"SKVE Twin Pipe Jacking Zone",       "lat":2.974198,"lon":101.722521,"url":""},
-      {"id":"CP3","name":"Hospital Serdang (HSIS) Bulk Meter","lat":2.975669,"lon":101.717638,"url":""},
-      {"id":"CP4","name":"Hospital Veterinar — End Route B",  "lat":2.976714,"lon":101.711815,"url":""}
+      {
+        "id":"CP1","ch":0,
+        "name":"IOI Conezion — Route A Start",
+        "detail":"CH 0+000 · Route A start. Live hot tap on the existing 900mm Ø MS pipe from IOI City Reservoir. New 400mm Ø MS pipeline begins here, establishing a supply path independent of Semenyih Balancing Reservoir.",
+        "lat":2.966963,"lon":101.721050,"url":""
+      },
+      {
+        "id":"CP2","ch":875,
+        "name":"SKVE Twin Pipe Jacking Zone",
+        "detail":"CH 0+800 – 0+950 · Twin pipe jacking beneath the South Klang Valley Expressway (SKVE). LLM permit zone. See Node C for full technical specification.",
+        "lat":2.974198,"lon":101.722521,"url":""
+      },
+      {
+        "id":"CP3","ch":1452,
+        "name":"Hospital Serdang — Bulk Meter Off-Take",
+        "detail":"CH 1+452 · Route A end / Route B start. Bulk meter, electromagnetic flowmeter, RTU panel and SCADA installation. Hot tap connection serving Hospital Sultan Idris Shah (HSIS) Cardiology Block.",
+        "lat":2.975669,"lon":101.717638,"url":""
+      },
+      {
+        "id":"CP4","ch":2198,
+        "name":"Hospital Veterinar UPM — Route B End",
+        "detail":"Cumulative CH 2+198 · Route B end (Route B CH 0+746). Live hot tap on the existing 200mm Ø MS pipe at Hospital Veterinar UPM. Final connection point.",
+        "lat":2.976714,"lon":101.711815,"url":""
+      }
     ]
   }
 };
