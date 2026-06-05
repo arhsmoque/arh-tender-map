@@ -116,7 +116,7 @@ const APP_CONFIG = {
       "role":   "Bangunan Utama",
       "tag":    "primary",
       "detail": "Kompleks mahkamah baharu, GFA ~5,800m². Aras lantai RL 6.20m. Didirikan di atas cerucuk spun 250mm Ø panjang 21m, beban kerja 200kN. Lantai bawah dan apron: suspended slab.",
-      "lat": 1.2262, "lon": 111.4615,
+      "lat": 1.23090, "lon": 111.45740,
       "marker": "M"
     },
     {
@@ -126,7 +126,7 @@ const APP_CONFIG = {
       "role":   "Kemudahan Sokongan",
       "tag":    "extended",
       "detail": "Dua pondok pengawal — pintu masuk Jalan Bayu dan pintu masuk Jalan Foocow. Didirikan di atas cerucuk RC 150mm Ø, panjang 9m, beban kerja 30kN.",
-      "lat": 1.2230, "lon": 111.4580,
+      "lat": 1.22980, "lon": 111.45720,
       "marker": "G"
     },
     {
@@ -136,7 +136,7 @@ const APP_CONFIG = {
       "role":   "Kemudahan Awam",
       "tag":    "extended",
       "detail": "56 TLK awam, 42 TLK kakitangan, 4 TLK hakim, 20 TLM motosikal. Jalan dalaman dan tempat letak di atas cerucuk RC 150mm Ø, panjang 9m. Konkrit turap dengan kontraksi joint.",
-      "lat": 1.2245, "lon": 111.4635,
+      "lat": 1.23040, "lon": 111.45770,
       "marker": "P"
     },
     {
@@ -146,17 +146,17 @@ const APP_CONFIG = {
       "role":   "Saliran",
       "tag":    "extended",
       "detail": "4 kolam kering (dry ponds) + OSD di belakang bangunan utama. Sistem saliran akhir ke longkang sedia ada Jalan Foocow.",
-      "lat": 1.2270, "lon": 111.4638,
+      "lat": 1.23100, "lon": 111.45790,
       "marker": "D"
     }
   ],
 
   "map": {
-    "center": [1.2260, 111.4615],
+    "center": [1.23053, 111.45744],
     "zoom":   17,
     "bounds": [
-      [1.220, 111.453],
-      [1.234, 111.470]
+      [1.228, 111.454],
+      [1.234, 111.461]
     ]
   },
 
@@ -199,11 +199,11 @@ const APP_CONFIG = {
   ],
 
   "quickNav": [
-    {"label": "Tapak Keseluruhan", "lat": 1.2260, "lon": 111.4615, "zoom": 17},
-    {"label": "BH1 (SW)",          "lat": 1.22278,"lon": 111.45957,"zoom": 19},
-    {"label": "BH3 (Tengah)",      "lat": 1.22555,"lon": 111.46199,"zoom": 19},
-    {"label": "BH5 (NE)",          "lat": 1.22818,"lon": 111.46582,"zoom": 19},
-    {"label": "Sri Aman Town",     "lat": 1.2333, "lon": 111.4621, "zoom": 14}
+    {"label": "Tapak Keseluruhan", "lat": 1.23053, "lon": 111.45744, "zoom": 17},
+    {"label": "BH1 (W)",           "lat": 1.23068, "lon": 111.45683, "zoom": 19},
+    {"label": "BH3 (SW-Ctr)",      "lat": 1.23032, "lon": 111.45718, "zoom": 19},
+    {"label": "BH5 (E)",           "lat": 1.23079, "lon": 111.45804, "zoom": 19},
+    {"label": "Sri Aman Town",     "lat": 1.2333,  "lon": 111.4621,  "zoom": 14}
   ],
 
   "designStandards": [
@@ -375,7 +375,7 @@ const APP_CONFIG = {
 
     "boreholes": [
       {
-        "id": "BH1", "lat": 1.22278, "lon": 111.45957, "rlM": 5.07, "depthM": 25.615,
+        "id": "BH1", "lat": 1.23068, "lon": 111.45683, "rlM": 5.07, "depthM": 25.615,
         "gwlM": 3.34,
         "layers": [
           {"depthFrom": 0.00, "depthTo": 9.00,  "soil": "Peat",             "spt": "0",    "colour": "#5D4037"},
@@ -386,7 +386,7 @@ const APP_CONFIG = {
         "lab": {"cuKpa": [9.7, 26], "cc": 0.477, "eo": 1.694, "cv": 1.474}
       },
       {
-        "id": "BH2", "lat": 1.22522, "lon": 111.45706, "rlM": 5.39, "depthM": 25.660,
+        "id": "BH2", "lat": 1.23113, "lon": 111.45700, "rlM": 5.39, "depthM": 25.660,
         "gwlM": 2.58,
         "layers": [
           {"depthFrom": 0.00, "depthTo": 9.00,  "soil": "Peat",             "spt": "0",    "colour": "#5D4037"},
@@ -397,7 +397,7 @@ const APP_CONFIG = {
         "lab": {"cuKpa": [9, 22], "ccRange": [0.136, 0.761], "eoRange": [0.650, 2.133]}
       },
       {
-        "id": "BH3", "lat": 1.22555, "lon": 111.46199, "rlM": 5.61, "depthM": 28.660,
+        "id": "BH3", "lat": 1.23032, "lon": 111.45718, "rlM": 5.61, "depthM": 28.660,
         "gwlM": 2.30,
         "layers": [
           {"depthFrom": 0.00, "depthTo": 9.00,  "soil": "Peat",              "spt": "0",    "colour": "#5D4037"},
@@ -408,7 +408,7 @@ const APP_CONFIG = {
         "lab": {"cuKpa": [10], "note": "Typical"}
       },
       {
-        "id": "BH4", "lat": 1.22709, "lon": 111.46412, "rlM": 5.52, "depthM": 30.085,
+        "id": "BH4", "lat": 1.23113, "lon": 111.45754, "rlM": 5.52, "depthM": 30.085,
         "gwlM": 2.99,
         "layers": [
           {"depthFrom": 0.00, "depthTo": 6.00,  "soil": "Peat",             "spt": "0",    "colour": "#5D4037"},
@@ -419,7 +419,7 @@ const APP_CONFIG = {
         "lab": {"cuKpa": [14, 21], "ccRange": [0.586, 0.761], "eoRange": [1.701, 1.981]}
       },
       {
-        "id": "BH5", "lat": 1.22818, "lon": 111.46582, "rlM": 5.53, "depthM": 24.070,
+        "id": "BH5", "lat": 1.23079, "lon": 111.45804, "rlM": 5.53, "depthM": 24.070,
         "gwlM": 2.36,
         "layers": [
           {"depthFrom": 0.00, "depthTo": 6.00,  "soil": "Peat",             "spt": "0",    "colour": "#5D4037"},
@@ -430,7 +430,7 @@ const APP_CONFIG = {
         "lab": {"cuKpa": [14, 30], "ccRange": [0.131, 0.697], "eoRange": [0.492, 2.023]}
       },
       {
-        "id": "BH6", "lat": 1.22902, "lon": 111.45980, "rlM": 5.42, "depthM": 30.160,
+        "id": "BH6", "lat": 1.22993, "lon": 111.45765, "rlM": 5.42, "depthM": 30.160,
         "gwlM": 2.92,
         "layers": [
           {"depthFrom": 0.00, "depthTo": 9.00,  "soil": "Peat",             "spt": "0–1",  "colour": "#5D4037"},
@@ -441,7 +441,7 @@ const APP_CONFIG = {
         "lab": {"cuKpa": [18, 26], "ccRange": [0.274, 0.586]}
       },
       {
-        "id": "BH7", "lat": 1.22985, "lon": 111.46010, "rlM": 5.10, "depthM": 24.070,
+        "id": "BH7", "lat": 1.23014, "lon": 111.45791, "rlM": 5.10, "depthM": 24.070,
         "gwlM": 1.76,
         "layers": [
           {"depthFrom": 0.00, "depthTo": 6.00,  "soil": "Peat",             "spt": "0",    "colour": "#5D4037"},
@@ -486,35 +486,30 @@ const APP_CONFIG = {
      ───────────────────────────────────────────────────────────────────────── */
   "geo": {
     "poly": [
-      [1.2222, 111.4568],
-      [1.2228, 111.4562],
-      [1.2275, 111.4548],
-      [1.2300, 111.4558],
-      [1.2308, 111.4598],
-      [1.2305, 111.4650],
-      [1.2290, 111.4668],
-      [1.2255, 111.4668],
-      [1.2230, 111.4658],
-      [1.2222, 111.4620],
-      [1.2222, 111.4568]
+      [1.22946, 111.45743],
+      [1.23042, 111.45852],
+      [1.23038, 111.45829],
+      [1.23160, 111.45746],
+      [1.23088, 111.45635],
+      [1.22946, 111.45743]
     ],
     "chPts": [],
     "sPos": [],
     "junc": [
-      [1, "BH1", "BH1 — Peat & Soft Silt (SW)",    "BH1 (RL 5.07m, GWL 3.34m): Peat 0–9m. Soft silt N=0–3 (9–13.5m). Stiff silt N=7–18 (13.5–19.5m). Hard silt N=50 (19.5–25.6m). Kedalaman 25.6m.", 111.45957, 1.22278],
-      [2, "BH2", "BH2 — Peat & Soft Clay (W)",      "BH2 (RL 5.39m, GWL 2.58m): Peat 0–9m. Soft clay N=0–2 (9–15m). Stiff silt N=6–19 (15–19.5m). Hard silt N=50 (19.5–25.7m). Kedalaman 25.7m.", 111.45706, 1.22522],
-      [3, "BH3", "BH3 — Peat & Medium Silt (Ctr)",  "BH3 (RL 5.61m, GWL 2.30m): Peat 0–9m. Soft silt N=0–3 (9–15m). Medium silt N=6–12 (15–22.5m). Hard silt N=50 (22.5–28.7m). Kedalaman 28.7m.", 111.46199, 1.22555],
-      [4, "BH4", "BH4 — Peat & Silt (NE Ctr)",      "BH4 (RL 5.52m, GWL 2.99m): Peat 0–6m. Soft silt N=3–4 (6–10.5m). Stiff silt N=5–15 (10.5–19.5m). Hard silt N=50 (19.5–30.1m). Kedalaman 30.1m.", 111.46412, 1.22709],
-      [5, "BH5", "BH5 — Peat & Soft Silt (E)",      "BH5 (RL 5.53m, GWL 2.36m): Peat 0–6m. Soft silt N=3–4 (6–10.5m). Stiff silt N=5–12 (10.5–18m). Hard silt N=50 (18–24.1m). Kedalaman 24.1m.", 111.46582, 1.22818],
-      [6, "BH6", "BH6 — Peat & Soft Silt (N)",      "BH6 (RL 5.42m, GWL 2.92m): Peat 0–9m. Soft silt N=0–4 (9–16.5m). Stiff silt N=5–16 (16.5–22.5m). Hard silt N=50 (22.5–30.2m). Kedalaman 30.2m.", 111.45980, 1.22902],
-      [7, "BH7", "BH7 — Peat & Soft Silt (NW)",     "BH7 (RL 5.10m, GWL 1.76m): Peat 0–6m. Soft silt N=0–4 (6–10.5m). Stiff silt N=5–10 (10.5–18m). Hard silt N=50 (18–24.1m). Kedalaman 24.1m.", 111.46010, 1.22985]
+      [1, "BH1", "BH1 — Peat & Soft Silt (W)",       "BH1 (RL 5.07m, GWL 3.34m): Peat 0–9m. Soft silt N=0–3 (9–13.5m). Stiff silt N=7–18 (13.5–19.5m). Hard silt N=50 (19.5–25.6m). Kedalaman 25.6m.", 111.45683, 1.23068],
+      [2, "BH2", "BH2 — Peat & Soft Clay (NW)",      "BH2 (RL 5.39m, GWL 2.58m): Peat 0–9m. Soft clay N=0–2 (9–15m). Stiff silt N=6–19 (15–19.5m). Hard silt N=50 (19.5–25.7m). Kedalaman 25.7m.", 111.45700, 1.23113],
+      [3, "BH3", "BH3 — Peat & Medium Silt (SW-Ctr)","BH3 (RL 5.61m, GWL 2.30m): Peat 0–9m. Soft silt N=0–3 (9–15m). Medium silt N=6–12 (15–22.5m). Hard silt N=50 (22.5–28.7m). Kedalaman 28.7m.", 111.45718, 1.23032],
+      [4, "BH4", "BH4 — Peat & Silt (N-Ctr)",        "BH4 (RL 5.52m, GWL 2.99m): Peat 0–6m. Soft silt N=3–4 (6–10.5m). Stiff silt N=5–15 (10.5–19.5m). Hard silt N=50 (19.5–30.1m). Kedalaman 30.1m.", 111.45754, 1.23113],
+      [5, "BH5", "BH5 — Peat & Soft Silt (E)",       "BH5 (RL 5.53m, GWL 2.36m): Peat 0–6m. Soft silt N=3–4 (6–10.5m). Stiff silt N=5–12 (10.5–18m). Hard silt N=50 (18–24.1m). Kedalaman 24.1m.", 111.45804, 1.23079],
+      [6, "BH6", "BH6 — Peat & Soft Silt (S)",       "BH6 (RL 5.42m, GWL 2.92m): Peat 0–9m. Soft silt N=0–4 (9–16.5m). Stiff silt N=5–16 (16.5–22.5m). Hard silt N=50 (22.5–30.2m). Kedalaman 30.2m.", 111.45765, 1.22993],
+      [7, "BH7", "BH7 — Peat & Soft Silt (SE)",      "BH7 (RL 5.10m, GWL 1.76m): Peat 0–6m. Soft silt N=0–4 (6–10.5m). Stiff silt N=5–10 (10.5–18m). Hard silt N=50 (18–24.1m). Kedalaman 24.1m.", 111.45791, 1.23014]
     ],
     "prop": [],
     "cps": [
-      {"id": "CP1", "ch": 0, "name": "Bangunan Utama Mahkamah",      "detail": "GFA ~5,800m². Cerucuk spun 250mm Ø, 21m, 200kN. Aras lantai RL 6.20m.",    "lat": 1.2262, "lon": 111.4615, "url": ""},
-      {"id": "CP2", "ch": 0, "name": "Pintu Masuk Utama — Jalan Bayu","detail": "Pintu masuk utama (RL 6.10m). Pondok pengawal pada cerucuk RC 150mm Ø, 9m, 30kN.", "lat": 1.2230, "lon": 111.4577, "url": ""},
-      {"id": "CP3", "ch": 0, "name": "OSD Pond & Kolam Kering",       "detail": "OSD + 4 kolam kering di belakang bangunan. Saliran ke Jalan Foocow.",        "lat": 1.2270, "lon": 111.4638, "url": ""},
-      {"id": "CP4", "ch": 0, "name": "Tap-Off Air Bersih",            "detail": "Paip 160mm Ø HDPE PN12.5 dari Jalan Foocow. 3 hydrant pillar. JBALBS.",       "lat": 1.2238, "lon": 111.4618, "url": ""}
+      {"id": "CP1", "ch": 0, "name": "Bangunan Utama Mahkamah",      "detail": "GFA ~5,800m². Cerucuk spun 250mm Ø, 21m, 200kN. Aras lantai RL 6.20m.",    "lat": 1.23090, "lon": 111.45740, "url": ""},
+      {"id": "CP2", "ch": 0, "name": "Pintu Masuk Utama — Jalan Bayu","detail": "Pintu masuk utama (RL 6.10m). Pondok pengawal pada cerucuk RC 150mm Ø, 9m, 30kN.", "lat": 1.22980, "lon": 111.45730, "url": ""},
+      {"id": "CP3", "ch": 0, "name": "OSD Pond & Kolam Kering",       "detail": "OSD + 4 kolam kering di belakang bangunan. Saliran ke Jalan Foocow.",        "lat": 1.23100, "lon": 111.45790, "url": ""},
+      {"id": "CP4", "ch": 0, "name": "Tap-Off Air Bersih",            "detail": "Paip 160mm Ø HDPE PN12.5 dari Jalan Foocow. 3 hydrant pillar. JBALBS.",       "lat": 1.22970, "lon": 111.45760, "url": ""}
     ]
   }
 };
