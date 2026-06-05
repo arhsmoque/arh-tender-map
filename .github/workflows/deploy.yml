@@ -2,11 +2,11 @@ name: Deploy to Cloudflare Workers
 
 on:
   push:
-    branches: [main]
+    branches: [main, sriaman]
   workflow_dispatch:
 
 concurrency:
-  group: deploy-cf-workers
+  group: deploy-cf-workers-${{ github.ref_name }}
   cancel-in-progress: false
 
 jobs:
@@ -20,14 +20,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # main branch — Hospital Serdang brief + hub
       - name: Deploy main briefing worker
+        if: github.ref_name == 'main'
         run: npx wrangler@latest deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Deploy hub worker
+        if: github.ref_name == 'main'
         run: npx wrangler@latest deploy --config wrangler-hub.jsonc
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      # sriaman branch — Mahkamah Baharu Sri Aman brief
+      - name: Deploy Sri Aman briefing worker
+        if: github.ref_name == 'sriaman'
+        run: npx wrangler@latest deploy --config wrangler-sriaman.jsonc
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

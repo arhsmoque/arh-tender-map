@@ -269,7 +269,7 @@ const APP_CONFIG = {
     "subtitle": "Imbas untuk akses peta interaktif tapak projek, lokasi BH, data geoteknik dan skop kerja sivil",
     "chips":    ["📱 Mobile Friendly", "🟢 Sarawak · Sri Aman"],
     "note":     "Ketik mana-mana penanda untuk maklumat teknikal terperinci.",
-    "url":      "https://sriaman.dpiktender.pages.dev"
+    "url":      "https://dpiktender-sriaman.arh-homelab.workers.dev"
   },
 
   "dwgSnippets": [

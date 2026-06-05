@@ -1,0 +1,13 @@
+{
+  // Sri Aman branch worker — deploys config.js (Sri Aman adapter) independently
+  // Live URL: https://dpiktender-sriaman.arh-homelab.workers.dev
+  // Production branch: sriaman (in dpik-brief repo)
+  "name": "dpiktender-sriaman",
+  "compatibility_date": "2026-06-05",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "."
+  }
+}
