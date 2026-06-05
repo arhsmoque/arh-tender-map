@@ -8,6 +8,8 @@
  * Consult : DPI Konsult Sdn Bhd
  * ICE     : ConsultFACE Sdn Bhd (Ir. Dr. Mohd Farid)
  * Site    : Jalan Bayu, Sri Aman, Sarawak — Lots 2000, 2003, 2004, 2008
+ *
+ * Source of truth: FACE_ICE GEOTECHNICAL_MAHKAMAH BAHARU SRI AMAN_02.pdf (Rev 02, 2026-05-07)
  */
 
 const APP_CONFIG = {
@@ -45,8 +47,8 @@ const APP_CONFIG = {
       "body": "Mesyuarat kompulsori bersama Wekajaya Sdn Bhd dan JKR pada 8 Jun 2026, jam 9:30 pagi, Aras 23A Menara PJD, Ibu Pejabat JKR KL. Kontrak pelantikan: JKR/PER/IP/CKUB/253/2025."
     },
     {
-      "title": "Tanah Lembut — Peat & Lempung Lembut (SPT < 4)",
-      "body": "Lapisan peat sehingga 9m tekal. SPT < 4 sehingga 16.5m (BH6). FOS kecerunan: 1.639 (statik) / 1.316 (seismik 5.9% PGA). Enapan jumlah: 370mm (60 tahun). Had enapan pasca-binaan: 250mm. Semua bangunan dan utiliti di atas cerucuk."
+      "title": "Tanah Lembut — Peat & Lempung Lembut (SPT N≤4)",
+      "body": "Lapisan peat (~6–9m tebal) di atas silt lembut sangat lembut (N≤4). Zon N≤4 sehingga 16.5m (BH6), 15m (BH2, BH3), 13.5m (BH1), 10.5m (BH4, BH5, BH7). FOS kecerunan: 1.639 (statik) / 1.316 (seismik 5.9% PGA). Enapan jumlah ~391mm (penuh konsolidasi, Cc median). Had enapan pasca-binaan: 250mm. Semua bangunan dan utiliti di atas cerucuk."
     }
   ],
 
@@ -101,8 +103,8 @@ const APP_CONFIG = {
   },
 
   "rationale": {
-    "problem": "Sri Aman, Sarawak memerlukan kompleks mahkamah baharu yang berdaya maju. Tapak di Jalan Bayu didominasi lapisan peat dan lempung lembut (SPT 0–4) sehingga kedalaman 16.5m (BH6), diikuti silt lembut sehingga 18–22m. Ini menimbulkan risiko enapan berlebihan dan kegagalan cerun jika reka bentuk geoteknik tidak menanganinya secara komprehensif.",
-    "solution": "Pendekatan Reka Bentuk & Bina dengan Wekajaya Sdn Bhd sebagai kontraktor utama, dan DPI Konsult Sdn Bhd sebagai perunding sivil, struktur dan geoteknik. Siasatan tapak komprehensif: 7 lubang gerudi (BH) sehingga SPT 50×5 dan 32 probe JKR. Analisis enapan dan kestabilan cerun dijalankan menggunakan perisian Slope/W. Geotextile separator TS 30 untuk pengasingan lapisan.",
+    "problem": "Sri Aman, Sarawak memerlukan kompleks mahkamah baharu yang berdaya maju. Tapak di Jalan Bayu didominasi lapisan peat dan silt lembut sangat lembut (SPT N≤4) sehingga kedalaman 10.5–16.5m bergantung kepada lokasi borehole, diikuti silt teguh sehingga 19.5–22.5m. Ini menimbulkan risiko enapan berlebihan dan kegagalan cerun jika reka bentuk geoteknik tidak menanganinya secara komprehensif.",
+    "solution": "Pendekatan Reka Bentuk & Bina dengan Wekajaya Sdn Bhd sebagai kontraktor utama, dan DPI Konsult Sdn Bhd sebagai perunding sivil, struktur dan geoteknik. Siasatan tapak komprehensif: 7 lubang gerudi (BH) sehingga SPT 50×5 dan 32 probe Mackintosh. Analisis enapan dan kestabilan cerun dijalankan menggunakan perisian Slope/W. Geotextile separator TS 30 untuk pengasingan lapisan.",
     "outcome": "Platform bangunan ditinggikan ke RL 6.20m dengan geotextile separator. FOS kecerunan melebihi had minimum (1.639 statik, 1.316 seismik). Semua struktur didirikan di atas cerucuk. Enapan pasca-binaan dijangka tidak melebihi 250mm. Kelas simen sulfat-tahan ditetapkan berdasarkan ujian kimia tanah (sulfat 0.4–1.4%, pH 4–6)."
   },
 
@@ -210,7 +212,7 @@ const APP_CONFIG = {
     {"parameter": "Aras Jalan Sedia Ada (Jln Bayu)","unit":"m RL", "value": "6.10"},
     {"parameter": "FOS Kecerunan — Statik",        "unit": "—",    "value": "≥ 1.5 (dicapai 1.639)"},
     {"parameter": "FOS Kecerunan — Seismik 5.9%",  "unit": "—",    "value": "≥ 1.3 (dicapai 1.316)"},
-    {"parameter": "Enapan Jumlah",                 "unit": "mm",   "value": "370 (724 bulan / ~60 tahun)"},
+    {"parameter": "Enapan Penuh Konsolidasi",       "unit": "mm",   "value": "~391 (Cc median) / ~334 (Cc purata)"},
     {"parameter": "Had Enapan Pasca-Binaan",        "unit": "mm",   "value": "≤ 250"},
     {"parameter": "Cerucuk Spun (Bangunan Utama)", "unit": "—",    "value": "250mm Ø · 21m · 200kN"},
     {"parameter": "Cerucuk RC (Jalan/Letak/Ancilari)","unit":"—",  "value": "150mm Ø · 9m · 30kN"},
@@ -287,15 +289,18 @@ const APP_CONFIG = {
   "dwgSnippets": [],
 
   "legend": [
-    {"color": "#27772C", "label": "Sempadan Tapak",              "sub": "Lot 2000, 2003, 2004, 2008 — Jalan Bayu, Sri Aman"},
-    {"color": "#F44336", "label": "Lokasi Lubang Gerudi (BH 1–7)", "sub": "7 BH sehingga SPT 50×5 · Peat & lempung lembut 0–16.5m"},
-    {"color": "#2196F3", "label": "Sistem Saliran",               "sub": "600mm U-drain + OSD 4 kolam kering"},
-    {"color": "#FF9800", "label": "Jalan Dalaman",                "sub": "7.2m lebar · AC 40mm + binder 60mm · cerucuk RC 150mm"},
-    {"color": "#9C27B0", "label": "Bangunan & Kemudahan",         "sub": "Mahkamah, pondok pengawal, tempat letak"}
+    {"color": "#27772C", "l": "Sempadan Tapak",               "s": "Lot 2000, 2003, 2004, 2008 — Jalan Bayu, Sri Aman"},
+    {"color": "#F44336", "l": "Lokasi Lubang Gerudi (BH 1–7)", "s": "7 BH sehingga SPT 50×5 · Zon N≤4 sehingga 16.5m"},
+    {"color": "#2196F3", "l": "Sistem Saliran",                "s": "600mm U-drain + OSD 4 kolam kering"},
+    {"color": "#FF9800", "l": "Jalan Dalaman",                 "s": "7.2m lebar · AC 40mm + binder 60mm · cerucuk RC 150mm"},
+    {"color": "#9C27B0", "l": "Bangunan & Kemudahan",          "s": "Mahkamah, pondok pengawal, tempat letak"}
   ],
 
   /* ─────────────────────────────────────────────────────────────────────────
-     GEOTECHNICAL DATA — extracted from DPI Report (Apr 2026) & FACE ICE (Rev 02)
+     GEOTECHNICAL DATA — source: FACE ICE Geotechnical Report Rev 02 (2026-05-07)
+     All values verified against sriaman_geotech_data.json extract.
+     Layer boundaries follow subsurface N-value zones: N≤4 / N5-19 / N≥50.
+     gwlM = water level depth from OGL (m bgl).
      ───────────────────────────────────────────────────────────────────────── */
   "geotechnical": {
     "siSummary": {
@@ -331,21 +336,23 @@ const APP_CONFIG = {
     },
 
     "settlement": {
-      "totalSettlementMm": 370,
-      "totalSettlementTimeMonths": 724,
+      "totalSettlementMm": 391,
+      "totalSettlementTimeMonths": 451,
       "postConstructionLimitMm": 250,
       "curves": [
         {"months": 0,   "mm": 0},
-        {"months": 21,  "mm": 100},
-        {"months": 54,  "mm": 150},
-        {"months": 120, "mm": 200},
-        {"months": 360, "mm": 280},
-        {"months": 724, "mm": 370}
+        {"months": 3,   "mm": 39},
+        {"months": 12,  "mm": 78},
+        {"months": 50,  "mm": 156},
+        {"months": 114, "mm": 235},
+        {"months": 226, "mm": 313},
+        {"months": 338, "mm": 352},
+        {"months": 451, "mm": 372}
       ],
       "postConstruction": [
-        {"scenario": "36 months construction (median Cc)", "mm": 266},
-        {"scenario": "36 months construction (avg Cc)",   "mm": 224},
-        {"scenario": "48 months construction (avg Cc)",   "mm": 209}
+        {"scenario": "36 months construction (median Cc)", "mm": 272},
+        {"scenario": "36 months construction (avg Cc)",    "mm": 229},
+        {"scenario": "48 months construction (avg Cc)",    "mm": 209}
       ]
     },
 
@@ -356,84 +363,91 @@ const APP_CONFIG = {
       "seismicFos": 1.316,
       "requiredStatic": 1.5,
       "requiredSeismic": 1.3,
-      "analysisHeightM": 4.0
+      "analysisHeightM": 1.0
     },
 
     "pileDesign": {
       "mainBuilding": {"type": "Spun 250mm Ø Class B", "lengthM": 21, "workingLoadKn": 200, "bhs": ["BH4", "BH5"]},
       "ancillary":    {"type": "RC 150mm Ø",           "lengthM": 9,  "workingLoadKn": 30,  "bhs": ["BH1","BH2","BH3","BH6","BH7"]},
-      "roadParking":  {"type": "RC 150mm Ø",           "lengthM": 18, "workingLoadKn": 30,  "bhs": ["BH1","BH2","BH3","BH6","BH7"]},
+      "roadParking":  {"type": "RC 150mm Ø",           "lengthM": 9,  "workingLoadKn": 30,  "bhs": ["BH1","BH2","BH3","BH6","BH7"]},
       "utilityFence": {"type": "Bakau 100mm Ø",        "lengthM": 6,  "workingLoadKn": 5,   "bhs": ["BH1","BH2","BH3","BH6","BH7"]}
     },
 
     "boreholes": [
       {
         "id": "BH1", "lat": 1.22278, "lon": 111.45957, "rlM": 5.07, "depthM": 25.615,
-        "gwlM": 0.30,
+        "gwlM": 3.34,
         "layers": [
-          {"depthFrom": 0.00, "depthTo": 9.00,  "soil": "Peat",            "spt": "0",      "colour": "#5D4037"},
-          {"depthFrom": 9.00, "depthTo": 18.00, "soil": "Soft Sandy Silt", "spt": "0–3",    "colour": "#A1887F"},
-          {"depthFrom": 18.00,"depthTo": 25.615,"soil": "Hard Silt",       "spt": "50",     "colour": "#795548"}
+          {"depthFrom": 0.00, "depthTo": 9.00,  "soil": "Peat",             "spt": "0",    "colour": "#5D4037"},
+          {"depthFrom": 9.00, "depthTo": 13.50, "soil": "Soft Sandy Silt",  "spt": "0–3",  "colour": "#A1887F"},
+          {"depthFrom": 13.50,"depthTo": 19.50, "soil": "Stiff Sandy Silt", "spt": "7–18", "colour": "#BCAAA4"},
+          {"depthFrom": 19.50,"depthTo": 25.615,"soil": "Hard Sandy Silt",  "spt": "50",   "colour": "#795548"}
         ],
         "lab": {"cuKpa": [9.7, 26], "cc": 0.477, "eo": 1.694, "cv": 1.474}
       },
       {
         "id": "BH2", "lat": 1.22522, "lon": 111.45706, "rlM": 5.39, "depthM": 25.660,
-        "gwlM": 0.40,
+        "gwlM": 2.58,
         "layers": [
-          {"depthFrom": 0.00, "depthTo": 9.00,  "soil": "Peat",            "spt": "0",      "colour": "#5D4037"},
-          {"depthFrom": 9.00, "depthTo": 19.00, "soil": "Soft Clay/Silt",  "spt": "0–2",    "colour": "#A1887F"},
-          {"depthFrom": 19.00,"depthTo": 25.660,"soil": "Dense Sand",      "spt": "50",     "colour": "#FFF176"}
+          {"depthFrom": 0.00, "depthTo": 9.00,  "soil": "Peat",             "spt": "0",    "colour": "#5D4037"},
+          {"depthFrom": 9.00, "depthTo": 15.00, "soil": "Soft Clay/Silt",   "spt": "0–2",  "colour": "#A1887F"},
+          {"depthFrom": 15.00,"depthTo": 19.50, "soil": "Stiff Sandy Silt", "spt": "6–19", "colour": "#BCAAA4"},
+          {"depthFrom": 19.50,"depthTo": 25.660,"soil": "Hard Sandy Silt",  "spt": "50",   "colour": "#795548"}
         ],
         "lab": {"cuKpa": [9, 22], "ccRange": [0.136, 0.761], "eoRange": [0.650, 2.133]}
       },
       {
         "id": "BH3", "lat": 1.22555, "lon": 111.46199, "rlM": 5.61, "depthM": 28.660,
-        "gwlM": 0.30,
+        "gwlM": 2.30,
         "layers": [
-          {"depthFrom": 0.00, "depthTo": 9.00,  "soil": "Peat",            "spt": "0",      "colour": "#5D4037"},
-          {"depthFrom": 9.00, "depthTo": 21.00, "soil": "Medium Silt",     "spt": "3–12",   "colour": "#BCAAA4"},
-          {"depthFrom": 21.00,"depthTo": 28.660,"soil": "Dense Sand",      "spt": "50",     "colour": "#FFF176"}
+          {"depthFrom": 0.00, "depthTo": 9.00,  "soil": "Peat",              "spt": "0",    "colour": "#5D4037"},
+          {"depthFrom": 9.00, "depthTo": 15.00, "soil": "Soft Sandy Silt",   "spt": "0–3",  "colour": "#A1887F"},
+          {"depthFrom": 15.00,"depthTo": 22.50, "soil": "Medium Sandy Silt", "spt": "6–12", "colour": "#BCAAA4"},
+          {"depthFrom": 22.50,"depthTo": 28.660,"soil": "Hard Sandy Silt",   "spt": "50",   "colour": "#795548"}
         ],
         "lab": {"cuKpa": [10], "note": "Typical"}
       },
       {
         "id": "BH4", "lat": 1.22709, "lon": 111.46412, "rlM": 5.52, "depthM": 30.085,
-        "gwlM": 0.30,
+        "gwlM": 2.99,
         "layers": [
-          {"depthFrom": 0.00, "depthTo": 6.00,  "soil": "Peat",            "spt": "0",      "colour": "#5D4037"},
-          {"depthFrom": 6.00, "depthTo": 12.00, "soil": "Silt",            "spt": "3–5",    "colour": "#BCAAA4"},
-          {"depthFrom": 12.00,"depthTo": 30.085,"soil": "Hard Silt",       "spt": "8–50",   "colour": "#795548"}
+          {"depthFrom": 0.00, "depthTo": 6.00,  "soil": "Peat",             "spt": "0",    "colour": "#5D4037"},
+          {"depthFrom": 6.00, "depthTo": 10.50, "soil": "Soft Sandy Silt",  "spt": "3–4",  "colour": "#A1887F"},
+          {"depthFrom": 10.50,"depthTo": 19.50, "soil": "Stiff Sandy Silt", "spt": "5–15", "colour": "#BCAAA4"},
+          {"depthFrom": 19.50,"depthTo": 30.085,"soil": "Hard Sandy Silt",  "spt": "50",   "colour": "#795548"}
         ],
         "lab": {"cuKpa": [14, 21], "ccRange": [0.586, 0.761], "eoRange": [1.701, 1.981]}
       },
       {
         "id": "BH5", "lat": 1.22818, "lon": 111.46582, "rlM": 5.53, "depthM": 24.070,
-        "gwlM": 0.50,
+        "gwlM": 2.36,
         "layers": [
-          {"depthFrom": 0.00, "depthTo": 6.00,  "soil": "Peat",            "spt": "0",      "colour": "#5D4037"},
-          {"depthFrom": 6.00, "depthTo": 15.00, "soil": "Soft Silt",       "spt": "3–8",    "colour": "#A1887F"},
-          {"depthFrom": 15.00,"depthTo": 24.070,"soil": "Hard Silt/Sand",  "spt": "50",     "colour": "#795548"}
+          {"depthFrom": 0.00, "depthTo": 6.00,  "soil": "Peat",             "spt": "0",    "colour": "#5D4037"},
+          {"depthFrom": 6.00, "depthTo": 10.50, "soil": "Soft Sandy Silt",  "spt": "3–4",  "colour": "#A1887F"},
+          {"depthFrom": 10.50,"depthTo": 18.00, "soil": "Stiff Sandy Silt", "spt": "5–12", "colour": "#BCAAA4"},
+          {"depthFrom": 18.00,"depthTo": 24.070,"soil": "Hard Sandy Silt",  "spt": "50",   "colour": "#795548"}
         ],
         "lab": {"cuKpa": [14, 30], "ccRange": [0.131, 0.697], "eoRange": [0.492, 2.023]}
       },
       {
         "id": "BH6", "lat": 1.22902, "lon": 111.45980, "rlM": 5.42, "depthM": 30.160,
-        "gwlM": 0.50,
+        "gwlM": 2.92,
         "layers": [
-          {"depthFrom": 0.00, "depthTo": 9.00,  "soil": "Peat",            "spt": "0",      "colour": "#5D4037"},
-          {"depthFrom": 9.00, "depthTo": 18.00, "soil": "Soft Silt",       "spt": "3–9",    "colour": "#A1887F"},
-          {"depthFrom": 18.00,"depthTo": 30.160,"soil": "Hard Silt",       "spt": "50",     "colour": "#795548"}
+          {"depthFrom": 0.00, "depthTo": 9.00,  "soil": "Peat",             "spt": "0–1",  "colour": "#5D4037"},
+          {"depthFrom": 9.00, "depthTo": 16.50, "soil": "Soft Sandy Silt",  "spt": "0–4",  "colour": "#A1887F"},
+          {"depthFrom": 16.50,"depthTo": 22.50, "soil": "Stiff Sandy Silt", "spt": "5–16", "colour": "#BCAAA4"},
+          {"depthFrom": 22.50,"depthTo": 30.160,"soil": "Hard Sandy Silt",  "spt": "50",   "colour": "#795548"}
         ],
         "lab": {"cuKpa": [18, 26], "ccRange": [0.274, 0.586]}
       },
       {
         "id": "BH7", "lat": 1.22985, "lon": 111.46010, "rlM": 5.10, "depthM": 24.070,
-        "gwlM": 0.60,
+        "gwlM": 1.76,
         "layers": [
-          {"depthFrom": 0.00, "depthTo": 6.00,  "soil": "Peat",            "spt": "0",      "colour": "#5D4037"},
-          {"depthFrom": 6.00, "depthTo": 9.00,  "soil": "Soft Silt",       "spt": "0–4",    "colour": "#A1887F"},
-          {"depthFrom": 9.00, "depthTo": 24.070,"soil": "Hard Silt",       "spt": "50",     "colour": "#795548"}
+          {"depthFrom": 0.00, "depthTo": 6.00,  "soil": "Peat",             "spt": "0",    "colour": "#5D4037"},
+          {"depthFrom": 6.00, "depthTo": 10.50, "soil": "Soft Sandy Silt",  "spt": "0–4",  "colour": "#A1887F"},
+          {"depthFrom": 10.50,"depthTo": 18.00, "soil": "Stiff Sandy Silt", "spt": "5–10", "colour": "#BCAAA4"},
+          {"depthFrom": 18.00,"depthTo": 24.070,"soil": "Hard Sandy Silt",  "spt": "50",   "colour": "#795548"}
         ],
         "lab": {"cuKpa": [17, 35], "ccRange": [0.278, 0.949], "eoRange": [1.264, 2.965], "cvRange": [0.483, 2.005]}
       }
@@ -442,16 +456,16 @@ const APP_CONFIG = {
     "mackintoshProbes": {
       "count": 32,
       "terminationM": 15.0,
-      "blows": [128,125,169,158,183,83,130,134,149,159,130,158,145,137,163,169,168,166,149,154,162,147,178,176,137,168,148,146,145,153,155,148]
+      "blows": [128,125,169,158,183,83,130,134,149,159,130,158,145,137,163,169,168,166,149,154,162,147,178,176,137,168,148,146,145,153,164,92]
     },
 
     "pileCapacityIce": {
       "bakau100": [
-        {"bh": "BH1", "capacityKn": 12},
-        {"bh": "BH2", "capacityKn": 24},
-        {"bh": "BH3", "capacityKn": 44},
-        {"bh": "BH6", "capacityKn": 44},
-        {"bh": "BH7", "capacityKn": 104}
+        {"bh": "BH1", "capacityKn": 3},
+        {"bh": "BH2", "capacityKn": 2},
+        {"bh": "BH3", "capacityKn": 4},
+        {"bh": "BH6", "capacityKn": 4},
+        {"bh": "BH7", "capacityKn": 10}
       ],
       "rc150": [
         {"bh": "BH1", "capacityKn": 23},
@@ -487,20 +501,20 @@ const APP_CONFIG = {
     "chPts": [],
     "sPos": [],
     "junc": [
-      [1, "BH1", "BH1 — Peat & Soft Silt (SW)",  "BH1 (RL 5.07m): Peat 0–9m. Soft silt SPT 0–3 (9–18m). Hard silt SPT 50 from 18m. Depth 25.6m.", 111.45957, 1.22278],
-      [2, "BH2", "BH2 — Peat & Soft Clay (W)",   "BH2 (RL 5.39m): Peat 0–9m. Soft clay SPT 0–2 (9–19m). Dense sand SPT 50 from 19m. Depth 25.7m.", 111.45706, 1.22522],
-      [3, "BH3", "BH3 — Peat & Medium Silt (Ctr)","BH3 (RL 5.61m): Peat 0–9m. Medium silt SPT 3–12 (9–21m). Dense sand SPT 50 from 21m. Depth 28.7m.", 111.46199, 1.22555],
-      [4, "BH4", "BH4 — Peat & Silt (NE Ctr)",   "BH4 (RL 5.52m): Peat 0–6m. Silt SPT 3–5 (6–12m). Hard silt SPT 8–50 from 12m. Depth 30.1m.", 111.46412, 1.22709],
-      [5, "BH5", "BH5 — Peat & Soft Silt (E)",   "BH5 (RL 5.53m): Peat 0–6m. Soft silt SPT 3–8 (6–15m). Hard silt/sand SPT 50 from 15m. Depth 24.1m.", 111.46582, 1.22818],
-      [6, "BH6", "BH6 — Peat & Soft Silt (N)",   "BH6 (RL 5.42m): Peat 0–9m. Soft silt SPT 3–9 (9–18m). Hard silt SPT 50 from 18m. Depth 30.2m.", 111.45980, 1.22902],
-      [7, "BH7", "BH7 — Peat & Soft Silt (NW)",  "BH7 (RL 5.10m): Peat 0–6m. Soft silt SPT 0–4 (6–9m). Hard silt SPT 50 from 9m. Depth 24.1m.", 111.46010, 1.22985]
+      [1, "BH1", "BH1 — Peat & Soft Silt (SW)",    "BH1 (RL 5.07m, GWL 3.34m): Peat 0–9m. Soft silt N=0–3 (9–13.5m). Stiff silt N=7–18 (13.5–19.5m). Hard silt N=50 (19.5–25.6m). Kedalaman 25.6m.", 111.45957, 1.22278],
+      [2, "BH2", "BH2 — Peat & Soft Clay (W)",      "BH2 (RL 5.39m, GWL 2.58m): Peat 0–9m. Soft clay N=0–2 (9–15m). Stiff silt N=6–19 (15–19.5m). Hard silt N=50 (19.5–25.7m). Kedalaman 25.7m.", 111.45706, 1.22522],
+      [3, "BH3", "BH3 — Peat & Medium Silt (Ctr)",  "BH3 (RL 5.61m, GWL 2.30m): Peat 0–9m. Soft silt N=0–3 (9–15m). Medium silt N=6–12 (15–22.5m). Hard silt N=50 (22.5–28.7m). Kedalaman 28.7m.", 111.46199, 1.22555],
+      [4, "BH4", "BH4 — Peat & Silt (NE Ctr)",      "BH4 (RL 5.52m, GWL 2.99m): Peat 0–6m. Soft silt N=3–4 (6–10.5m). Stiff silt N=5–15 (10.5–19.5m). Hard silt N=50 (19.5–30.1m). Kedalaman 30.1m.", 111.46412, 1.22709],
+      [5, "BH5", "BH5 — Peat & Soft Silt (E)",      "BH5 (RL 5.53m, GWL 2.36m): Peat 0–6m. Soft silt N=3–4 (6–10.5m). Stiff silt N=5–12 (10.5–18m). Hard silt N=50 (18–24.1m). Kedalaman 24.1m.", 111.46582, 1.22818],
+      [6, "BH6", "BH6 — Peat & Soft Silt (N)",      "BH6 (RL 5.42m, GWL 2.92m): Peat 0–9m. Soft silt N=0–4 (9–16.5m). Stiff silt N=5–16 (16.5–22.5m). Hard silt N=50 (22.5–30.2m). Kedalaman 30.2m.", 111.45980, 1.22902],
+      [7, "BH7", "BH7 — Peat & Soft Silt (NW)",     "BH7 (RL 5.10m, GWL 1.76m): Peat 0–6m. Soft silt N=0–4 (6–10.5m). Stiff silt N=5–10 (10.5–18m). Hard silt N=50 (18–24.1m). Kedalaman 24.1m.", 111.46010, 1.22985]
     ],
     "prop": [],
     "cps": [
-      {"id": "CP1", "ch": 0, "name": "Bangunan Utama Mahkamah",      "detail": "GFA ~5,800m². Cerucuk spun 250mm Ø, 21m, 200kN. Aras lantai RL 6.20m.",   "lat": 1.2262, "lon": 111.4615, "url": ""},
-      {"id": "CP2", "ch": 0, "name": "Pintu Masuk Utama — Jalan Bayu", "detail": "Pintu masuk utama (RL 6.10m). Pondok pengawal pada cerucuk RC 150mm Ø, 9m, 30kN.", "lat": 1.2230, "lon": 111.4577, "url": ""},
-      {"id": "CP3", "ch": 0, "name": "OSD Pond & Kolam Kering",      "detail": "OSD + 4 kolam kering di belakang bangunan. Saliran ke Jalan Foocow.",       "lat": 1.2270, "lon": 111.4638, "url": ""},
-      {"id": "CP4", "ch": 0, "name": "Tap-Off Air Bersih",           "detail": "Paip 160mm Ø HDPE PN12.5 dari Jalan Foocow. 3 hydrant pillar. JBALBS.",      "lat": 1.2238, "lon": 111.4618, "url": ""}
+      {"id": "CP1", "ch": 0, "name": "Bangunan Utama Mahkamah",      "detail": "GFA ~5,800m². Cerucuk spun 250mm Ø, 21m, 200kN. Aras lantai RL 6.20m.",    "lat": 1.2262, "lon": 111.4615, "url": ""},
+      {"id": "CP2", "ch": 0, "name": "Pintu Masuk Utama — Jalan Bayu","detail": "Pintu masuk utama (RL 6.10m). Pondok pengawal pada cerucuk RC 150mm Ø, 9m, 30kN.", "lat": 1.2230, "lon": 111.4577, "url": ""},
+      {"id": "CP3", "ch": 0, "name": "OSD Pond & Kolam Kering",       "detail": "OSD + 4 kolam kering di belakang bangunan. Saliran ke Jalan Foocow.",        "lat": 1.2270, "lon": 111.4638, "url": ""},
+      {"id": "CP4", "ch": 0, "name": "Tap-Off Air Bersih",            "detail": "Paip 160mm Ø HDPE PN12.5 dari Jalan Foocow. 3 hydrant pillar. JBALBS.",       "lat": 1.2238, "lon": 111.4618, "url": ""}
     ]
   }
 };
