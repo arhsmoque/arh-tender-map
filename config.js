@@ -1,29 +1,23 @@
 /**
  * config.js — Project Brief Adapter
- *
- * @role     adapter / data-config
- * @contract APP_CONFIG → consumed by index.html + mobile.html + qr.html
- *
  * Project : Projek Pembangunan Kompleks Mahkamah Baharu Sri Aman, Sarawak
- * Client  : Jabatan Perdana Menteri — Bahagian Hal Ehwal Undang-Undang (BHEUU)
+ * Contract: JKR/PER/IP/CKUB/170/2023
+ * Client  : Jabatan Kerja Raya Malaysia (JKR)
  * Manager : JKR Malaysia (Cawangan Kontrak dan Ukur Bahan)
  * D&B     : Wekajaya Sdn Bhd
  * Consult : DPI Konsult Sdn Bhd
- * Contract: JKR/PER/IP/CKUB/170/2023
- *
+ * ICE     : ConsultFACE Sdn Bhd (Ir. Dr. Mohd Farid)
  * Site    : Jalan Bayu, Sri Aman, Sarawak — Lots 2000, 2003, 2004, 2008
- * Centre  : 1.2255°N, 111.4610°E
- * SI      : 7 BH (to SPT 50×5) + 32 JKR Probes
  */
 
 const APP_CONFIG = {
   "lang": "ms",
-  "pageTitle": "Mahkamah Baharu Sri Aman — Project Brief",
+  "pageTitle": "Mahkamah Baharu Sri Aman — Taklimat Projek",
 
   "project": {
     "title": "Projek Pembangunan Kompleks Mahkamah Baharu Sri Aman, Sarawak",
     "subtitle": "Kompleks Mahkamah Baharu · Jalan Bayu, Sri Aman · Reka Bentuk & Bina",
-    "designStandard": "JKR Standard Specification · MS 1754:2004 · Eurocode 7",
+    "designStandard": "JKR Standard Specification · MS 1754:2004 · Eurocode 7 · BS 5930:2015 · MS 2038:2024",
     "tenderNumber": "JKR/PER/IP/CKUB/170/2023",
     "indicativePrice": "—",
     "durationMonths": "—",
@@ -33,15 +27,15 @@ const APP_CONFIG = {
   },
 
   "client": {
-    "name": "JABATAN PERDANA MENTERI",
-    "subname": "Bahagian Hal Ehwal Undang-Undang (BHEUU)",
-    "url": "https://www.bheuu.gov.my",
-    "logo": "assets/logos/consultant-logo.png"
+    "name": "JABATAN KERJA RAYA MALAYSIA",
+    "subname": "Kementerian Kerja Raya · Cawangan Kontrak & Ukur Bahan (CKUB)",
+    "url": "https://www.jkr.gov.my",
+    "logo": "assets/logos/jkr-logo.svg"
   },
 
   "consultant": {
     "name": "DPI Konsult Sdn Bhd",
-    "subname": "Civil & Structural Consultant",
+    "subname": "Civil, Structural & Geotechnical Consultant",
     "logo": "assets/logos/consultant-logo.png"
   },
 
@@ -51,15 +45,15 @@ const APP_CONFIG = {
       "body": "Mesyuarat kompulsori bersama Wekajaya Sdn Bhd dan JKR pada 8 Jun 2026, jam 9:30 pagi, Aras 23A Menara PJD, Ibu Pejabat JKR KL. Kontrak pelantikan: JKR/PER/IP/CKUB/253/2025."
     },
     {
-      "title": "Tanah Lembut — Peat & Lempung Lembut",
-      "body": "Lapisan peat sehingga 10m tebal. FOS kecerunan: 1.639 (statik) / 1.316 (seismik 5.9% PGA). Enapan jumlah: 370mm. Had enapan pasca-binaan: 250mm. Semua bangunan dan utiliti di atas cerucuk."
+      "title": "Tanah Lembut — Peat & Lempung Lembut (SPT < 4)",
+      "body": "Lapisan peat sehingga 9m tekal. SPT < 4 sehingga 16.5m (BH6). FOS kecerunan: 1.639 (statik) / 1.316 (seismik 5.9% PGA). Enapan jumlah: 370mm (60 tahun). Had enapan pasca-binaan: 250mm. Semua bangunan dan utiliti di atas cerucuk."
     }
   ],
 
   "scope": [
-    {"color":"#4CAF50","text":"Earthwork — Penimbusan platform ~1.0m, isipadu 20,000 m³ + surgecaj 7,000 m³. Aras platform RL 6.20m. Geotextile separator TS 30 sebelum penimbusan."},
+    {"color":"#4CAF50","text":"Earthwork — Penimbusan platform ~1.0m (RL 5.2m → 6.2m), isipadu ~20,000 m³ + surgecaj 7,000 m³. Geotextile separator TS 30 sebelum penimbusan. Cerun timbus 1V:2H + hydroseed."},
     {"color":"#2196F3","text":"Drainage — 600mm U-drain pratuang + 4 kolam kering (OSD). Saliran akhir ke longkang Jalan Foocow. Saringan sampah di sump terakhir."},
-    {"color":"#FF9800","text":"Road Works — Jalan dalaman lebar 7.2m, AC 40mm + binder 60mm + base 300mm. Pintu masuk utama ke Jalan Bayu, pintu kedua ke Jalan Foocow."},
+    {"color":"#FF9800","text":"Road Works — Jalan dalaman lebar 7.2m, AC 40mm + binder 60mm + base 300mm. Pintu masuk utama ke Jalan Bayu, pintu kedua ke Jalan Foocow. Cerucuk RC 150mm Ø di bawah turapan."},
     {"color":"#00BCD4","text":"External Water — Paip 160mm Ø HDPE PN12.5 dari Jalan Foocow (JBALBS). Tangki 60,000L (1 hari simpanan). 3 hydrant pillar. DI pipe 150mm Ø untuk lintasan jalan."},
     {"color":"#9C27B0","text":"Sewerage — Paip 225mm Ø HDPE berganding berganda. STP dalam tapak, 178 P.E. (5,800m² mahkamah + 2 pondok pengawal)."},
     {"color":"#F44336","text":"Geotechnical — Cerucuk Spun 250mm Ø, 21m, 200kN (bangunan utama). Cerucuk RC 150mm, 9m, 30kN (jalan/tempat letak/bangunan ancilari). Bakau 6m, 5kN (utiliti/pagar)."}
@@ -77,6 +71,12 @@ const APP_CONFIG = {
       "label": "Kontraktor Utama (D&B)",
       "members": [
         {"name": "Akmal Bahri (Wekajaya)",       "title": "Design & Build Contractor — 227571V",      "email": "—"}
+      ]
+    },
+    {
+      "label": "Independent Checker (ICE)",
+      "members": [
+        {"name": "Ir. Dr. Mohd Farid Bin Ahmad", "title": "ConsultFACE Sdn Bhd — C110961",           "email": "—"}
       ]
     }
   ],
@@ -101,9 +101,9 @@ const APP_CONFIG = {
   },
 
   "rationale": {
-    "problem": "Sri Aman, Sarawak memerlukan kompleks mahkamah baharu yang berdaya maju. Tapak di Jalan Bayu didominasi lapisan peat dan lempung lembut (SPT 0–4) sehingga kedalaman 10m, diikuti silt lembut sehingga 18–22m. Ini menimbulkan risiko enapan berlebihan dan kegagalan cerun jika reka bentuk geoteknik tidak menanganinya secara komprehensif.",
-    "solution": "Pendekatan Reka Bentuk & Bina dengan Wekajaya Sdn Bhd sebagai kontraktor utama, dan DPI Konsult Sdn Bhd sebagai perunding sivil, struktur dan geoteknik. Siasatan tapak komprehensif: 7 lubang gerudi (BH) sehingga SPT 50×5 dan 32 probe JKR. Analisis enapan dan kestabilan cerun dijalankan menggunakan perisian Slope/W.",
-    "outcome": "Platform bangunan ditinggikan ke RL 6.20m dengan geotextile separator. FOS kecerunan melebihi had minimum (1.639 statik, 1.316 seismik). Semua struktur didirikan di atas cerucuk. Enapan pasca-binaan dijangka tidak melebihi 250mm. Kelas simen sulfat-tahan ditetapkan berdasarkan ujian kimia tanah."
+    "problem": "Sri Aman, Sarawak memerlukan kompleks mahkamah baharu yang berdaya maju. Tapak di Jalan Bayu didominasi lapisan peat dan lempung lembut (SPT 0–4) sehingga kedalaman 16.5m (BH6), diikuti silt lembut sehingga 18–22m. Ini menimbulkan risiko enapan berlebihan dan kegagalan cerun jika reka bentuk geoteknik tidak menanganinya secara komprehensif.",
+    "solution": "Pendekatan Reka Bentuk & Bina dengan Wekajaya Sdn Bhd sebagai kontraktor utama, dan DPI Konsult Sdn Bhd sebagai perunding sivil, struktur dan geoteknik. Siasatan tapak komprehensif: 7 lubang gerudi (BH) sehingga SPT 50×5 dan 32 probe JKR. Analisis enapan dan kestabilan cerun dijalankan menggunakan perisian Slope/W. Geotextile separator TS 30 untuk pengasingan lapisan.",
+    "outcome": "Platform bangunan ditinggikan ke RL 6.20m dengan geotextile separator. FOS kecerunan melebihi had minimum (1.639 statik, 1.316 seismik). Semua struktur didirikan di atas cerucuk. Enapan pasca-binaan dijangka tidak melebihi 250mm. Kelas simen sulfat-tahan ditetapkan berdasarkan ujian kimia tanah (sulfat 0.4–1.4%, pH 4–6)."
   },
 
   "facilities": [
@@ -136,6 +136,16 @@ const APP_CONFIG = {
       "detail": "56 TLK awam, 42 TLK kakitangan, 4 TLK hakim, 20 TLM motosikal. Jalan dalaman dan tempat letak di atas cerucuk RC 150mm Ø, panjang 9m. Konkrit turap dengan kontraksi joint.",
       "lat": 1.2245, "lon": 111.4635,
       "marker": "P"
+    },
+    {
+      "id":     "osd",
+      "name":   "OSD & Kolam Kering",
+      "abbr":   "OSD",
+      "role":   "Saliran",
+      "tag":    "extended",
+      "detail": "4 kolam kering (dry ponds) + OSD di belakang bangunan utama. Sistem saliran akhir ke longkang sedia ada Jalan Foocow.",
+      "lat": 1.2270, "lon": 111.4638,
+      "marker": "D"
     }
   ],
 
@@ -151,6 +161,7 @@ const APP_CONFIG = {
   "methodSegments": [],
   "methodBreakdown": [],
   "constructionMethods": [],
+  "routes": [],
 
   "governingAuthorities": [
     {
@@ -188,6 +199,7 @@ const APP_CONFIG = {
   "quickNav": [
     {"label": "Tapak Keseluruhan", "lat": 1.2260, "lon": 111.4615, "zoom": 17},
     {"label": "BH1 (SW)",          "lat": 1.22278,"lon": 111.45957,"zoom": 19},
+    {"label": "BH3 (Tengah)",      "lat": 1.22555,"lon": 111.46199,"zoom": 19},
     {"label": "BH5 (NE)",          "lat": 1.22818,"lon": 111.46582,"zoom": 19},
     {"label": "Sri Aman Town",     "lat": 1.2333, "lon": 111.4621, "zoom": 14}
   ],
@@ -198,7 +210,7 @@ const APP_CONFIG = {
     {"parameter": "Aras Jalan Sedia Ada (Jln Bayu)","unit":"m RL", "value": "6.10"},
     {"parameter": "FOS Kecerunan — Statik",        "unit": "—",    "value": "≥ 1.5 (dicapai 1.639)"},
     {"parameter": "FOS Kecerunan — Seismik 5.9%",  "unit": "—",    "value": "≥ 1.3 (dicapai 1.316)"},
-    {"parameter": "Enapan Jumlah",                 "unit": "mm",   "value": "370 (724 bulan)"},
+    {"parameter": "Enapan Jumlah",                 "unit": "mm",   "value": "370 (724 bulan / ~60 tahun)"},
     {"parameter": "Had Enapan Pasca-Binaan",        "unit": "mm",   "value": "≤ 250"},
     {"parameter": "Cerucuk Spun (Bangunan Utama)", "unit": "—",    "value": "250mm Ø · 21m · 200kN"},
     {"parameter": "Cerucuk RC (Jalan/Letak/Ancilari)","unit":"—",  "value": "150mm Ø · 9m · 30kN"},
@@ -213,19 +225,11 @@ const APP_CONFIG = {
   "projectTeam": [
     {
       "role":   "Pemilik Projek",
-      "name":   "Jabatan Perdana Menteri (BHEUU)",
-      "abbr":   "JPM",
-      "logo":   "assets/logos/consultant-logo.png",
-      "url":    "https://www.bheuu.gov.my",
-      "detail": "Jabatan Perdana Menteri, Bahagian Hal Ehwal Undang-Undang — pemilik aset mahkamah persekutuan."
-    },
-    {
-      "role":   "Pengurus Projek",
       "name":   "Jabatan Kerja Raya Malaysia",
       "abbr":   "JKR",
-      "logo":   "assets/logos/consultant-logo.png",
+      "logo":   "assets/logos/jkr-logo.svg",
       "url":    "https://www.jkr.gov.my",
-      "detail": "JKR Malaysia (CKUB) — pengurusan kontrak, pengawasan pembinaan dan kelulusan teknikal."
+      "detail": "JKR Malaysia (CKUB) — pengurusan kontrak, pengawasan pembinaan dan kelulusan teknikal. Kementerian Kerja Raya."
     },
     {
       "role":   "Kontraktor Utama (D&B)",
@@ -242,6 +246,14 @@ const APP_CONFIG = {
       "logo":   "assets/logos/consultant-logo.png",
       "url":    null,
       "detail": "Reka bentuk terperinci: sivil (earthwork, drainage, road, water, sewerage) dan geoteknik. Penyeliaan pembinaan."
+    },
+    {
+      "role":   "Independent Geotechnical Checker",
+      "name":   "ConsultFACE Sdn Bhd",
+      "abbr":   "FACE",
+      "logo":   null,
+      "url":    null,
+      "detail": "Ir. Dr. Mohd Farid Bin Ahmad (C110961). Penilaian bebas reka bentuk geoteknik, kestabilan cerun dan asas cerucuk."
     }
   ],
 
@@ -264,7 +276,7 @@ const APP_CONFIG = {
   },
 
   "qrPage": {
-    "badge":    "JKR MALAYSIA · JPM BHEUU",
+    "badge":    "JKR MALAYSIA · SRI AMAN",
     "title":    "Kompleks Mahkamah Baharu Sri Aman",
     "subtitle": "Imbas untuk akses peta interaktif tapak projek, lokasi BH, data geoteknik dan skop kerja sivil",
     "chips":    ["📱 Mobile Friendly", "🟢 Sarawak · Sri Aman"],
@@ -272,45 +284,193 @@ const APP_CONFIG = {
     "url":      "https://dpiktender-sriaman.arh-homelab.workers.dev"
   },
 
-  "dwgSnippets": [
-    {
-      "id":    "dwg-bh-plan",
-      "label": "DWG · Pelan BH",
-      "title": "Pelan Lokasi Lubang Gerudi & Probe",
-      "ch":    "7 BH + 32 Probe JKR · Lot 2000, Jalan Bayu",
-      "img":   "assets/drawings/bh-plan.png",
-      "lat":   1.2255, "lon": 111.4610
-    },
-    {
-      "id":    "dwg-settlement",
-      "label": "DWG · Enapan",
-      "title": "Analisis Enapan Penyatuan",
-      "ch":    "Enapan jumlah 370mm · Had pasca-binaan 250mm",
-      "img":   "assets/drawings/settlement.png",
-      "lat":   1.2262, "lon": 111.4615
-    }
-  ],
-
-  "routes": [],
+  "dwgSnippets": [],
 
   "legend": [
     {"color": "#27772C", "label": "Sempadan Tapak",              "sub": "Lot 2000, 2003, 2004, 2008 — Jalan Bayu, Sri Aman"},
-    {"color": "#F44336", "label": "Lokasi Lubang Gerudi (BH 1–7)", "sub": "7 BH sehingga SPT 50×5 · Peat & lempung lembut 0–18m"},
+    {"color": "#F44336", "label": "Lokasi Lubang Gerudi (BH 1–7)", "sub": "7 BH sehingga SPT 50×5 · Peat & lempung lembut 0–16.5m"},
     {"color": "#2196F3", "label": "Sistem Saliran",               "sub": "600mm U-drain + OSD 4 kolam kering"},
-    {"color": "#FF9800", "label": "Jalan Dalaman",                "sub": "7.2m lebar · AC 40mm + binder 60mm · cerucuk RC 150mm"}
+    {"color": "#FF9800", "label": "Jalan Dalaman",                "sub": "7.2m lebar · AC 40mm + binder 60mm · cerucuk RC 150mm"},
+    {"color": "#9C27B0", "label": "Bangunan & Kemudahan",         "sub": "Mahkamah, pondok pengawal, tempat letak"}
   ],
 
   /* ─────────────────────────────────────────────────────────────────────────
-     GEOSPATIAL
-     All coordinates: WGS84 decimal degrees [lat, lon]
-     JUNC exception: [id, label, title, detail, LON, LAT]  ← lon/lat swapped
-     Site: Lot 2000/2003/2004/2008, Jalan Bayu, Sri Aman, Sarawak
-     Centre: 1.2260°N, 111.4615°E   (WGS84 from SI coordinate table)
+     GEOTECHNICAL DATA — extracted from DPI Report (Apr 2026) & FACE ICE (Rev 02)
+     ───────────────────────────────────────────────────────────────────────── */
+  "geotechnical": {
+    "siSummary": {
+      "boreholes": 7,
+      "probes": 32,
+      "bhTermination": "SPT 50 × 5",
+      "probeTermination": "15.0m bgl",
+      "undisturbedSamples": true,
+      "labTests": ["UU Triaxial", "Consolidation", "Atterberg Limits", "Moisture Content", "Chemical Content", "Ignition Loss"]
+    },
+
+    "seismic": {
+      "zone": "V–VI (MS EN 1998-1:2017 NA)",
+      "pga": "0.06g (5.9%)",
+      "mmi": "IV–V",
+      "description": "Light to moderate shaking with negligible to very minor structural damage."
+    },
+
+    "chemical": {
+      "sulphate": {"range": "0.4 – 1.4%", "class": "Class 2 (Moderate)", "note": "Sulphate-tolerant cement required"},
+      "chloride": {"range": "0 – 20 mg/kg (moderate)", "class": "Moderate", "note": "Reinforcement protection required"},
+      "ph": {"range": "4.0 – 6.0", "class": "Acidic", "note": "Cement content ≥ 300 kg/m³, w/c ≤ 0.5"}
+    },
+
+    "earthwork": {
+      "existingRL": 5.2,
+      "platformRL": 6.2,
+      "fillHeight": 1.0,
+      "fillSlope": "1V:2H",
+      "slopeProtection": "Hydroseed + cut-off drain + toe drain + cascading drain",
+      "geotextile": "TS 30 separator before fill",
+      "volume": "~20,000 m³ + 7,000 m³ surge"
+    },
+
+    "settlement": {
+      "totalSettlementMm": 370,
+      "totalSettlementTimeMonths": 724,
+      "postConstructionLimitMm": 250,
+      "curves": [
+        {"months": 0,   "mm": 0},
+        {"months": 21,  "mm": 100},
+        {"months": 54,  "mm": 150},
+        {"months": 120, "mm": 200},
+        {"months": 360, "mm": 280},
+        {"months": 724, "mm": 370}
+      ],
+      "postConstruction": [
+        {"scenario": "36 months construction (median Cc)", "mm": 266},
+        {"scenario": "36 months construction (avg Cc)",   "mm": 224},
+        {"scenario": "48 months construction (avg Cc)",   "mm": 209}
+      ]
+    },
+
+    "slopeStability": {
+      "method": "Morgenstern-Price (Slope/W)",
+      "fillSlopeFos": 4.83,
+      "staticFos": 1.639,
+      "seismicFos": 1.316,
+      "requiredStatic": 1.5,
+      "requiredSeismic": 1.3,
+      "analysisHeightM": 4.0
+    },
+
+    "pileDesign": {
+      "mainBuilding": {"type": "Spun 250mm Ø Class B", "lengthM": 21, "workingLoadKn": 200, "bhs": ["BH4", "BH5"]},
+      "ancillary":    {"type": "RC 150mm Ø",           "lengthM": 9,  "workingLoadKn": 30,  "bhs": ["BH1","BH2","BH3","BH6","BH7"]},
+      "roadParking":  {"type": "RC 150mm Ø",           "lengthM": 18, "workingLoadKn": 30,  "bhs": ["BH1","BH2","BH3","BH6","BH7"]},
+      "utilityFence": {"type": "Bakau 100mm Ø",        "lengthM": 6,  "workingLoadKn": 5,   "bhs": ["BH1","BH2","BH3","BH6","BH7"]}
+    },
+
+    "boreholes": [
+      {
+        "id": "BH1", "lat": 1.22278, "lon": 111.45957, "rlM": 5.07, "depthM": 25.615,
+        "gwlM": 0.30,
+        "layers": [
+          {"depthFrom": 0.00, "depthTo": 9.00,  "soil": "Peat",            "spt": "0",      "colour": "#5D4037"},
+          {"depthFrom": 9.00, "depthTo": 18.00, "soil": "Soft Sandy Silt", "spt": "0–3",    "colour": "#A1887F"},
+          {"depthFrom": 18.00,"depthTo": 25.615,"soil": "Hard Silt",       "spt": "50",     "colour": "#795548"}
+        ],
+        "lab": {"cuKpa": [9.7, 26], "cc": 0.477, "eo": 1.694, "cv": 1.474}
+      },
+      {
+        "id": "BH2", "lat": 1.22522, "lon": 111.45706, "rlM": 5.39, "depthM": 25.660,
+        "gwlM": 0.40,
+        "layers": [
+          {"depthFrom": 0.00, "depthTo": 9.00,  "soil": "Peat",            "spt": "0",      "colour": "#5D4037"},
+          {"depthFrom": 9.00, "depthTo": 19.00, "soil": "Soft Clay/Silt",  "spt": "0–2",    "colour": "#A1887F"},
+          {"depthFrom": 19.00,"depthTo": 25.660,"soil": "Dense Sand",      "spt": "50",     "colour": "#FFF176"}
+        ],
+        "lab": {"cuKpa": [9, 22], "ccRange": [0.136, 0.761], "eoRange": [0.650, 2.133]}
+      },
+      {
+        "id": "BH3", "lat": 1.22555, "lon": 111.46199, "rlM": 5.61, "depthM": 28.660,
+        "gwlM": 0.30,
+        "layers": [
+          {"depthFrom": 0.00, "depthTo": 9.00,  "soil": "Peat",            "spt": "0",      "colour": "#5D4037"},
+          {"depthFrom": 9.00, "depthTo": 21.00, "soil": "Medium Silt",     "spt": "3–12",   "colour": "#BCAAA4"},
+          {"depthFrom": 21.00,"depthTo": 28.660,"soil": "Dense Sand",      "spt": "50",     "colour": "#FFF176"}
+        ],
+        "lab": {"cuKpa": [10], "note": "Typical"}
+      },
+      {
+        "id": "BH4", "lat": 1.22709, "lon": 111.46412, "rlM": 5.52, "depthM": 30.085,
+        "gwlM": 0.30,
+        "layers": [
+          {"depthFrom": 0.00, "depthTo": 6.00,  "soil": "Peat",            "spt": "0",      "colour": "#5D4037"},
+          {"depthFrom": 6.00, "depthTo": 12.00, "soil": "Silt",            "spt": "3–5",    "colour": "#BCAAA4"},
+          {"depthFrom": 12.00,"depthTo": 30.085,"soil": "Hard Silt",       "spt": "8–50",   "colour": "#795548"}
+        ],
+        "lab": {"cuKpa": [14, 21], "ccRange": [0.586, 0.761], "eoRange": [1.701, 1.981]}
+      },
+      {
+        "id": "BH5", "lat": 1.22818, "lon": 111.46582, "rlM": 5.53, "depthM": 24.070,
+        "gwlM": 0.50,
+        "layers": [
+          {"depthFrom": 0.00, "depthTo": 6.00,  "soil": "Peat",            "spt": "0",      "colour": "#5D4037"},
+          {"depthFrom": 6.00, "depthTo": 15.00, "soil": "Soft Silt",       "spt": "3–8",    "colour": "#A1887F"},
+          {"depthFrom": 15.00,"depthTo": 24.070,"soil": "Hard Silt/Sand",  "spt": "50",     "colour": "#795548"}
+        ],
+        "lab": {"cuKpa": [14, 30], "ccRange": [0.131, 0.697], "eoRange": [0.492, 2.023]}
+      },
+      {
+        "id": "BH6", "lat": 1.22902, "lon": 111.45980, "rlM": 5.42, "depthM": 30.160,
+        "gwlM": 0.50,
+        "layers": [
+          {"depthFrom": 0.00, "depthTo": 9.00,  "soil": "Peat",            "spt": "0",      "colour": "#5D4037"},
+          {"depthFrom": 9.00, "depthTo": 18.00, "soil": "Soft Silt",       "spt": "3–9",    "colour": "#A1887F"},
+          {"depthFrom": 18.00,"depthTo": 30.160,"soil": "Hard Silt",       "spt": "50",     "colour": "#795548"}
+        ],
+        "lab": {"cuKpa": [18, 26], "ccRange": [0.274, 0.586]}
+      },
+      {
+        "id": "BH7", "lat": 1.22985, "lon": 111.46010, "rlM": 5.10, "depthM": 24.070,
+        "gwlM": 0.60,
+        "layers": [
+          {"depthFrom": 0.00, "depthTo": 6.00,  "soil": "Peat",            "spt": "0",      "colour": "#5D4037"},
+          {"depthFrom": 6.00, "depthTo": 9.00,  "soil": "Soft Silt",       "spt": "0–4",    "colour": "#A1887F"},
+          {"depthFrom": 9.00, "depthTo": 24.070,"soil": "Hard Silt",       "spt": "50",     "colour": "#795548"}
+        ],
+        "lab": {"cuKpa": [17, 35], "ccRange": [0.278, 0.949], "eoRange": [1.264, 2.965], "cvRange": [0.483, 2.005]}
+      }
+    ],
+
+    "mackintoshProbes": {
+      "count": 32,
+      "terminationM": 15.0,
+      "blows": [128,125,169,158,183,83,130,134,149,159,130,158,145,137,163,169,168,166,149,154,162,147,178,176,137,168,148,146,145,153,155,148]
+    },
+
+    "pileCapacityIce": {
+      "bakau100": [
+        {"bh": "BH1", "capacityKn": 12},
+        {"bh": "BH2", "capacityKn": 24},
+        {"bh": "BH3", "capacityKn": 44},
+        {"bh": "BH6", "capacityKn": 44},
+        {"bh": "BH7", "capacityKn": 104}
+      ],
+      "rc150": [
+        {"bh": "BH1", "capacityKn": 23},
+        {"bh": "BH2", "capacityKn": 15},
+        {"bh": "BH3", "capacityKn": 18},
+        {"bh": "BH6", "capacityKn": 14},
+        {"bh": "BH7", "capacityKn": 37}
+      ],
+      "spun250": [
+        {"bh": "BH4", "capacityKn": 230},
+        {"bh": "BH5", "capacityKn": 250}
+      ]
+    }
+  },
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     GEOSPATIAL — WGS84
      ───────────────────────────────────────────────────────────────────────── */
   "geo": {
-
-    /* Site boundary polygon — approximate, traced from survey plan (Pelan Ukur Topografi)
-       Lot 2000 (main), 2003 & 2004 (NW), 2008 (NE), bounded west by Jalan Bayu */
     "poly": [
       [1.2222, 111.4568],
       [1.2228, 111.4562],
@@ -324,85 +484,28 @@ const APP_CONFIG = {
       [1.2222, 111.4620],
       [1.2222, 111.4568]
     ],
-
-    /* No pipeline chainage — building project */
     "chPts": [],
-
     "sPos": [],
-
-    /* Borehole markers
-       Format: [id, label, title, detail, LON, LAT]  ← JUNC lon/lat is SWAPPED */
     "junc": [
-      [1, "BH1",
-       "BH1 — Peat & Lempung Lembut (SW Tapak)",
-       "BH1 (RL 5.07m): Peat SPT 0 dari 0–9m. Lempung lembut/silt SPT 0–3 sehingga 18m. Silt keras SPT 50 dari 18m+. Cu=9.7–26 kPa. Cc=0.477, eo=1.694, cv=1.474 m²/yr.",
-       111.45957, 1.22278],
-
-      [2, "BH2",
-       "BH2 — Peat & Lempung Lembut (W Tapak)",
-       "BH2 (RL 5.39m): Peat SPT 0 dari 0–9m. Lempung lembut SPT 0–2 sehingga 19m. Pasir padat SPT 50 dari 19m+. Cu=9–22 kPa. Cc=0.136–0.761, eo=0.650–2.133.",
-       111.45706, 1.22522],
-
-      [3, "BH3",
-       "BH3 — Peat & Silt Lembut (Tengah Tapak)",
-       "BH3 (RL 5.61m): Peat SPT 0 dari 0–9m. Silt sederhana SPT 3–12 sehingga 21m. Pasir padat SPT 50 dari 21m+. Cu tipikal 10 kPa.",
-       111.46199, 1.22555],
-
-      [4, "BH4",
-       "BH4 — Peat & Silt (NE Tengah)",
-       "BH4 (RL 5.52m): Peat SPT 0 dari 0–6m. Silt SPT 3–5 dari 6–12m. Silt keras SPT 8–50 dari 12m+. Cu=14–21 kPa. Cc=0.586–0.761, eo=1.701–1.981.",
-       111.46412, 1.22709],
-
-      [5, "BH5",
-       "BH5 — Peat & Silt (E Tapak)",
-       "BH5 (RL 5.53m): Peat SPT 0 dari 0–6m. Silt lembut SPT 3–8 dari 6–15m. Silt keras/pasir SPT 50 dari 15m+. Cu=14–30 kPa. Cc=0.131–0.697, eo=0.492–2.023.",
-       111.46582, 1.22818],
-
-      [6, "BH6",
-       "BH6 — Peat & Silt (N Tapak)",
-       "BH6 (RL 5.42m): Peat sehingga 9m. Silt lembut 9–18m (SPT 3–9). Silt keras SPT 50 dari 18m+. Cu=18–26 kPa. Cc=0.274–0.586.",
-       111.4598, 1.22902],
-
-      [7, "BH7",
-       "BH7 — Peat & Lempung Lembut (NW Tapak)",
-       "BH7 (RL ~5.1m): Peat 0–6m. Silt lembut 6–9m (SPT 0–4). Silt keras SPT 50 dari 9m+. Cu=17–35 kPa. Cc=0.278–0.949, eo=1.264–2.965.",
-       111.4601, 1.22985]
+      [1, "BH1", "BH1 — Peat & Soft Silt (SW)",  "BH1 (RL 5.07m): Peat 0–9m. Soft silt SPT 0–3 (9–18m). Hard silt SPT 50 from 18m. Depth 25.6m.", 111.45957, 1.22278],
+      [2, "BH2", "BH2 — Peat & Soft Clay (W)",   "BH2 (RL 5.39m): Peat 0–9m. Soft clay SPT 0–2 (9–19m). Dense sand SPT 50 from 19m. Depth 25.7m.", 111.45706, 1.22522],
+      [3, "BH3", "BH3 — Peat & Medium Silt (Ctr)","BH3 (RL 5.61m): Peat 0–9m. Medium silt SPT 3–12 (9–21m). Dense sand SPT 50 from 21m. Depth 28.7m.", 111.46199, 1.22555],
+      [4, "BH4", "BH4 — Peat & Silt (NE Ctr)",   "BH4 (RL 5.52m): Peat 0–6m. Silt SPT 3–5 (6–12m). Hard silt SPT 8–50 from 12m. Depth 30.1m.", 111.46412, 1.22709],
+      [5, "BH5", "BH5 — Peat & Soft Silt (E)",   "BH5 (RL 5.53m): Peat 0–6m. Soft silt SPT 3–8 (6–15m). Hard silt/sand SPT 50 from 15m. Depth 24.1m.", 111.46582, 1.22818],
+      [6, "BH6", "BH6 — Peat & Soft Silt (N)",   "BH6 (RL 5.42m): Peat 0–9m. Soft silt SPT 3–9 (9–18m). Hard silt SPT 50 from 18m. Depth 30.2m.", 111.45980, 1.22902],
+      [7, "BH7", "BH7 — Peat & Soft Silt (NW)",  "BH7 (RL 5.10m): Peat 0–6m. Soft silt SPT 0–4 (6–9m). Hard silt SPT 50 from 9m. Depth 24.1m.", 111.46010, 1.22985]
     ],
-
-    /* No pipeline props */
     "prop": [],
-
-    /* Key site control points */
     "cps": [
-      {
-        "id": "CP1", "ch": 0,
-        "name": "Bangunan Utama Mahkamah",
-        "detail": "Bangunan kompleks mahkamah baharu, GFA ~5,800m². Cerucuk spun 250mm Ø, 21m, 200kN. Aras lantai RL 6.20m. Lantai bawah dan apron: suspended slab di atas cerucuk.",
-        "lat": 1.2262, "lon": 111.4615, "url": ""
-      },
-      {
-        "id": "CP2", "ch": 0,
-        "name": "Pintu Masuk Utama — Jalan Bayu",
-        "detail": "Pintu masuk utama dari Jalan Bayu (RL 6.10m). Laluan khas hakim dan awam. Pondok pengawal pada cerucuk RC 150mm Ø, 9m, 30kN.",
-        "lat": 1.2230, "lon": 111.4577, "url": ""
-      },
-      {
-        "id": "CP3", "ch": 0,
-        "name": "OSD Pond & Kolam Kering",
-        "detail": "OSD (On-Site Detention) dan 4 kolam kering (dry ponds) di belakang bangunan utama. Sistem saliran akhir ke longkang sedia ada Jalan Foocow melalui OSD.",
-        "lat": 1.2270, "lon": 111.4638, "url": ""
-      },
-      {
-        "id": "CP4", "ch": 0,
-        "name": "Tap-Off Air Bersih — Jalan Foocow",
-        "detail": "Titik tap paip 160mm Ø HDPE PN12.5 dari paip sedia ada di Jalan Foocow. 2 meter pukal (domestik + bomba). 3 hydrant pillar dalam tapak. Tertakluk kelulusan JBALBS.",
-        "lat": 1.2238, "lon": 111.4618, "url": ""
-      }
+      {"id": "CP1", "ch": 0, "name": "Bangunan Utama Mahkamah",      "detail": "GFA ~5,800m². Cerucuk spun 250mm Ø, 21m, 200kN. Aras lantai RL 6.20m.",   "lat": 1.2262, "lon": 111.4615, "url": ""},
+      {"id": "CP2", "ch": 0, "name": "Pintu Masuk Utama — Jalan Bayu", "detail": "Pintu masuk utama (RL 6.10m). Pondok pengawal pada cerucuk RC 150mm Ø, 9m, 30kN.", "lat": 1.2230, "lon": 111.4577, "url": ""},
+      {"id": "CP3", "ch": 0, "name": "OSD Pond & Kolam Kering",      "detail": "OSD + 4 kolam kering di belakang bangunan. Saliran ke Jalan Foocow.",       "lat": 1.2270, "lon": 111.4638, "url": ""},
+      {"id": "CP4", "ch": 0, "name": "Tap-Off Air Bersih",           "detail": "Paip 160mm Ø HDPE PN12.5 dari Jalan Foocow. 3 hydrant pillar. JBALBS.",      "lat": 1.2238, "lon": 111.4618, "url": ""}
     ]
   }
 };
 
-/* Compatibility shim — flat references consumed by HTML engine */
+/* Compatibility shim */
 APP_CONFIG.POLY   = APP_CONFIG.geo.poly;
 APP_CONFIG.CH_PTS = APP_CONFIG.geo.chPts;
 APP_CONFIG.JUNC   = APP_CONFIG.geo.junc;

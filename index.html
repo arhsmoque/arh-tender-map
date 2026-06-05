@@ -1,13 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ms">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Project Brief</title>
+<title>Mahkamah Baharu Sri Aman — Taklimat Projek</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="config.js"></script>
 <style>
 :root{
@@ -17,6 +21,12 @@
   --ac:#0099D4;--ac2:rgba(0,153,212,0.10);--ac3:rgba(0,153,212,0.05);
   --am:#F5A623;--gn:#22aa66;--mg:#cc22aa;--or:#e07020;
   --hdr:58px;
+}
+[data-theme="dark"] {
+  --bg:#0b1524;--panel:#111d2e;--p2:#0f1d30;--p3:#14253e;
+  --bd:rgba(255,255,255,0.08);--bd2:rgba(255,255,255,0.15);
+  --tx:#ddeeff;--mu:#6a88a8;--ft:#3a5570;
+  --ac:#33ccff;--ac2:rgba(0,155,155,0.12);--ac3:rgba(0,155,155,0.05);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{height:100%;font-family:'Inter',sans-serif;color:var(--tx);background:var(--bg);overflow:hidden;}
@@ -36,16 +46,22 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--tx);background:
 .chip{font-size:9px;font-weight:600;padding:2px 8px;border-radius:10px;
   background:var(--ac2);color:var(--ac);border:1px solid rgba(0,153,212,0.22);white-space:nowrap;}
 .chip.am{background:rgba(245,166,35,0.10);color:var(--am);border-color:rgba(245,166,35,0.25);}
+.hdr-actions{display:flex;gap:6px;align-items:center;}
+.hbtn{font-size:10px;font-weight:600;padding:5px 10px;border-radius:6px;background:var(--p2);color:var(--mu);border:1px solid var(--bd);cursor:pointer;font-family:'Inter',sans-serif;}
+.hbtn:hover{background:var(--ac2);color:var(--ac);}
 
 #main{display:flex;height:calc(100vh - var(--hdr));overflow:hidden;}
-#map-pane{flex:0 0 60%;position:relative;}
+#map-pane{flex:0 0 58%;position:relative;transition:flex .3s;}
+#map-pane.full{flex:0 0 100%;}
 #map{position:absolute;inset:0;}
-#sidebar{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg);border-left:1px solid var(--bd2);}
+#sidebar{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg);border-left:1px solid var(--bd2);transition:flex .3s;}
+#sidebar.hidden{display:none;}
 
-#tabs{display:flex;background:var(--panel);border-bottom:1px solid var(--bd2);flex-shrink:0;}
-.tab{flex:1;padding:11px 4px;font-size:11px;font-weight:600;color:var(--mu);
+#tabs{display:flex;background:var(--panel);border-bottom:1px solid var(--bd2);flex-shrink:0;overflow-x:auto;scrollbar-width:none;}
+#tabs::-webkit-scrollbar{display:none;}
+.tab{flex:1;padding:11px 6px;font-size:11px;font-weight:600;color:var(--mu);
   background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;
-  transition:all .15s;font-family:'Inter',sans-serif;}
+  transition:all .15s;font-family:'Inter',sans-serif;white-space:nowrap;min-width:70px;}
 .tab:hover{color:var(--ac);background:var(--ac3);}
 .tab.active{color:var(--ac);border-bottom-color:var(--ac);}
 
@@ -57,11 +73,10 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--tx);background:
 ::-webkit-scrollbar-thumb{background:var(--ft);border-radius:3px;}
 
 .card{background:var(--panel);border:1px solid var(--bd);border-radius:10px;overflow:hidden;}
-.card-hd{padding:9px 13px;border-bottom:1px solid var(--bd);background:var(--p2);}
+.card-hd{padding:9px 13px;border-bottom:1px solid var(--bd);background:var(--p2);display:flex;justify-content:space-between;align-items:center;}
 .card-hd-t{font-size:9.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--mu);}
 .card-body{padding:10px 13px;}
-.row{display:flex;justify-content:space-between;align-items:baseline;
-  padding:5px 0;border-bottom:1px solid var(--bd);}
+.row{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid var(--bd);}
 .row:last-child{border-bottom:none;}
 .rk{font-size:11px;color:var(--mu);}
 .rv{font-size:12px;font-weight:600;color:var(--tx);text-align:right;flex:1;margin-left:8px;}
@@ -79,75 +94,32 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--tx);background:
 .leg-label{font-size:11px;color:var(--tx);font-weight:500;}
 .leg-sub{font-size:9.5px;color:var(--mu);margin-left:39px;margin-top:-3px;}
 
-.route-card{border-radius:10px;overflow:hidden;border:2px solid;}
-.route-card-hd{padding:11px 13px;display:flex;align-items:center;gap:10px;}
-.route-badge{font-size:10px;font-weight:800;padding:4px 9px;border-radius:5px;color:#fff;flex-shrink:0;}
-.route-hd-t .rt{font-size:12.5px;font-weight:700;}
-.route-hd-t .rs{font-size:10px;opacity:.7;margin-top:2px;}
-.route-card-body{padding:10px 13px;background:var(--panel);}
-
-.mbd{display:flex;flex-direction:column;gap:6px;}
-.mbd-item{display:flex;align-items:center;gap:8px;}
-.mbd-label{font-size:10.5px;color:var(--mu);flex:0 0 200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.mbd-bar-wrap{flex:1;height:10px;background:var(--p3);border-radius:5px;overflow:hidden;}
-.mbd-bar{height:100%;border-radius:5px;}
-.mbd-pct{font-size:10px;font-weight:700;width:28px;text-align:right;}
-.mbd-m{font-size:9px;color:var(--ft);width:55px;text-align:right;}
-
-.method-card{background:var(--panel);border:1px solid var(--bd);border-radius:9px;overflow:hidden;}
-.method-hd{display:flex;align-items:center;gap:10px;padding:10px 13px;cursor:pointer;user-select:none;}
-.method-hd:hover{background:var(--ac3);}
-.method-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
-.method-label{font-size:12px;font-weight:600;flex:1;}
-.method-meta{font-size:9.5px;color:var(--mu);white-space:nowrap;}
-.method-chev{font-size:9px;color:var(--mu);transition:transform .2s;margin-left:4px;}
-.method-body{display:none;padding:11px 13px;border-top:1px solid var(--bd);background:var(--ac3);}
-.method-body.open{display:block;}
-.method-body .ch-tag{font-size:9.5px;font-weight:700;color:var(--ac);background:var(--ac2);
-  padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:8px;}
-.method-body p{font-size:11.5px;line-height:1.68;color:var(--mu);}
-
-.story-card{background:var(--panel);border:1px solid var(--bd);border-radius:10px;padding:14px;}
-.story-hd{display:flex;align-items:center;gap:9px;margin-bottom:9px;}
-.story-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;
-  justify-content:center;font-size:15px;flex-shrink:0;}
-.story-title{font-size:12.5px;font-weight:700;}
-.story-body{font-size:11.5px;line-height:1.72;color:var(--mu);}
-
-.fac-card{background:var(--panel);border:1px solid var(--bd);border-radius:10px;padding:12px;
-  display:flex;gap:11px;align-items:flex-start;}
-.fac-marker{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;
-  justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;}
+.fac-card{background:var(--panel);border:1px solid var(--bd);border-radius:10px;padding:12px;display:flex;gap:11px;align-items:flex-start;}
+.fac-marker{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;}
 .fac-name{font-size:12.5px;font-weight:700;line-height:1.2;}
-.fac-role{font-size:8.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
-  padding:2px 7px;border-radius:4px;margin:4px 0 6px;display:inline-block;}
+.fac-role{font-size:8.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:2px 7px;border-radius:4px;margin:4px 0 6px;display:inline-block;}
 .fac-role.primary{background:rgba(0,153,212,0.12);color:var(--ac);}
 .fac-role.extended{background:rgba(245,166,35,0.12);color:var(--am);}
-.fac-role.existing{background:rgba(34,170,102,0.12);color:var(--gn);}
 .fac-detail{font-size:11px;line-height:1.65;color:var(--mu);}
 
-.team-card{background:var(--panel);border:1px solid var(--bd);border-radius:10px;padding:14px;
-  display:flex;gap:13px;align-items:center;}
+.team-card{background:var(--panel);border:1px solid var(--bd);border-radius:10px;padding:14px;display:flex;gap:13px;align-items:center;}
 .team-logo{height:38px;width:auto;max-width:90px;object-fit:contain;}
-.team-logo-ph{width:38px;height:38px;border-radius:9px;background:var(--p2);
-  display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--ac);}
+.team-logo-ph{width:38px;height:38px;border-radius:9px;background:var(--p2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--ac);}
 .team-role{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--mu);margin-bottom:3px;}
 .team-name{font-size:13px;font-weight:700;}
 .team-detail{font-size:10.5px;color:var(--mu);margin-top:3px;}
 
 .sec-title{font-size:9.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--mu);padding:2px 0;}
+
 .auth-table{width:100%;border-collapse:collapse;font-size:11px;background:var(--panel);border-radius:10px;overflow:hidden;border:1px solid var(--bd);}
-.auth-table th{text-align:left;font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
-  color:var(--mu);padding:7px 10px;background:var(--p2);border-bottom:1px solid var(--bd2);}
+.auth-table th{text-align:left;font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--mu);padding:7px 10px;background:var(--p2);border-bottom:1px solid var(--bd2);}
 .auth-table td{padding:8px 10px;border-bottom:1px solid var(--bd);vertical-align:top;}
 .auth-table tr:last-child td{border-bottom:none;}
 .auth-table td:first-child{font-weight:600;font-size:11.5px;}
-.auth-badge{font-size:8.5px;font-weight:700;padding:2px 7px;border-radius:4px;
-  background:var(--ac2);color:var(--ac);display:inline-block;margin-bottom:3px;}
+.auth-badge{font-size:8.5px;font-weight:700;padding:2px 7px;border-radius:4px;background:var(--ac2);color:var(--ac);display:inline-block;margin-bottom:3px;}
 .auth-sub{font-size:9.5px;color:var(--mu);margin-top:2px;}
 
-.lf-popup .leaflet-popup-content-wrapper{background:var(--panel);border-radius:10px;
-  box-shadow:0 4px 20px rgba(0,0,0,0.13);border:1px solid var(--bd2);padding:0;}
+.lf-popup .leaflet-popup-content-wrapper{background:var(--panel);border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,0.13);border:1px solid var(--bd2);padding:0;}
 .lf-popup .leaflet-popup-content{margin:0;font-family:'Inter',sans-serif;}
 .lf-popup .leaflet-popup-tip{background:var(--panel);}
 .popup-inner{padding:13px 15px;min-width:210px;max-width:290px;}
@@ -156,58 +128,101 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--tx);background:
 .popup-body{font-size:11px;line-height:1.65;color:var(--mu);}
 .popup-ch{font-size:10px;font-weight:600;color:var(--ac);margin-top:7px;}
 
-/* Drawing snippet lightbox */
-#dwg-lb{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.84);z-index:9999;
-  align-items:center;justify-content:center;padding:16px;}
-#dwg-lb.open{display:flex;}
-#dwg-lb-box{background:#0d2137;border-radius:12px;overflow:hidden;
-  max-width:min(96vw,1080px);box-shadow:0 12px 48px rgba(0,0,0,0.65);
-  display:flex;flex-direction:column;}
-#dwg-lb-hdr{display:flex;align-items:center;gap:10px;padding:10px 14px;flex-shrink:0;}
-#dwg-lb-title{font-size:12px;font-weight:700;color:#fff;flex:1;line-height:1.3;}
-#dwg-lb-ch{font-size:9.5px;color:rgba(255,255,255,0.5);white-space:nowrap;flex-shrink:0;}
-#dwg-lb-close{background:rgba(255,255,255,0.12);border:none;color:#fff;font-size:13px;
-  cursor:pointer;padding:5px 9px;border-radius:5px;line-height:1;flex-shrink:0;
-  font-family:'Inter',sans-serif;}
-#dwg-lb-close:hover{background:rgba(255,255,255,0.28);}
-#dwg-lb-img{max-width:100%;max-height:80vh;object-fit:contain;display:block;
-  background:#f4f8fb;}
-.dwg-pin{background:#0d2137;color:#fff;border-radius:5px;padding:4px 8px;
-  font-size:9px;font-weight:800;font-family:'Inter',sans-serif;letter-spacing:.3px;
-  border:1.5px solid rgba(255,255,255,0.22);cursor:pointer;pointer-events:all;
-  white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.35);
-  display:flex;align-items:center;gap:5px;user-select:none;}
-.dwg-pin:hover{background:#0073a8;border-color:rgba(255,255,255,0.5);}
-.dwg-pin-dot{width:7px;height:7px;border-radius:50%;background:#F5A623;flex-shrink:0;}
-#basemap-sw{position:absolute;top:10px;right:10px;z-index:500;
-  display:flex;gap:3px;background:var(--panel);border-radius:8px;
-  padding:4px;box-shadow:0 2px 10px rgba(0,0,0,0.15);border:1px solid var(--bd2);}
-.bm-btn{font-size:10px;font-weight:600;padding:5px 10px;border-radius:5px;
-  background:none;border:none;cursor:pointer;color:var(--mu);
-  font-family:'Inter',sans-serif;transition:all .15s;white-space:nowrap;}
+#basemap-sw{position:absolute;top:10px;right:10px;z-index:500;display:flex;gap:3px;background:var(--panel);border-radius:8px;padding:4px;box-shadow:0 2px 10px rgba(0,0,0,0.15);border:1px solid var(--bd2);}
+.bm-btn{font-size:10px;font-weight:600;padding:5px 10px;border-radius:5px;background:none;border:none;cursor:pointer;color:var(--mu);font-family:'Inter',sans-serif;transition:all .15s;white-space:nowrap;}
 .bm-btn:hover{background:var(--ac2);color:var(--ac);}
 .bm-btn.active{background:var(--ac);color:#fff;}
-#coord-view{position:absolute;bottom:24px;left:10px;z-index:500;
-  background:rgba(13,33,55,0.78);color:#e0f0fa;font-size:10px;font-weight:600;
-  font-family:'Inter',sans-serif;padding:4px 10px;border-radius:5px;
-  letter-spacing:.3px;pointer-events:none;backdrop-filter:blur(2px);}
-.photo-pin{background:#1a1a2e;color:#fff;border-radius:6px;padding:4px 8px;
-  font-size:9px;font-weight:700;font-family:'Inter',sans-serif;
-  border:1.5px solid rgba(100,200,255,0.35);cursor:pointer;pointer-events:all;
-  white-space:nowrap;box-shadow:0 2px 10px rgba(0,0,0,0.4);
-  display:flex;align-items:center;gap:5px;user-select:none;}
-.photo-pin:hover{background:#0073a8;border-color:rgba(100,200,255,0.7);}
-.photo-pin-icon{font-size:11px;flex-shrink:0;}
+
+#map-tools{position:absolute;top:10px;left:10px;z-index:500;display:flex;flex-direction:column;gap:4px;}
+.mt-btn{font-size:10px;font-weight:600;padding:5px 10px;border-radius:5px;background:var(--panel);border:1px solid var(--bd2);cursor:pointer;color:var(--mu);font-family:'Inter',sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.10);}
+.mt-btn:hover{background:var(--ac2);color:var(--ac);}
+.mt-btn.on{background:var(--ac);color:#fff;border-color:var(--ac);}
+
+#coord-view{position:absolute;bottom:24px;left:10px;z-index:500;background:rgba(13,33,55,0.78);color:#e0f0fa;font-size:10px;font-weight:600;font-family:'Inter',sans-serif;padding:4px 10px;border-radius:5px;letter-spacing:.3px;pointer-events:none;backdrop-filter:blur(2px);}
+#copy-toast{position:absolute;bottom:48px;left:10px;z-index:600;background:var(--gn);color:#fff;font-size:10px;font-weight:700;padding:4px 10px;border-radius:5px;opacity:0;transition:opacity .3s;pointer-events:none;}
+
+/* Borehole log styles */
+.bh-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
+.bh-card{background:var(--panel);border:1px solid var(--bd);border-radius:10px;overflow:hidden;cursor:pointer;transition:transform .15s,box-shadow .15s;}
+.bh-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.08);}
+.bh-hd{padding:9px 12px;background:var(--p2);border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;}
+.bh-id{font-size:13px;font-weight:800;color:var(--ac);}
+.bh-meta{font-size:9px;color:var(--mu);}
+.bh-body{padding:10px 12px;display:flex;flex-direction:column;gap:6px;}
+.bh-layer{display:flex;align-items:center;gap:8px;font-size:11px;}
+.bh-layer-bar{flex:1;height:18px;border-radius:4px;position:relative;overflow:hidden;}
+.bh-layer-text{white-space:nowrap;}
+.bh-spt{font-size:10px;font-weight:700;color:var(--tx);background:var(--p3);padding:1px 6px;border-radius:4px;}
+
+/* Chart containers */
+.chart-wrap{background:var(--panel);border:1px solid var(--bd);border-radius:10px;padding:12px;}
+.chart-title{font-size:11px;font-weight:700;color:var(--tx);margin-bottom:8px;}
+.chart-box{position:relative;height:220px;}
+.chart-box.tall{height:320px;}
+
+/* Alerts */
+.alert-box{background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.25);border-radius:8px;padding:10px 12px;}
+.alert-title{font-size:10px;font-weight:700;color:var(--am);margin-bottom:4px;}
+.alert-body{font-size:11px;color:var(--mu);line-height:1.6;}
+
+/* Stat pills */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.stat-pill{background:var(--panel);border:1px solid var(--bd);border-radius:10px;padding:10px;text-align:center;}
+.stat-num{font-size:20px;font-weight:800;color:var(--ac);line-height:1;}
+.stat-unit{font-size:9px;color:var(--mu);margin-top:2px;}
+.stat-lbl{font-size:10px;color:var(--mu);margin-top:4px;font-weight:600;}
+
+/* Scope list */
+.scope-item{display:flex;align-items:flex-start;gap:9px;padding:8px 0;border-bottom:1px solid var(--bd);}
+.scope-item:last-child{border-bottom:none;padding-bottom:0;}
+.scope-dot{width:22px;height:22px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;}
+.scope-txt{font-size:11.5px;line-height:1.55;color:var(--tx);}
+
+/* Modal */
+#modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:9000;align-items:center;justify-content:center;padding:16px;}
+#modal-overlay.show{display:flex;}
+.modal-box{background:var(--panel);border-radius:12px;max-width:520px;width:100%;max-height:85vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 12px 48px rgba(0,0,0,0.35);}
+.modal-hd{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--bd);background:var(--p2);}
+.modal-tl{font-size:13px;font-weight:700;}
+.modal-cl{background:none;border:none;color:var(--mu);font-size:18px;cursor:pointer;}
+.modal-body{padding:14px;overflow-y:auto;}
+.bh-log-viz{display:flex;flex-direction:column;gap:4px;}
+.bh-log-row{display:flex;align-items:center;gap:8px;font-size:11px;}
+.bh-log-depth{width:60px;color:var(--mu);font-size:10px;text-align:right;}
+.bh-log-bar{flex:1;height:24px;border-radius:4px;display:flex;align-items:center;padding:0 8px;color:#fff;font-weight:700;font-size:10px;text-shadow:0 1px 2px rgba(0,0,0,0.5);position:relative;overflow:hidden;}
+.bh-log-spt{width:50px;text-align:right;font-weight:700;color:var(--tx);}
+.bh-log-note{color:var(--mu);font-size:10px;}
+
+/* PDF preview */
+#pdf-preview{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9001;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
+#pdf-preview.show{display:flex;}
+.pdf-box{background:var(--panel);border-radius:10px;padding:16px;max-width:400px;width:100%;text-align:center;}
+.pdf-spinner{width:32px;height:32px;border:3px solid var(--bd);border-top-color:var(--ac);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 12px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* External link card */
+.ext-card{background:var(--panel);border:1px solid var(--bd);border-radius:10px;padding:12px;display:flex;gap:12px;align-items:center;cursor:pointer;transition:all .15s;text-decoration:none;color:inherit;}
+.ext-card:hover{border-color:var(--ac);background:var(--ac3);}
+.ext-icon{width:40px;height:40px;border-radius:8px;background:var(--p2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.ext-title{font-size:12px;font-weight:700;}
+.ext-desc{font-size:10px;color:var(--mu);margin-top:2px;}
+
+/* Responsive */
+@media(max-width:960px){#map-pane{flex:0 0 50%;}}
+@media(max-width:780px){
+  #main{flex-direction:column;}
+  #map-pane{flex:0 0 45vh;}
+  #sidebar{flex:1;border-left:none;border-top:1px solid var(--bd2);}
+}
+@media print{
+  #hdr-actions,.mt-btn,#basemap-sw,#map-tools,.tab,.hbtn{display:none!important;}
+  #sidebar{flex:1!important;display:flex!important;}
+  #map-pane{display:none!important;}
+  body{overflow:auto!important;}
+}
 </style>
 </head>
 <body>
-<script>
-if(/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||
-   (window.innerWidth<=900&&'ontouchstart' in window)){
-  window.location.replace('mobile.html');
-}
-</script>
-
 <header id="hdr">
   <div class="hdr-brand">
     <img id="client-logo" src="" alt="Client">
@@ -220,6 +235,12 @@ if(/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||
   <div class="hdr-title">
     <div class="hdr-proj" id="proj-title"></div>
     <div class="hdr-chips" id="stat-chips"></div>
+  </div>
+  <div class="hdr-actions" id="hdr-actions">
+    <button class="hbtn" id="btn-pdf" title="Export PDF">📄 PDF</button>
+    <button class="hbtn" id="btn-print" title="Cetak">🖨️ Cetak</button>
+    <button class="hbtn" id="btn-theme" title="Tukar tema">🌙</button>
+    <button class="hbtn" id="btn-fullmap" title="Peta penuh">⛶</button>
   </div>
   <div class="hdr-div"></div>
   <div class="hdr-brand" style="justify-content:flex-end;">
@@ -239,34 +260,114 @@ if(/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||
       <button class="bm-btn" onclick="switchBm('sat',this)">Satellite</button>
       <button class="bm-btn" onclick="switchBm('topo',this)">Topo</button>
     </div>
+    <div id="map-tools">
+      <button class="mt-btn on" id="lyr-bh" onclick="toggleLayer('bh')">🔍 BH</button>
+      <button class="mt-btn on" id="lyr-boundary" onclick="toggleLayer('boundary')">⬡ Sempadan</button>
+      <button class="mt-btn on" id="lyr-fac" onclick="toggleLayer('fac')">🏢 Kemudahan</button>
+      <button class="mt-btn" id="lyr-heat" onclick="toggleHeatmap()">🌡️ Heatmap</button>
+    </div>
     <div id="coord-view">—</div>
+    <div id="copy-toast">Koordinat disalin</div>
   </div>
   <div id="sidebar">
     <div id="tabs">
-      <button class="tab active" data-tab="t-map">🗺 Map</button>
-      <button class="tab" data-tab="t-scope">📋 Scope</button>
-      <button class="tab" data-tab="t-bg">ℹ Background</button>
-      <button class="tab" data-tab="t-team">👥 Team</button>
+      <button class="tab active" data-tab="t-overview">📋 Info</button>
+      <button class="tab" data-tab="t-geo">🏗 Geoteknik</button>
+      <button class="tab" data-tab="t-charts">📊 Graf</button>
+      <button class="tab" data-tab="t-site">📐 Tapak</button>
+      <button class="tab" data-tab="t-team">👥 Pasukan</button>
     </div>
-    <div id="t-map" class="panel active"><div class="pg" id="map-panel"></div></div>
-    <div id="t-scope" class="panel"><div class="pg" id="scope-panel"></div></div>
-    <div id="t-bg" class="panel"><div class="pg" id="bg-panel"></div></div>
+    <div id="t-overview" class="panel active"><div class="pg" id="overview-panel"></div></div>
+    <div id="t-geo" class="panel"><div class="pg" id="geo-panel"></div></div>
+    <div id="t-charts" class="panel"><div class="pg" id="charts-panel"></div></div>
+    <div id="t-site" class="panel"><div class="pg" id="site-panel"></div></div>
     <div id="t-team" class="panel"><div class="pg" id="team-panel"></div></div>
   </div>
 </div>
 
-<script>
-const C=APP_CONFIG, T=C.theme||{};
+<!-- Borehole Log Modal -->
+<div id="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <div class="modal-hd"><span class="modal-tl" id="modal-title">Log Borehole</span><button class="modal-cl" onclick="closeModal()">✕</button></div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
 
-/* CSS token override from theme */
+<!-- PDF Export Preview -->
+<div id="pdf-preview"><div class="pdf-box"><div class="pdf-spinner"></div><div style="font-size:13px;font-weight:700;">Menjana PDF...</div><div style="font-size:11px;color:var(--mu);margin-top:6px;">Sila tunggu sebentar</div></div></div>
+
+<script>
+const C=APP_CONFIG, T=C.theme||{}, GT=C.geotechnical||{};
+
+/* Theme override */
 const tv={'--bg':T.bg,'--panel':T.panel,'--p2':T.panel2,'--p3':T.panel3,
   '--bd':T.border,'--bd2':T.border2,'--tx':T.text,'--mu':T.muted,'--ft':T.faint,
   '--ac':T.accent,'--ac2':T.accent2,'--am':T.amber,'--gn':T.green,'--mg':T.magenta,'--or':T.orange};
 Object.entries(tv).forEach(([k,v])=>v&&document.documentElement.style.setProperty(k,v));
 
-/* Header */
-document.title=C.pageTitle||'Project Brief';
 const $=id=>document.getElementById(id);
+document.title=C.pageTitle||'Project Brief';
+
+/* Dark mode */
+const themeBtn=$('btn-theme');
+function applyTheme(dark){
+  document.documentElement.setAttribute('data-theme', dark?'dark':'');
+  themeBtn.textContent=dark?'☀️':'🌙';
+  localStorage.setItem('dpik-theme', dark?'dark':'light');
+}
+applyTheme(localStorage.getItem('dpik-theme')==='dark');
+themeBtn.onclick=()=>applyTheme(!document.documentElement.getAttribute('data-theme'));
+
+/* Print */
+$('btn-print').onclick=()=>window.print();
+
+/* PDF Export */
+$('btn-pdf').onclick=async()=>{
+  const preview=$('pdf-preview');
+  preview.classList.add('show');
+  try{
+    const {jsPDF}=window.jspdf;
+    const pdf=new jsPDF('p','mm','a4');
+    pdf.setFont('helvetica');
+    pdf.setFontSize(16);
+    pdf.text(C.project.title,14,20);
+    pdf.setFontSize(10);
+    pdf.text(`No. Tender: ${C.project.tenderNumber} | Disediakan oleh: ${C.consultant.name}`,14,28);
+    pdf.setDrawColor(200);pdf.line(14,32,196,32);
+    const sections=[['overview-panel',20],['geo-panel',20],['site-panel',20]];
+    let y=40;
+    for(const [id,pad] of sections){
+      const el=$(id);
+      if(!el)continue;
+      const clone=el.cloneNode(true);
+      clone.style.background='#fff';clone.style.color='#000';
+      const wrap=document.createElement('div');
+      wrap.style.position='absolute';wrap.style.left='-9999px';
+      wrap.style.width='780px';wrap.appendChild(clone);document.body.appendChild(wrap);
+      const canvas=await html2canvas(clone,{scale:2,backgroundColor:'#ffffff'});
+      document.body.removeChild(wrap);
+      const imgData=canvas.toDataURL('image/png');
+      const imgW=180;const imgH=(canvas.height*imgW)/canvas.width;
+      if(y+imgH>280){pdf.addPage();y=20;}
+      pdf.addImage(imgData,'PNG',14,y,imgW,imgH);
+      y+=imgH+pad;
+    }
+    pdf.save(`Taklimat_${C.project.tenderNumber.replace(/\//g,'_')}.pdf`);
+  }catch(e){console.error(e);alert('Gagal menjana PDF: '+e.message);}
+  preview.classList.remove('show');
+};
+
+/* Fullscreen map */
+let mapFull=false;
+$('btn-fullmap').onclick=()=>{
+  mapFull=!mapFull;
+  $('map-pane').classList.toggle('full',mapFull);
+  $('sidebar').classList.toggle('hidden',mapFull);
+  $('btn-fullmap').textContent=mapFull?'⛶ Tutup':'⛶ Penuh';
+  setTimeout(()=>map.invalidateSize(),350);
+};
+
+/* Header */
 $('client-logo').src=C.client.logo;
 $('client-name').textContent=C.client.name;
 $('client-sub').textContent=C.client.subname||'';
@@ -275,12 +376,12 @@ $('consult-name').textContent=C.consultant.name;
 $('consult-sub').textContent=C.consultant.subname||'';
 $('proj-title').textContent=C.project.title;
 const chips=$('stat-chips');
-[[`${C.stats.totalLengthKm} km Pipeline`,''],[`${C.stats.hospitalsServed} Hospitals`,'am']].forEach(([t,c])=>{
+[['SPT 50×5 · 7 BH',''],['32 Probe JKR','am']].forEach(([t,c])=>{
   const s=document.createElement('span');s.className='chip'+(c?' '+c:'');
   s.textContent=t;chips.appendChild(s);
 });
 
-/* Tab switching */
+/* Tabs */
 document.querySelectorAll('.tab').forEach(b=>{
   b.addEventListener('click',()=>{
     document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
@@ -289,27 +390,6 @@ document.querySelectorAll('.tab').forEach(b=>{
     document.getElementById(b.dataset.tab).classList.add('active');
   });
 });
-
-/* interp: chainage → [lat,lon] */
-function interp(d){
-  const p=C.POLY;
-  function hav(a,b){
-    const R=6371000,f1=a[0]*Math.PI/180,f2=b[0]*Math.PI/180,
-      df=(b[0]-a[0])*Math.PI/180,dl=(b[1]-a[1])*Math.PI/180,
-      s=Math.sin(df/2),c=Math.sin(dl/2),aa=s*s+Math.cos(f1)*Math.cos(f2)*c*c;
-    return R*2*Math.atan2(Math.sqrt(aa),Math.sqrt(1-aa));
-  }
-  let acc=0;
-  for(let i=1;i<p.length;i++){
-    const seg=hav(p[i-1],p[i]);
-    if(acc+seg>=d){
-      const f=(d-acc)/seg;
-      return[p[i-1][0]+(p[i][0]-p[i-1][0])*f,p[i-1][1]+(p[i][1]-p[i-1][1])*f];
-    }
-    acc+=seg;
-  }
-  return p[p.length-1];
-}
 
 /* Map */
 const map=L.map('map',{zoomControl:true}).setView(C.map.center,C.map.zoom);
@@ -327,255 +407,332 @@ function switchBm(name,btn){
   document.querySelectorAll('.bm-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
 }
-const lg=L.layerGroup().addTo(map);
 
-(C.methodSegments||[]).forEach(seg=>{
-  const pts=[];
-  for(let d=seg.fromCh;d<seg.toCh;d+=10){const p=interp(d);if(p)pts.push(p);}
-  const last=interp(seg.toCh);if(last)pts.push(last);
-  if(pts.length<2)return;
-  const hx=seg.color.replace('#',''),
-    cr=parseInt(hx.slice(0,2),16),cg=parseInt(hx.slice(2,4),16),cb=parseInt(hx.slice(4,6),16);
-  /* Scalable path: wider halo + mid layer + core line + direction arrows */
-  L.polyline(pts,{color:`rgba(${cr},${cg},${cb},0.10)`,weight:28,opacity:1,lineJoin:'round'}).addTo(lg);
-  L.polyline(pts,{color:`rgba(${cr},${cg},${cb},0.35)`,weight:14,opacity:1,lineJoin:'round'}).addTo(lg);
-  L.polyline(pts,{color:seg.color,weight:7,opacity:.95,lineJoin:'round'}).addTo(lg);
-  for(let i=30;i<pts.length-15;i+=45){
-    const a=pts[i], b=pts[i+10];
-    const ang=Math.atan2(b[1]-a[1],b[0]-a[0])*180/Math.PI;
-    L.marker(a,{icon:L.divIcon({className:'',html:
-      '<div style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:8px solid '+seg.color+';transform:rotate('+(ang+90)+'deg);opacity:0.7;"></div>',
-      iconSize:[10,10],iconAnchor:[5,5]})}).addTo(lg);
-  }
-});
-
-/* Chainage markers — major tick + label every 500m, minor tick every 100m */
-const totalCh=2198.85;
-for(let ch=0;ch<=totalCh;ch+=100){
-  const pt=interp(ch);if(!pt)continue;
-  const isRouteB=ch>=1452.45;
-  const displayCh=Math.round(isRouteB?ch-1452.45:ch);
-  const col=isRouteB?'#F5A623':'#0099D4';
-  /* major = within 60m of a 500m boundary on the route-relative chainage */
-  const isMajor=(displayCh%500<60)||(displayCh===0);
-  const kmStr=(displayCh/1000).toFixed(3).replace(/\.?0+$/,'');
-  const label=(isRouteB?'B':'A')+'+'+(displayCh<1000?'0':'')+Math.floor(displayCh/1000)+'+'+(displayCh%1000).toString().padStart(3,'0');
-  if(isMajor){
-    L.marker(pt,{icon:L.divIcon({className:'',html:
-      '<div style="width:2px;height:14px;background:'+col+';opacity:0.75;margin:0 auto;border-radius:1px;"></div>'+
-      '<div style="font-size:9px;font-weight:700;color:'+col+';opacity:0.80;text-align:center;white-space:nowrap;margin-top:2px;letter-spacing:0.3px;text-shadow:0 1px 3px rgba(255,255,255,0.9);">'+label+'</div>',
-      iconSize:[48,26],iconAnchor:[24,7]})}).addTo(lg);
-  } else {
-    L.marker(pt,{icon:L.divIcon({className:'',html:
-      '<div style="width:1px;height:7px;background:'+col+';opacity:0.30;margin:0 auto;border-radius:1px;"></div>',
-      iconSize:[4,8],iconAnchor:[2,7]})}).addTo(lg);
-  }
+const layers={bh:L.layerGroup().addTo(map), boundary:L.layerGroup().addTo(map), fac:L.layerGroup().addTo(map)};
+let heatLayer=null;
+function toggleLayer(name){
+  const el=document.getElementById('lyr-'+name);
+  if(map.hasLayer(layers[name])){map.removeLayer(layers[name]);el.classList.remove('on');}
+  else{layers[name].addTo(map);el.classList.add('on');}
 }
 
-const jClr={B:'#e06020',C:'#e06020',D:'#e06020',F:'#cc22aa'};
-(C.JUNC||[]).forEach(j=>{
-  const[ch,lbl,title,detail,lon,lat]=j;
-  const clr=jClr[lbl]||T.accent;
-  const icon=L.divIcon({className:'',html:
-    `<div style="width:28px;height:28px;border-radius:50%;background:${clr};color:#fff;
-      display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;
-      box-shadow:0 2px 8px rgba(0,0,0,0.22);border:2px solid #fff;">${lbl}</div>`,
-    iconSize:[28,28],iconAnchor:[14,14]});
-  L.marker([lat,lon],{icon}).addTo(lg)
-    .bindPopup(`<div class="popup-inner">
-      <div class="popup-lbl">Node ${lbl}</div>
-      <div class="popup-title">${title}</div>
-      <div class="popup-body">${detail}</div>
-      <div class="popup-ch">${ch>=1452.45?('Route B · CH '+String(((ch-1452.45)/1000).toFixed(3)).replace('.','+')):('Route A · CH '+String((ch/1000).toFixed(3)).replace('.','+'))}</div>
-    </div>`,{className:'lf-popup'});
+/* Site boundary */
+const poly=C.geo.poly;
+if(poly&&poly.length>2){
+  L.polygon(poly,{color:T.accent||'#27772C',weight:3,fillColor:T.accent||'#27772C',fillOpacity:0.06,dashArray:'6 4'}).addTo(layers.boundary);
+  L.polyline(poly.concat([poly[0]]),{color:T.accent||'#27772C',weight:2,opacity:0.4}).addTo(layers.boundary);
+}
+
+/* GeoJSON Boreholes with interactive log modal */
+const bhFeatures={type:'FeatureCollection',features:(GT.boreholes||[]).map(bh=>({type:'Feature',geometry:{type:'Point',coordinates:[bh.lon,bh.lat]},properties:bh}))};
+const bhClr={'BH1':'#F44336','BH2':'#E91E63','BH3':'#9C27B0','BH4':'#673AB7','BH5':'#3F51B5','BH6':'#009688','BH7':'#FF5722'};
+L.geoJSON(bhFeatures,{
+  pointToLayer:(feature,latlng)=>{
+    const id=feature.properties.id;
+    const clr=bhClr[id]||'#0099D4';
+    return L.marker(latlng,{icon:L.divIcon({className:'',html:`<div style="width:30px;height:30px;border-radius:50%;background:${clr};color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,0.25);border:2px solid #fff;cursor:pointer;">${id}</div>`,iconSize:[30,30],iconAnchor:[15,15]})});
+  },
+  onEachFeature:(feature,layer)=>{
+    const p=feature.properties;
+    layer.bindPopup(`<div class="popup-inner"><div class="popup-lbl">Borehole ${p.id}</div><div class="popup-title">${p.id} — ${p.layers[0].soil} ke ${p.layers[p.layers.length-1].soil}</div><div class="popup-body">RL ${p.rlM} · Kedalaman ${p.depthM}m · GWL ${p.gwlM}m<br>Klik ikon untuk log penuh.</div></div>`,{className:'lf-popup'});
+    layer.on('click',()=>openBoreholeModal(p));
+  }
+}).addTo(layers.bh);
+
+/* Borehole modal */
+function openBoreholeModal(bh){
+  $('modal-title').textContent=`Log Borehole ${bh.id}`;
+  let html=`<div style="font-size:11px;color:var(--mu);margin-bottom:10px;">RL ${bh.rlM}m · Kedalaman ${bh.depthM}m · GWL ${bh.gwlM}m bgl</div><div class="bh-log-viz">`;
+  bh.layers.forEach(L=>{
+    html+=`<div class="bh-log-row">
+      <div class="bh-log-depth">${L.depthFrom.toFixed(1)}–${L.depthTo.toFixed(1)}m</div>
+      <div class="bh-log-bar" style="background:${L.colour};">${L.soil}</div>
+      <div class="bh-log-spt">SPT ${L.spt}</div>
+    </div>`;
+  });
+  html+=`</div>`;
+  if(bh.lab){
+    html+=`<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--bd);"><div class="sec-title">Ujian Makmal</div>`;
+    if(bh.lab.cuKpa) html+=`<div class="bh-log-note">Cu: ${bh.lab.cuKpa.join('–')} kPa</div>`;
+    if(bh.lab.cc) html+=`<div class="bh-log-note">Cc: ${bh.lab.cc}</div>`;
+    if(bh.lab.ccRange) html+=`<div class="bh-log-note">Cc: ${bh.lab.ccRange.join(' – ')}</div>`;
+    if(bh.lab.eo) html+=`<div class="bh-log-note">eo: ${bh.lab.eo}</div>`;
+    if(bh.lab.eoRange) html+=`<div class="bh-log-note">eo: ${bh.lab.eoRange.join(' – ')}</div>`;
+    if(bh.lab.cv) html+=`<div class="bh-log-note">cv: ${bh.lab.cv} m²/yr</div>`;
+    if(bh.lab.cvRange) html+=`<div class="bh-log-note">cv: ${bh.lab.cvRange.join(' – ')} m²/yr</div>`;
+    html+=`</div>`;
+  }
+  $('modal-body').innerHTML=html;
+  $('modal-overlay').classList.add('show');
+}
+function closeModal(){$('modal-overlay').classList.remove('show');}
+
+/* Facility markers */
+const fclr={primary:T.accent||'#0099D4',extended:T.amber||'#F5A623'};
+(C.facilities||[]).forEach(f=>{
+  const c=fclr[f.tag]||T.accent;
+  const icon=L.divIcon({className:'',html:`<div style="width:32px;height:32px;border-radius:8px;background:${c};color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,0.25);border:2px solid #fff;cursor:pointer;">${f.marker}</div>`,iconSize:[32,32],iconAnchor:[16,16]});
+  L.marker([f.lat,f.lon],{icon}).addTo(layers.fac)
+    .bindPopup(`<div class="popup-inner"><div class="popup-lbl">${f.role}</div><div class="popup-title">${f.name}</div><div class="popup-body">${f.detail}</div></div>`,{className:'lf-popup'});
 });
 
-/* MAP PANEL */
-const mp=$('map-panel');
-mp.insertAdjacentHTML('beforeend',`
-  <div class="card">
-    <div class="card-hd"><div class="card-hd-t">Quick Navigation</div></div>
-    <div class="card-body"><div class="qnav-row" id="qnav"></div></div>
-  </div>`);
-(C.quickNav||[]).forEach(qn=>{
-  const b=document.createElement('button');b.className='qbtn';b.textContent=qn.label;
-  b.onclick=()=>map.setView([qn.lat,qn.lon],qn.zoom||17);
+/* Heatmap from borehole data */
+function buildHeatmapData(){
+  const pts=[];
+  (GT.boreholes||[]).forEach(bh=>{
+    let peatTh=0;bh.layers.forEach(L=>{if(L.soil.toLowerCase().includes('peat'))peatTh+=L.depthTo-L.depthFrom;});
+    pts.push([bh.lat,bh.lon,peatTh*2]); // intensity scaled
+  });
+  return pts;
+}
+function toggleHeatmap(){
+  const el=$('lyr-heat');
+  if(heatLayer){map.removeLayer(heatLayer);heatLayer=null;el.classList.remove('on');return;}
+  heatLayer=L.heatLayer(buildHeatmapData(),{radius:35,blur:25,maxZoom:17,max:20,gradient:{0.2:'#4CAF50',0.4:'#FFEB3B',0.6:'#FF9800',0.8:'#F44336'}}).addTo(map);
+  el.classList.add('on');
+}
+
+/* Quick nav */
+const qn=$('overview-panel');
+qn.insertAdjacentHTML('beforeend',`<div class="card"><div class="card-hd"><div class="card-hd-t">Navigasi Pantas</div></div><div class="card-body"><div class="qnav-row" id="qnav"></div></div></div>`);
+(C.quickNav||[]).forEach(q=>{
+  const b=document.createElement('button');b.className='qbtn';b.textContent=q.label;
+  b.onclick=()=>map.setView([q.lat,q.lon],q.zoom||17);
   $('qnav').appendChild(b);
 });
 
-const legData=(C.legend||[]).map(li=>({c:li.color,l:li.label,s:li.sub}));
+/* Legend */
 let legHtml=`<div class="card"><div class="card-hd"><div class="card-hd-t">Legend</div></div><div class="card-body"><div class="legend">`;
-legData.forEach(li=>{
-  legHtml+=`<div class="leg-item"><div class="leg-swatch" style="background:${li.c};"></div>
-    <div class="leg-label">${li.l}</div></div>
-    <div class="leg-sub">${li.s}</div>`;
+(C.legend||[]).forEach(li=>{
+  legHtml+=`<div class="leg-item"><div class="leg-swatch" style="background:${li.color};"></div><div class="leg-label">${li.l}</div></div><div class="leg-sub">${li.s}</div>`;
 });
 legHtml+=`</div></div></div>`;
-mp.insertAdjacentHTML('beforeend',legHtml);
+qn.insertAdjacentHTML('beforeend',legHtml);
 
-/* SCOPE PANEL */
-const sp=$('scope-panel');
-(C.routes||[]).forEach(r=>{
-  const c=r.color;
-  const rowsHtml=(r.rows||[]).map(row=>
-    `<div class="row"><span class="rk">${row.k}</span><span class="rv">${row.v}</span></div>`
-  ).join('');
-  sp.insertAdjacentHTML('beforeend',`
-    <div class="route-card" style="border-color:${c};">
-      <div class="route-card-hd" style="background:${c}18;color:${c};">
-        <span class="route-badge" style="background:${c};">${r.id}</span>
-        <div class="route-hd-t">
-          <div class="rt">${r.pipeSpec} — Route ${r.id}</div>
-          <div class="rs">${r.from} → ${r.to}</div>
-        </div>
-      </div>
-      <div class="route-card-body">${rowsHtml}</div>
-    </div>`);
-});
+/* Overview stats */
+qn.insertAdjacentHTML('beforeend',`
+<div class="stat-row">
+  <div class="stat-pill"><div class="stat-num">7</div><div class="stat-unit">BH</div><div class="stat-lbl">Lubang Gerudi</div></div>
+  <div class="stat-pill"><div class="stat-num">32</div><div class="stat-unit">Probe</div><div class="stat-lbl">Mackintosh</div></div>
+  <div class="stat-pill"><div class="stat-num">${GT.settlement?GT.settlement.totalSettlementMm:'370'}</div><div class="stat-unit">mm</div><div class="stat-lbl">Enapan Jumlah</div></div>
+  <div class="stat-pill"><div class="stat-num">1.639</div><div class="stat-unit">FOS</div><div class="stat-lbl">Kestabilan Statik</div></div>
+</div>`);
 
-if(C.methodBreakdown&&C.methodBreakdown.length){
-  let h=`<div class="card"><div class="card-hd"><div class="card-hd-t">Construction Method Breakdown</div></div>
-    <div class="card-body"><div class="mbd">`;
-  C.methodBreakdown.forEach(m=>{
-    h+=`<div class="mbd-item">
-      <div class="mbd-label">${m.method}</div>
-      <div class="mbd-bar-wrap"><div class="mbd-bar" style="width:${m.pct}%;background:${m.color};"></div></div>
-      <div class="mbd-pct" style="color:${m.color};">${m.pct}%</div>
-      <div class="mbd-m">${m.metres.toLocaleString()}m</div>
-    </div>`;
+/* Alerts */
+if(C.alerts&&C.alerts.length){
+  C.alerts.forEach(a=>{
+    qn.insertAdjacentHTML('beforeend',`<div class="alert-box"><div class="alert-title">${a.title}</div><div class="alert-body">${a.body}</div></div>`);
   });
-  sp.insertAdjacentHTML('beforeend',h+`</div></div></div>`);
 }
 
-sp.insertAdjacentHTML('beforeend',`<div class="sec-title">Construction Methods</div>`);
-(C.constructionMethods||[]).forEach((m,i)=>{
-  const el=document.createElement('div');el.className='method-card';
-  el.innerHTML=`
-    <div class="method-hd" onclick="this.nextElementSibling.classList.toggle('open');
-      this.querySelector('.method-chev').style.transform=this.nextElementSibling.classList.contains('open')?'rotate(180deg)':'';">
-      <div class="method-dot" style="background:${m.color};"></div>
-      <div class="method-label">${m.label}</div>
-      <div class="method-meta">${m.total}</div>
-      <div class="method-chev">▼</div>
-    </div>
-    <div class="method-body${i===0?' open':''}">
-      <div class="ch-tag">📍 ${m.chainage}</div>
-      <p>${m.detail}</p>
+/* Scope */
+let scopeH=`<div class="card"><div class="card-hd"><div class="card-hd-t">Skop Kerja Utama</div></div><div class="card-body">`;
+(C.scope||[]).forEach((s,i)=>{
+  scopeH+=`<div class="scope-item"><div class="scope-dot" style="background:${s.color}1a;color:${s.color};border:1px solid ${s.color}40;">${i+1}</div><div class="scope-txt">${s.text}</div></div>`;
+});
+scopeH+=`</div></div>`;
+qn.insertAdjacentHTML('beforeend',scopeH);
+
+/* Design standards */
+let dsH=`<div class="card"><div class="card-hd"><div class="card-hd-t">Parameter Reka Bentuk</div></div><div class="card-body">`;
+(C.designStandards||[]).forEach(d=>{
+  dsH+=`<div class="row"><span class="rk">${d.parameter}${d.unit!=='—'?' ('+d.unit+')':''}</span><span class="rv ac">${d.value}</span></div>`;
+});
+dsH+=`</div></div>`;
+qn.insertAdjacentHTML('beforeend',dsH);
+
+/* Rationale */
+const rat=C.rationale||{};
+if(rat.problem){
+  qn.insertAdjacentHTML('beforeend',`<div class="card"><div class="card-hd"><div class="card-hd-t">Justifikasi Projek</div></div><div class="card-body"><div style="font-size:11px;line-height:1.7;color:var(--mu);"><strong style="color:var(--tx);">Masalah:</strong> ${rat.problem}<br><br><strong style="color:var(--tx);">Penyelesaian:</strong> ${rat.solution}<br><br><strong style="color:var(--tx);">Hasil:</strong> ${rat.outcome}</div></div></div>`);
+}
+
+/* ===================== GEOTECHNICAL TAB ===================== */
+const gp=$('geo-panel');
+
+/* SI Summary */
+gp.insertAdjacentHTML('beforeend',`<div class="card"><div class="card-hd"><div class="card-hd-t">Ringkasan Siasatan Tapak</div></div><div class="card-body">
+  <div class="row"><span class="rk">Boreholes</span><span class="rv">${GT.siSummary.boreholes} (SPT 50×5)</span></div>
+  <div class="row"><span class="rk">Mackintosh Probe</span><span class="rv">${GT.siSummary.probes} (15m)</span></div>
+  <div class="row"><span class="rk">Ujian Makmal</span><span class="rv">${GT.siSummary.labTests.join(', ')}</span></div>
+  <div class="row"><span class="rk">Sampel Undisturbed</span><span class="rv">Ya</span></div>
+</div></div>`);
+
+/* Seismic */
+gp.insertAdjacentHTML('beforeend',`<div class="card"><div class="card-hd"><div class="card-hd-t">Hazard Seismik & Kimia</div></div><div class="card-body">
+  <div class="row"><span class="rk">Zon Seismik</span><span class="rv">${GT.seismic.zone}</span></div>
+  <div class="row"><span class="rk">PGA</span><span class="rv">${GT.seismic.pga}</span></div>
+  <div class="row"><span class="rk">MMI</span><span class="rv">${GT.seismic.mmi}</span></div>
+  <div class="row"><span class="rk">Sulfat</span><span class="rv ac">${GT.chemical.sulphate.range} · ${GT.chemical.sulphate.class}</span></div>
+  <div class="row"><span class="rk">pH Air Bumi</span><span class="rv ac">${GT.chemical.ph.range} · ${GT.chemical.ph.class}</span></div>
+  <div class="row"><span class="rk">Klorida</span><span class="rv">${GT.chemical.chloride.range}</span></div>
+</div></div>`);
+
+/* Earthwork */
+const ew=GT.earthwork;
+gp.insertAdjacentHTML('beforeend',`<div class="card"><div class="card-hd"><div class="card-hd-t">Kerja Tanah</div></div><div class="card-body">
+  <div class="row"><span class="rk">Aras Sedia Ada</span><span class="rv">RL ${ew.existingRL}</span></div>
+  <div class="row"><span class="rk">Aras Platform</span><span class="rv">RL ${ew.platformRL}</span></div>
+  <div class="row"><span class="rk">Tebal Timbusan</span><span class="rv">${ew.fillHeight} m</span></div>
+  <div class="row"><span class="rk">Cerun Timbus</span><span class="rv">${ew.fillSlope}</span></div>
+  <div class="row"><span class="rk">Pengeras</span><span class="rv">${ew.geotextile}</span></div>
+  <div class="row"><span class="rk">Isipadu</span><span class="rv">${ew.volume}</span></div>
+</div></div>`);
+
+/* Slope stability */
+const ss=GT.slopeStability;
+gp.insertAdjacentHTML('beforeend',`<div class="card"><div class="card-hd"><div class="card-hd-t">Kestabilan Cerun</div></div><div class="card-body">
+  <div class="row"><span class="rk">Kaedah</span><span class="rv">${ss.method}</span></div>
+  <div class="row"><span class="rk">FOS Fill Slope</span><span class="rv" style="color:var(--gn);">${ss.fillSlopeFos}</span></div>
+  <div class="row"><span class="rk">FOS Statik (min 1.5)</span><span class="rv" style="color:var(--gn);">${ss.staticFos}</span></div>
+  <div class="row"><span class="rk">FOS Seismik 5.9% (min 1.3)</span><span class="rv" style="color:var(--gn);">${ss.seismicFos}</span></div>
+</div></div>`);
+
+/* Borehole cards */
+gp.insertAdjacentHTML('beforeend',`<div class="sec-title">Log Borehole (Klik untuk log penuh)</div>`);
+const bhGrid=document.createElement('div');bhGrid.className='bh-grid';
+(GT.boreholes||[]).forEach(bh=>{
+  const card=document.createElement('div');card.className='bh-card';
+  let layersHtml='';
+  bh.layers.forEach(L=>{
+    layersHtml+=`<div class="bh-layer">
+      <div class="bh-layer-bar" style="background:${L.colour};"><span style="position:absolute;left:4px;top:2px;font-size:9px;color:#fff;font-weight:700;text-shadow:0 1px 2px rgba(0,0,0,0.5);">${L.depthFrom}-${L.depthTo}m</span></div>
+      <div class="bh-layer-text">${L.soil}</div>
+      <div class="bh-spt">SPT ${L.spt}</div>
     </div>`;
-  sp.appendChild(el);
+  });
+  card.innerHTML=`<div class="bh-hd"><div><div class="bh-id">${bh.id}</div><div class="bh-meta">RL ${bh.rlM} · ${bh.depthM}m · GWL ${bh.gwlM}m</div></div></div><div class="bh-body">${layersHtml}</div>`;
+  card.onclick=()=>openBoreholeModal(bh);
+  bhGrid.appendChild(card);
 });
+gp.appendChild(bhGrid);
 
-/* Design Standards section removed per directive — avoids ambiguity */
+/* Mackintosh probe */
+const mp=GT.mackintoshProbes;
+gp.insertAdjacentHTML('beforeend',`<div class="card"><div class="card-hd"><div class="card-hd-t">Mackintosh Probe (32 tests)</div></div><div class="card-body">
+  <div class="row"><span class="rk">Kedalaman Penamatan</span><span class="rv">${mp.terminationM} m</span></div>
+  <div class="row"><span class="rk">Bilangan Tumbukan (min–max)</span><span class="rv">${Math.min(...mp.blows)} – ${Math.max(...mp.blows)} / 300mm</span></div>
+  <div class="row"><span class="rk">Purata Tumbukan</span><span class="rv">${(mp.blows.reduce((a,b)=>a+b,0)/mp.blows.length).toFixed(0)}</span></div>
+</div></div>`);
 
-/* BACKGROUND PANEL */
-const bp=$('bg-panel');
-const stories=[
-  {i:'⚠️',bg:'rgba(224,112,32,0.09)',t:'The Problem',b:C.rationale.problem},
-  {i:'💡',bg:'rgba(0,153,212,0.09)', t:'The Solution',b:C.rationale.solution},
-  {i:'✅',bg:'rgba(34,170,102,0.09)',t:'The Outcome', b:C.rationale.outcome}
-];
-stories.forEach(s=>{
-  bp.insertAdjacentHTML('beforeend',
-    `<div class="story-card">
-      <div class="story-hd">
-        <div class="story-icon" style="background:${s.bg};">${s.i}</div>
-        <div class="story-title">${s.t}</div>
-      </div>
-      <div class="story-body">${s.b}</div>
-    </div>`);
-});
+/* ===================== CHARTS TAB ===================== */
+const cp=$('charts-panel');
+cp.insertAdjacentHTML('beforeend',`<div class="chart-wrap"><div class="chart-title">📉 Enapan vs Masa (Consolidation Settlement)</div><div class="chart-box tall"><canvas id="chart-settlement"></canvas></div></div>`);
+cp.insertAdjacentHTML('beforeend',`<div class="chart-wrap"><div class="chart-title">🔨 Profil SPT N-Value (BH1–BH7)</div><div class="chart-box tall"><canvas id="chart-spt"></canvas></div></div>`);
+cp.insertAdjacentHTML('beforeend',`<div class="chart-wrap"><div class="chart-title">🏗 Kapasiti Cerucuk — Perbandingan ICE</div><div class="chart-box"><canvas id="chart-pile"></canvas></div></div>`);
 
-bp.insertAdjacentHTML('beforeend',`<div class="sec-title">Facilities Served</div>`);
-const fclr={primary:T.accent||'#0099D4',extended:T.amber||'#F5A623',existing:T.green||'#22aa66'};
+/* ===================== SITE TAB ===================== */
+const sp=$('site-panel');
+sp.insertAdjacentHTML('beforeend',`<div class="sec-title">Pelan Susun Atur Kemudahan</div>`);
 (C.facilities||[]).forEach(f=>{
   const c=fclr[f.tag]||T.accent;
-  bp.insertAdjacentHTML('beforeend',
-    `<div class="fac-card">
-      <div class="fac-marker" style="background:${c};">${f.marker}</div>
-      <div>
-        <div class="fac-name">${f.name}</div>
-        <span class="fac-role ${f.tag}">${f.role}</span>
-        <div class="fac-detail">${f.detail}</div>
-      </div>
-    </div>`);
+  sp.insertAdjacentHTML('beforeend',`<div class="fac-card"><div class="fac-marker" style="background:${c};">${f.marker}</div><div><div class="fac-name">${f.name}</div><span class="fac-role ${f.tag}">${f.role}</span><div class="fac-detail">${f.detail}</div></div></div>`);
 });
 
-/* TEAM PANEL */
+/* CoGSI Sarawak link */
+sp.insertAdjacentHTML('beforeend',`<div class="sec-title">Data Geoteknik Wilayah (Sarawak)</div>
+  <a class="ext-card" href="https://cogsi.sarawak.gov.my" target="_blank" rel="noopener">
+    <div class="ext-icon">🌏</div>
+    <div>
+      <div class="ext-title">CoGSI — Consolidated Geotechnical Site Investigation (Sarawak)</div>
+      <div class="ext-desc">Akses data geoteknik regional untuk tapak-tapak di Sarawak. Sistem web-based untuk carian, paparan dan muat turun maklumat borehole.</div>
+    </div>
+  </a>
+  <div style="font-size:10px;color:var(--mu);margin-top:6px;">Nota: Pautan ke pangkalan data geoteknik awam Sarawak untuk konteks regional tapak Jalan Bayu.</div>
+`);
+
+sp.insertAdjacentHTML('beforeend',`<div class="sec-title">Pihak Berkuasa & Kelulusan</div>`);
+let authH=`<table class="auth-table"><thead><tr><th>Pihak Berkuasa</th><th>Skop Kelulusan</th><th>Jalan / Rujukan</th></tr></thead><tbody>`;
+(C.governingAuthorities||[]).forEach(a=>{
+  authH+=`<tr><td><div class="auth-badge">${a.abbr}</div>${a.name}<br><span style="font-size:9.5px;color:var(--mu);">${a.type}</span></td><td><span style="font-weight:600;font-size:11px;">${a.chainageLabel}</span></td><td>${a.roads}<div class="auth-sub">${a.landmarks}</div></td></tr>`;
+});
+authH+=`</tbody></table>`;
+sp.insertAdjacentHTML('beforeend',authH);
+
+/* ===================== TEAM TAB ===================== */
 const tp=$('team-panel');
 (C.projectTeam||[]).forEach(t=>{
-  const logo=t.logo
-    ?`<img class="team-logo" src="${t.logo}" alt="${t.abbr}" onerror="this.parentNode.innerHTML='<div class=team-logo-ph>${t.abbr.slice(0,3)}</div>'">`
-    :`<div class="team-logo-ph">${(t.abbr||t.name).slice(0,3)}</div>`;
-  tp.insertAdjacentHTML('beforeend',
-    `<div class="team-card">${logo}
-      <div>
-        <div class="team-role">${t.role}</div>
-        <div class="team-name">${t.name}</div>
-        <div class="team-detail">${t.detail||''}</div>
-      </div>
-    </div>`);
+  const logo=t.logo?`<img class="team-logo" src="${t.logo}" alt="${t.abbr}" onerror="this.parentNode.innerHTML='<div class=team-logo-ph>${(t.abbr||t.name).slice(0,3)}</div>'">`:`<div class="team-logo-ph">${(t.abbr||t.name).slice(0,3)}</div>`;
+  tp.insertAdjacentHTML('beforeend',`<div class="team-card">${logo}<div><div class="team-role">${t.role}</div><div class="team-name">${t.name}</div><div class="team-detail">${t.detail||''}</div></div></div>`);
 });
 
-if(C.governingAuthorities&&C.governingAuthorities.length){
-  tp.insertAdjacentHTML('beforeend',`<div class="sec-title">Road & Permit Authorities</div>`);
-  let h=`<table class="auth-table"><thead><tr>
-    <th>Authority</th><th>Chainage Zone</th><th>Roads & Landmarks</th></tr></thead><tbody>`;
-  C.governingAuthorities.forEach(a=>{
-    h+=`<tr>
-      <td><div class="auth-badge">${a.abbr}</div><br>${a.name}<br>
-          <span style="font-size:9.5px;color:var(--mu);">${a.type}</span></td>
-      <td><span class="auth-sub" style="font-weight:600;font-size:11px;">${a.chainageLabel}</span></td>
-      <td>${a.roads}<div class="auth-sub">${a.landmarks}</div></td>
-    </tr>`;
+/* Contacts */
+if(C.contacts&&C.contacts.length){
+  tp.insertAdjacentHTML('beforeend',`<div class="sec-title">Hubungi</div>`);
+  C.contacts.forEach(g=>{
+    tp.insertAdjacentHTML('beforeend',`<div class="card" style="margin-bottom:8px;"><div class="card-hd"><div class="card-hd-t">${g.label}</div></div><div class="card-body">`+
+      g.members.map(m=>`<div class="row"><span class="rk">${m.name}<br><span style="font-size:9.5px;color:var(--mu);">${m.title}</span></span><span class="rv" style="font-size:10px;">${m.email}</span></div>`).join('')+`</div></div>`);
   });
-  h+=`</tbody></table>`;
-  tp.insertAdjacentHTML('beforeend',h);
 }
-/* Drawing snippets — map pins + lightbox */
-function openDwg(img,title,ch){
-  document.getElementById('dwg-lb-img').src=img;
-  document.getElementById('dwg-lb-title').textContent=title;
-  document.getElementById('dwg-lb-ch').textContent=ch||'';
-  document.getElementById('dwg-lb').classList.add('open');
-}
-document.getElementById('dwg-lb').addEventListener('click',function(e){
-  if(e.target===this)this.classList.remove('open');
-});
-document.addEventListener('keydown',function(e){
-  if(e.key==='Escape')document.getElementById('dwg-lb').classList.remove('open');
-});
-document.addEventListener('click',function(e){
-  const el=e.target.closest('.dwg-pin, .photo-pin');
-  if(el)openDwg(el.dataset.img,el.dataset.title,el.dataset.ch);
-});
 
-/* Coordinate viewer */
-const coordEl=document.getElementById('coord-view');
+/* Coordinate viewer + copy */
+const coordEl=$('coord-view'), toast=$('copy-toast');
 map.on('mousemove',e=>{
   const la=e.latlng.lat,lo=e.latlng.lng;
   coordEl.textContent=Math.abs(la).toFixed(5)+'° '+(la>=0?'N':'S')+'  '+Math.abs(lo).toFixed(5)+'° '+(lo>=0?'E':'W');
 });
 map.on('mouseout',()=>{coordEl.textContent='—';});
-(C.dwgSnippets||[]).forEach(d=>{
-  const safeTitle=d.title.replace(/"/g,'&quot;');
-  const safeCh=(d.ch||'').replace(/"/g,'&quot;');
-  const icon=L.divIcon({className:'',
-    html:`<div class="photo-pin" data-img="${d.img}" data-title="${safeTitle}" data-ch="${safeCh}"><span class="photo-pin-icon">📷</span> ${d.label}</div>`,
-    iconSize:[null,null],iconAnchor:[0,14]});
-  L.marker([d.lat,d.lon],{icon,interactive:false,keyboard:false}).addTo(lg);
+map.on('click',e=>{
+  const la=e.latlng.lat,lo=e.latlng.lng;
+  const txt=la.toFixed(6)+','+lo.toFixed(6);
+  navigator.clipboard&&navigator.clipboard.writeText(txt).then(()=>{toast.style.opacity=1;setTimeout(()=>toast.style.opacity=0,1500);});
 });
+
+/* ===================== CHART.JS ===================== */
+function initCharts(){
+  Chart.defaults.font.family="'Inter',sans-serif";
+  Chart.defaults.color=getComputedStyle(document.body).getPropertyValue('--mu').trim()||'#4d7a9a';
+
+  const sc=GT.settlement.curves;
+  new Chart(document.getElementById('chart-settlement'),{
+    type:'line',
+    data:{labels:sc.map(d=>d.months+' bln'),datasets:[
+      {label:'Enapan (mm)',data:sc.map(d=>d.mm),borderColor:'#0099D4',backgroundColor:'rgba(0,153,212,0.1)',tension:0.3,fill:true,pointRadius:3}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{title:{display:true,text:'Masa (bulan)'}},y:{title:{display:true,text:'Enapan (mm)'},beginAtZero:true}}}
+  });
+
+  const bhs=GT.boreholes;
+  const sptData={peat:[],soft:[],hard:[]};
+  bhs.forEach(bh=>{
+    let peat=0,soft=0,hard=0;
+    bh.layers.forEach(L=>{
+      const th=L.depthTo-L.depthFrom;
+      if(L.soil.toLowerCase().includes('peat'))peat+=th;
+      else if(L.spt==='50'||(L.spt&&L.spt.includes&&L.spt.includes('50')))hard+=th;
+      else soft+=th;
+    });
+    sptData.peat.push(peat);sptData.soft.push(soft);sptData.hard.push(hard);
+  });
+  new Chart(document.getElementById('chart-spt'),{
+    type:'bar',
+    data:{labels:bhs.map(b=>b.id),datasets:[
+      {label:'Peat',data:sptData.peat,backgroundColor:'#5D4037'},
+      {label:'Soft Soil (SPT<4)',data:sptData.soft,backgroundColor:'#A1887F'},
+      {label:'Hard/Dense (SPT 50)',data:sptData.hard,backgroundColor:'#FFF176'}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{title:{display:false}},
+      scales:{x:{stacked:true,title:{display:true,text:'Kedalaman (m)'}},y:{stacked:true}},
+      interaction:{mode:'index',intersect:false}}
+  });
+
+  const pc=GT.pileCapacityIce;
+  new Chart(document.getElementById('chart-pile'),{
+    type:'bar',
+    data:{labels:['Bakau 100mm','RC 150mm','Spun 250mm'],datasets:[
+      {label:'Purata Kapasiti (kN)',data:[
+        pc.bakau100.reduce((a,b)=>a+b.capacityKn,0)/pc.bakau100.length,
+        pc.rc150.reduce((a,b)=>a+b.capacityKn,0)/pc.rc150.length,
+        pc.spun250.reduce((a,b)=>a+b.capacityKn,0)/pc.spun250.length
+      ],backgroundColor:['#8D6E63','#2196F3','#F44336']}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{y:{title:{display:true,text:'Kapasiti (kN)'},beginAtZero:true}}}
+  });
+}
+
+setTimeout(initCharts,400);
 </script>
-
-<div id="dwg-lb">
-  <div id="dwg-lb-box">
-    <div id="dwg-lb-hdr">
-      <span id="dwg-lb-title"></span>
-      <span id="dwg-lb-ch"></span>
-      <button id="dwg-lb-close" onclick="document.getElementById('dwg-lb').classList.remove('open')">✕ Close</button>
-    </div>
-    <img id="dwg-lb-img" src="" alt="Drawing Snippet">
-  </div>
-</div>
-
 </body>
 </html>
