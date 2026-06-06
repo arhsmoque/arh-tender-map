@@ -172,6 +172,18 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--tx);background:
 .stat-unit{font-size:9px;color:var(--mu);margin-top:2px;}
 .stat-lbl{font-size:10px;color:var(--mu);margin-top:4px;font-weight:600;}
 
+/* Decision briefing */
+.decision-summary{font-size:11.5px;line-height:1.65;color:var(--mu);}
+.decision-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+.decision-card{background:var(--panel);border:1px solid var(--bd);border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:6px;}
+.decision-tag{font-size:8.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--ac);}
+.decision-title{font-size:12px;font-weight:800;color:var(--tx);line-height:1.25;}
+.decision-body{font-size:10.5px;line-height:1.55;color:var(--mu);}
+.decision-status{font-size:10px;font-weight:700;color:var(--am);line-height:1.4;}
+.gate-list{display:flex;flex-direction:column;gap:7px;}
+.gate-item{display:flex;gap:8px;align-items:flex-start;font-size:11px;line-height:1.5;color:var(--tx);}
+.gate-num{width:20px;height:20px;border-radius:5px;background:var(--ac2);color:var(--ac);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;}
+
 /* Scope list */
 .scope-item{display:flex;align-items:flex-start;gap:9px;padding:8px 0;border-bottom:1px solid var(--bd);}
 .scope-item:last-child{border-bottom:none;padding-bottom:0;}
@@ -213,6 +225,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--tx);background:
   #main{flex-direction:column;}
   #map-pane{flex:0 0 45vh;}
   #sidebar{flex:1;border-left:none;border-top:1px solid var(--bd2);}
+  .decision-grid{grid-template-columns:1fr;}
 }
 @media print{
   #hdr-actions,.mt-btn,#basemap-sw,#map-tools,.tab,.hbtn{display:none!important;}
@@ -272,11 +285,11 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--tx);background:
   </div>
   <div id="sidebar">
     <div id="tabs">
-      <button class="tab active" data-tab="t-overview">📋 Info</button>
-      <button class="tab" data-tab="t-geo">🏗 Geoteknik</button>
-      <button class="tab" data-tab="t-charts">📊 Graf</button>
+      <button class="tab active" data-tab="t-overview">📋 Keputusan</button>
+      <button class="tab" data-tab="t-geo">🏗 Bukti</button>
+      <button class="tab" data-tab="t-charts">📊 Trend</button>
       <button class="tab" data-tab="t-site">📐 Tapak</button>
-      <button class="tab" data-tab="t-team">👥 Pasukan</button>
+      <button class="tab" data-tab="t-team">👥 Peranan</button>
     </div>
     <div id="t-overview" class="panel active"><div class="pg" id="overview-panel"></div></div>
     <div id="t-geo" class="panel"><div class="pg" id="geo-panel"></div></div>
@@ -555,6 +568,32 @@ function toggleHeatmap(){
 
 /* Quick nav */
 const qn=$('overview-panel');
+const db=C.decisionBrief||{};
+if(db.purpose){
+  qn.insertAdjacentHTML('beforeend',`<div class="card"><div class="card-hd"><div class="card-hd-t">Tujuan Mesyuarat</div></div><div class="card-body">
+    <div class="decision-summary">${db.purpose}</div>
+    ${db.meeting?`<div style="margin-top:9px;padding-top:8px;border-top:1px solid var(--bd);font-size:10.5px;line-height:1.6;color:var(--mu);"><strong style="color:var(--tx);">${db.meeting.date} · ${db.meeting.time}</strong><br>${db.meeting.venue}<br>${db.meeting.attendance}</div>`:''}
+  </div></div>`);
+}
+if(db.decisionQuestions&&db.decisionQuestions.length){
+  let decisionHtml=`<div class="card"><div class="card-hd"><div class="card-hd-t">Soalan Keputusan JKR</div></div><div class="card-body"><div class="decision-grid">`;
+  db.decisionQuestions.forEach(q=>{
+    decisionHtml+=`<div class="decision-card">
+      <div class="decision-tag">${q.label}</div>
+      <div class="decision-title">${q.question}</div>
+      <div class="decision-body">${q.evidence}</div>
+      <div class="decision-status">${q.status}</div>
+    </div>`;
+  });
+  decisionHtml+=`</div></div></div>`;
+  qn.insertAdjacentHTML('beforeend',decisionHtml);
+}
+if(db.evidenceGates&&db.evidenceGates.length){
+  let gateHtml=`<div class="card"><div class="card-hd"><div class="card-hd-t">Evidence Gates Sebelum Persetujuan</div></div><div class="card-body"><div class="gate-list">`;
+  db.evidenceGates.forEach((g,i)=>{gateHtml+=`<div class="gate-item"><span class="gate-num">${i+1}</span><span>${g}</span></div>`;});
+  gateHtml+=`</div></div></div>`;
+  qn.insertAdjacentHTML('beforeend',gateHtml);
+}
 qn.insertAdjacentHTML('beforeend',`<div class="card"><div class="card-hd"><div class="card-hd-t">Navigasi Pantas</div></div><div class="card-body"><div class="qnav-row" id="qnav"></div></div></div>`);
 (C.quickNav||[]).forEach(q=>{
   const b=document.createElement('button');b.className='qbtn';b.textContent=q.label;

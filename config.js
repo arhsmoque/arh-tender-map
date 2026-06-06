@@ -152,11 +152,11 @@ const APP_CONFIG = {
   ],
 
   "map": {
-    "center": [1.23053, 111.45744],
+    "center": [1.23059, 111.45736],
     "zoom":   17,
     "bounds": [
-      [1.228, 111.454],
-      [1.234, 111.461]
+      [1.22930, 111.45610],
+      [1.23190, 111.45880]
     ]
   },
 
@@ -173,6 +173,54 @@ const APP_CONFIG = {
     "minZoom": 16,
     "attribution": "eLASIS / Land and Survey Department Sarawak",
     "note": "Live eLASIS cadastral boundary service is token-protected and is requested through the public eLASIS GIS proxy used by their own viewer. If access is blocked, replace this with an exported local GeoJSON/PDF-derived layer."
+  },
+
+  "decisionBrief": {
+    "purpose": "Menyokong Mesyuarat Reka Bentuk Geoteknik JKR pada 8 Jun 2026 dengan menukar data siasatan tapak Sri Aman kepada bukti keputusan untuk penerimaan platform, enapan, cerun, cerucuk dan kawalan pembinaan.",
+    "meeting": {
+      "date": "8 June 2026",
+      "time": "9:30 am",
+      "venue": "Bilik Mesyuarat Bahagian Reka Bentuk Geoteknik Bangunan, Tingkat 23A, Menara PJD, Ibu Pejabat JKR Malaysia",
+      "attendance": "Kehadiran perunding adalah wajib berdasarkan memo Wekajaya WSB/ENG/MBSA/DPIK/2026(008), 29 Mei 2026."
+    },
+    "decisionQuestions": [
+      {
+        "label": "Strategi platform",
+        "question": "Bolehkah JKR menerima RL 6.20m dengan timbusan ~1.0m di atas peat / silt lembut?",
+        "evidence": "Sempadan Lot 2000, 7 BH, 32 MP, separator TS 30, cerun timbus 1V:2H, ~20,000 m³ timbusan + 7,000 m³ surgecaj.",
+        "status": "Terima dengan syarat kawalan pembinaan"
+      },
+      {
+        "label": "Risiko enapan",
+        "question": "Adakah enapan pasca-binaan boleh diterima untuk operasi kompleks mahkamah?",
+        "evidence": "Enapan jumlah ~391mm (median Cc); pasca-binaan 272mm pada 36 bulan median Cc, 229mm pada 36 bulan purata Cc, 209mm pada 48 bulan purata Cc.",
+        "status": "Keputusan bergantung pada tempoh program dan titik kawalan pemantauan"
+      },
+      {
+        "label": "Kestabilan cerun",
+        "question": "Adakah cerun timbus melepasi FOS minimum JKR untuk semakan statik dan seismik?",
+        "evidence": "Morgenstern-Price / Slope-W: FOS 1.639 statik dan 1.316 seismik berbanding minimum 1.5 dan 1.3; FOS cerun timbus setempat 4.83.",
+        "status": "Boleh diterima dengan perlindungan hakisan"
+      },
+      {
+        "label": "Pilihan asas",
+        "question": "Adakah panjang dan kapasiti cerucuk konsisten dengan bukti borehole?",
+        "evidence": "Bangunan utama: spun 250mm, 21m, 200kN. Jalan/parkir/ancillary: RC 150mm, 9m, 30kN. Utiliti/pagar: bakau 100mm, 6m, 5kN.",
+        "status": "Sahkan rejim ujian dan semakan jurutera geoteknik untuk anomali"
+      }
+    ],
+    "evidenceGates": [
+      "Sahkan sempadan kadaster Lot 2000 dan susun atur tapak terhadap eLASIS sebelum taklimat dimuktamadkan.",
+      "Kaitkan setiap zon kemudahan dengan borehole berdekatan dan kedalaman lapisan lembut; jangan anggap tapak seragam.",
+      "Tetapkan trigger pemantauan enapan jika program 36 bulan dikekalkan.",
+      "Lindungi cerun sementara dalam satu minggu; hydroseed/geomat, cut-off drain, toe drain dan cascading drain.",
+      "Jalankan Static Load Test pada 1% titik cerucuk dan PDA / High Strain Dynamic Test sekurang-kurangnya 3%."
+    ],
+    "sourceNotes": [
+      "Memo mesyuarat: Wekajaya Engineering Department Memo WSB/ENG/MBSA/DPIK/2026(008), 29 Mei 2026.",
+      "Ekstrak teknikal: Independent Geotechnical Checker Report Rev 02, 7 Mei 2026.",
+      "Koordinat: Projek Mahkamah Sri Aman.kmz, eksport Google Earth Pro."
+    ]
   },
 
   "methodSegments": [],
@@ -214,10 +262,10 @@ const APP_CONFIG = {
   ],
 
   "quickNav": [
-    {"label": "Tapak Keseluruhan", "lat": 1.23053, "lon": 111.45744, "zoom": 17},
-    {"label": "BH1 (W)",           "lat": 1.23068, "lon": 111.45683, "zoom": 19},
-    {"label": "BH3 (SW-Ctr)",      "lat": 1.23032, "lon": 111.45718, "zoom": 19},
-    {"label": "BH5 (E)",           "lat": 1.23079, "lon": 111.45804, "zoom": 19},
+    {"label": "Lot 2000",          "lat": 1.23059, "lon": 111.45736, "zoom": 18},
+    {"label": "BH1 (W)",           "lat": 1.230844613982477, "lon": 111.4567190721134, "zoom": 19},
+    {"label": "BH3 (Ctr)",         "lat": 1.230382214306199, "lon": 111.4570586755615, "zoom": 19},
+    {"label": "BH6 (S)",           "lat": 1.229859064507745, "lon": 111.4574453288203, "zoom": 19},
     {"label": "Sri Aman Town",     "lat": 1.2333,  "lon": 111.4621,  "zoom": 14}
   ],
 
@@ -390,7 +438,7 @@ const APP_CONFIG = {
 
     "boreholes": [
       {
-        "id": "BH1", "lat": 1.23068, "lon": 111.45683, "rlM": 5.07, "depthM": 25.615,
+        "id": "BH1", "lat": 1.230844613982477, "lon": 111.4567190721134, "rlM": 5.07, "depthM": 25.615,
         "gwlM": 3.34,
         "layers": [
           {"depthFrom": 0.00, "depthTo": 9.00,  "soil": "Peat",             "spt": "0",    "colour": "#5D4037"},
@@ -401,7 +449,7 @@ const APP_CONFIG = {
         "lab": {"cuKpa": [9.7, 26], "cc": 0.477, "eo": 1.694, "cv": 1.474}
       },
       {
-        "id": "BH2", "lat": 1.23113, "lon": 111.45700, "rlM": 5.39, "depthM": 25.660,
+        "id": "BH2", "lat": 1.231202385599171, "lon": 111.4572890642997, "rlM": 5.39, "depthM": 25.660,
         "gwlM": 2.58,
         "layers": [
           {"depthFrom": 0.00, "depthTo": 9.00,  "soil": "Peat",             "spt": "0",    "colour": "#5D4037"},
@@ -412,7 +460,7 @@ const APP_CONFIG = {
         "lab": {"cuKpa": [9, 22], "ccRange": [0.136, 0.761], "eoRange": [0.650, 2.133]}
       },
       {
-        "id": "BH3", "lat": 1.23032, "lon": 111.45718, "rlM": 5.61, "depthM": 28.660,
+        "id": "BH3", "lat": 1.230382214306199, "lon": 111.4570586755615, "rlM": 5.61, "depthM": 28.660,
         "gwlM": 2.30,
         "layers": [
           {"depthFrom": 0.00, "depthTo": 9.00,  "soil": "Peat",              "spt": "0",    "colour": "#5D4037"},
@@ -423,7 +471,7 @@ const APP_CONFIG = {
         "lab": {"cuKpa": [10], "note": "Typical"}
       },
       {
-        "id": "BH4", "lat": 1.23113, "lon": 111.45754, "rlM": 5.52, "depthM": 30.085,
+        "id": "BH4", "lat": 1.230870433257311, "lon": 111.457249267201, "rlM": 5.52, "depthM": 30.085,
         "gwlM": 2.99,
         "layers": [
           {"depthFrom": 0.00, "depthTo": 6.00,  "soil": "Peat",             "spt": "0",    "colour": "#5D4037"},
@@ -434,7 +482,7 @@ const APP_CONFIG = {
         "lab": {"cuKpa": [14, 21], "ccRange": [0.586, 0.761], "eoRange": [1.701, 1.981]}
       },
       {
-        "id": "BH5", "lat": 1.23079, "lon": 111.45804, "rlM": 5.53, "depthM": 24.070,
+        "id": "BH5", "lat": 1.230696016581852, "lon": 111.4577186724582, "rlM": 5.53, "depthM": 24.070,
         "gwlM": 2.36,
         "layers": [
           {"depthFrom": 0.00, "depthTo": 6.00,  "soil": "Peat",             "spt": "0",    "colour": "#5D4037"},
@@ -445,7 +493,7 @@ const APP_CONFIG = {
         "lab": {"cuKpa": [14, 30], "ccRange": [0.131, 0.697], "eoRange": [0.492, 2.023]}
       },
       {
-        "id": "BH6", "lat": 1.22993, "lon": 111.45765, "rlM": 5.42, "depthM": 30.160,
+        "id": "BH6", "lat": 1.229859064507745, "lon": 111.4574453288203, "rlM": 5.42, "depthM": 30.160,
         "gwlM": 2.92,
         "layers": [
           {"depthFrom": 0.00, "depthTo": 9.00,  "soil": "Peat",             "spt": "0–1",  "colour": "#5D4037"},
@@ -456,7 +504,7 @@ const APP_CONFIG = {
         "lab": {"cuKpa": [18, 26], "ccRange": [0.274, 0.586]}
       },
       {
-        "id": "BH7", "lat": 1.23014, "lon": 111.45791, "rlM": 5.10, "depthM": 24.070,
+        "id": "BH7", "lat": 1.230239735274369, "lon": 111.4579427722577, "rlM": 5.10, "depthM": 24.070,
         "gwlM": 1.76,
         "layers": [
           {"depthFrom": 0.00, "depthTo": 6.00,  "soil": "Peat",             "spt": "0",    "colour": "#5D4037"},
@@ -501,23 +549,24 @@ const APP_CONFIG = {
      ───────────────────────────────────────────────────────────────────────── */
   "geo": {
     "poly": [
-      [1.22946, 111.45743],
-      [1.23042, 111.45852],
-      [1.23038, 111.45829],
-      [1.23160, 111.45746],
-      [1.23088, 111.45635],
-      [1.22946, 111.45743]
+      [1.229498521188063, 111.4574098079336],
+      [1.230446514601365, 111.4585316598169],
+      [1.230369167465016, 111.4582565607028],
+      [1.231722979978533, 111.4574392550496],
+      [1.230873587566818, 111.4563604495926],
+      [1.230057271916703, 111.4569801122528],
+      [1.229498521188063, 111.4574098079336]
     ],
     "chPts": [],
     "sPos": [],
     "junc": [
-      [1, "BH1", "BH1 — Peat & Soft Silt (W)",       "BH1 (RL 5.07m, GWL 3.34m): Peat 0–9m. Soft silt N=0–3 (9–13.5m). Stiff silt N=7–18 (13.5–19.5m). Hard silt N=50 (19.5–25.6m). Kedalaman 25.6m.", 111.45683, 1.23068],
-      [2, "BH2", "BH2 — Peat & Soft Clay (NW)",      "BH2 (RL 5.39m, GWL 2.58m): Peat 0–9m. Soft clay N=0–2 (9–15m). Stiff silt N=6–19 (15–19.5m). Hard silt N=50 (19.5–25.7m). Kedalaman 25.7m.", 111.45700, 1.23113],
-      [3, "BH3", "BH3 — Peat & Medium Silt (SW-Ctr)","BH3 (RL 5.61m, GWL 2.30m): Peat 0–9m. Soft silt N=0–3 (9–15m). Medium silt N=6–12 (15–22.5m). Hard silt N=50 (22.5–28.7m). Kedalaman 28.7m.", 111.45718, 1.23032],
-      [4, "BH4", "BH4 — Peat & Silt (N-Ctr)",        "BH4 (RL 5.52m, GWL 2.99m): Peat 0–6m. Soft silt N=3–4 (6–10.5m). Stiff silt N=5–15 (10.5–19.5m). Hard silt N=50 (19.5–30.1m). Kedalaman 30.1m.", 111.45754, 1.23113],
-      [5, "BH5", "BH5 — Peat & Soft Silt (E)",       "BH5 (RL 5.53m, GWL 2.36m): Peat 0–6m. Soft silt N=3–4 (6–10.5m). Stiff silt N=5–12 (10.5–18m). Hard silt N=50 (18–24.1m). Kedalaman 24.1m.", 111.45804, 1.23079],
-      [6, "BH6", "BH6 — Peat & Soft Silt (S)",       "BH6 (RL 5.42m, GWL 2.92m): Peat 0–9m. Soft silt N=0–4 (9–16.5m). Stiff silt N=5–16 (16.5–22.5m). Hard silt N=50 (22.5–30.2m). Kedalaman 30.2m.", 111.45765, 1.22993],
-      [7, "BH7", "BH7 — Peat & Soft Silt (SE)",      "BH7 (RL 5.10m, GWL 1.76m): Peat 0–6m. Soft silt N=0–4 (6–10.5m). Stiff silt N=5–10 (10.5–18m). Hard silt N=50 (18–24.1m). Kedalaman 24.1m.", 111.45791, 1.23014]
+      [1, "BH1", "BH1 — Peat & Soft Silt (W)",       "BH1 (RL 5.07m, GWL 3.34m): Peat 0–9m. Soft silt N=0–3 (9–13.5m). Stiff silt N=7–18 (13.5–19.5m). Hard silt N=50 (19.5–25.6m). Kedalaman 25.6m.", 111.4567190721134, 1.230844613982477],
+      [2, "BH2", "BH2 — Peat & Soft Clay (NW)",      "BH2 (RL 5.39m, GWL 2.58m): Peat 0–9m. Soft clay N=0–2 (9–15m). Stiff silt N=6–19 (15–19.5m). Hard silt N=50 (19.5–25.7m). Kedalaman 25.7m.", 111.4572890642997, 1.231202385599171],
+      [3, "BH3", "BH3 — Peat & Medium Silt (Ctr)",   "BH3 (RL 5.61m, GWL 2.30m): Peat 0–9m. Soft silt N=0–3 (9–15m). Medium silt N=6–12 (15–22.5m). Hard silt N=50 (22.5–28.7m). Kedalaman 28.7m.", 111.4570586755615, 1.230382214306199],
+      [4, "BH4", "BH4 — Peat & Silt (Ctr-N)",        "BH4 (RL 5.52m, GWL 2.99m): Peat 0–6m. Soft silt N=3–4 (6–10.5m). Stiff silt N=5–15 (10.5–19.5m). Hard silt N=50 (19.5–30.1m). Kedalaman 30.1m.", 111.457249267201, 1.230870433257311],
+      [5, "BH5", "BH5 — Peat & Soft Silt (E)",       "BH5 (RL 5.53m, GWL 2.36m): Peat 0–6m. Soft silt N=3–4 (6–10.5m). Stiff silt N=5–12 (10.5–18m). Hard silt N=50 (18–24.1m). Kedalaman 24.1m.", 111.4577186724582, 1.230696016581852],
+      [6, "BH6", "BH6 — Peat & Soft Silt (S)",       "BH6 (RL 5.42m, GWL 2.92m): Peat 0–9m. Soft silt N=0–4 (9–16.5m). Stiff silt N=5–16 (16.5–22.5m). Hard silt N=50 (22.5–30.2m). Kedalaman 30.2m.", 111.4574453288203, 1.229859064507745],
+      [7, "BH7", "BH7 — Peat & Soft Silt (SE)",      "BH7 (RL 5.10m, GWL 1.76m): Peat 0–6m. Soft silt N=0–4 (6–10.5m). Stiff silt N=5–10 (10.5–18m). Hard silt N=50 (18–24.1m). Kedalaman 24.1m.", 111.4579427722577, 1.230239735274369]
     ],
     "prop": [],
     "cps": [
