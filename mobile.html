@@ -113,6 +113,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--tx);font-
       <button class="mbtn active" id="base-osm" onclick="setBase('osm')">Peta</button>
       <button class="mbtn" id="base-sat" onclick="setBase('sat')">Satelit</button>
       <button class="mbtn" id="m-cadastre" onclick="toggleCadastre()">Kadaster</button>
+      <button class="mbtn" id="m-seismic" onclick="toggleSeismic()">Seismik</button>
       <button class="mbtn" onclick="flyFull()">↔ Keseluruhan</button>
     </div>
   </div>
@@ -165,8 +166,10 @@ const SAT=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Worl
 OSM.addTo(map);
 
 const lg=L.layerGroup().addTo(map);
+const seismicLayer=L.layerGroup();
 let cadastreLayer=null;
 let cadastreOn=false;
+let seismicOn=false;
 
 function buildCadastreExportUrl(cfg){
   const b=map.getBounds();
@@ -229,6 +232,26 @@ if(geo.poly&&geo.poly.length>2){
   L.polygon(geo.poly,{color:'#aaff00',weight:2,fillColor:'#aaff00',fillOpacity:0.05,dashArray:'4 4'}).addTo(lg);
 }
 
+/* Site seismic condition */
+const seis=C.seismicCondition||{};
+if(seis.enabled&&seis.position){
+  const loc=[seis.position.lat,seis.position.lon];
+  L.circle(loc,{radius:seis.radiusM||500,color:'#FFB800',weight:2,fillColor:'#FFB800',fillOpacity:0.12,dashArray:'7 5'}).addTo(seismicLayer);
+  L.marker(loc,{icon:L.divIcon({className:'',html:`<div style="width:30px;height:30px;border-radius:50%;background:#FFB800;color:#161000;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.5);">EQ</div>`,iconSize:[30,30],iconAnchor:[15,15]})}).addTo(seismicLayer)
+    .bindPopup(`<div style="padding:10px;min-width:190px;"><div style="font-size:9px;color:var(--am);font-weight:800;text-transform:uppercase;">${seis.label}</div><div style="font-size:12px;font-weight:800;margin-top:3px;">PGA ${seis.pgaG}g · MMI ${seis.mmi}</div><div style="font-size:10px;color:var(--mu);line-height:1.5;margin-top:5px;">${seis.decision}</div></div>`);
+  if(seis.defaultOn)toggleSeismic();
+}else{
+  const el=document.getElementById('m-seismic');
+  if(el)el.style.display='none';
+}
+
+function toggleSeismic(){
+  const el=document.getElementById('m-seismic');
+  seismicOn=!seismicOn;
+  if(el)el.classList.toggle('active',seismicOn);
+  if(seismicOn)seismicLayer.addTo(map);else map.removeLayer(seismicLayer);
+}
+
 /* Boreholes */
 const bhClr={'BH1':'#F44336','BH2':'#E91E63','BH3':'#9C27B0','BH4':'#673AB7','BH5':'#3F51B5','BH6':'#009688','BH7':'#FF5722'};
 (GT.boreholes||[]).forEach(bh=>{
@@ -275,6 +298,15 @@ if(db.decisionQuestions&&db.decisionQuestions.length){
   dhtml+=`</div></div>`;
   ip.insertAdjacentHTML('beforeend',dhtml);
 }
+const rb=C.reportBrief||{};
+if(rb.sections&&rb.sections.length){
+  let rhtml=`<div class="card"><div class="card-hd"><div class="card-hd-t">${rb.title||'Indeks Bukti Laporan'}</div></div><div class="card-body">`;
+  rb.sections.forEach((s,i)=>{
+    rhtml+=`<div style="padding:7px 0;border-bottom:1px solid var(--bd);"><div style="font-size:9px;color:var(--y);font-weight:800;">${i+1}. ${s.name}</div><div style="font-size:10px;color:var(--mu);line-height:1.45;margin-top:3px;">${s.decisionUse}</div></div>`;
+  });
+  rhtml+=`</div></div>`;
+  ip.insertAdjacentHTML('beforeend',rhtml);
+}
 ip.insertAdjacentHTML('beforeend',`<div class="sgrid">
   <div class="spill"><div class="snum">7</div><div class="sunit">BH</div><div class="slbl">Lubang Gerudi</div></div>
   <div class="spill"><div class="snum">32</div><div class="sunit">Probe</div><div class="slbl">Mackintosh</div></div>
@@ -306,8 +338,10 @@ const gp=document.getElementById('m-geo-panel');
 });
 
 gp.insertAdjacentHTML('beforeend',`<div class="card"><div class="card-hd"><div class="card-hd-t">Kestabilan & Kimia</div></div><div class="card-body">
+  <div class="row"><span class="rk">PGA / MMI</span><span class="rv">${GT.seismic.pga} · ${GT.seismic.mmi}</span></div>
   <div class="row"><span class="rk">FOS Statik</span><span class="rv" style="color:#4CAF50;">${GT.slopeStability.staticFos}</span></div>
   <div class="row"><span class="rk">FOS Seismik</span><span class="rv" style="color:#4CAF50;">${GT.slopeStability.seismicFos}</span></div>
+  ${seis.decision?`<div class="row"><span class="rk">Keputusan</span><span class="rv" style="color:#FFB800;">${seis.decision}</span></div>`:''}
   <div class="row"><span class="rk">Sulfat</span><span class="rv">${GT.chemical.sulphate.range}</span></div>
   <div class="row"><span class="rk">pH</span><span class="rv">${GT.chemical.ph.range}</span></div>
 </div></div>`);

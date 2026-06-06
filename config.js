@@ -175,6 +175,29 @@ const APP_CONFIG = {
     "note": "Live eLASIS cadastral boundary service is token-protected and is requested through the public eLASIS GIS proxy used by their own viewer. If access is blocked, replace this with an exported local GeoJSON/PDF-derived layer."
   },
 
+  "seismicCondition": {
+    "enabled": true,
+    "defaultOn": false,
+    "label": "Keadaan Seismik Tapak",
+    "source": "Independent Geotechnical Checker Report Rev 02, Section 3.1 and Figure 3",
+    "position": {"lat": 1.23059, "lon": 111.45736},
+    "radiusM": 520,
+    "pgaG": 0.06,
+    "pgaPercentG": 5.9,
+    "mmi": "IV–V",
+    "zone": "V–VI (NA to MS EN 1998-1:2017)",
+    "classification": "Kawasan seismik rendah; gegaran ringan hingga sederhana.",
+    "designMeaning": "Kesan struktur dijangka boleh diabaikan hingga sangat kecil, tetapi semakan cerun seismik masih perlu dibuktikan.",
+    "decision": "FOS seismik 1.316 melepasi minimum 1.3; isu dominan JKR kekal enapan tanah lembut dan kawalan pembinaan.",
+    "disclaimer": "Lingkaran ini ialah penanda keadaan reka bentuk tapak, bukan kontur hazard nasional. Untuk kontur wilayah, import data rasmi JMG atau GEM GeoTIFF berlesen.",
+    "references": [
+      {"name": "FACE / ICE Report", "use": "Nilai tapak muktamad untuk mesyuarat: PGA 0.06g dan MMI IV–V."},
+      {"name": "Dlubal Geo-Zone Tool", "use": "Semakan rujukan lokasi mengikut MS EN 1998-1."},
+      {"name": "GEM Global Seismic Hazard Map / ATLAS", "use": "Rujukan global dan sumber GeoTIFF / hazard curve jika JKR mahu lapisan wilayah."},
+      {"name": "ThinkHazard Malaysia", "use": "Konteks komunikasi risiko: hazard gempa perlu dipertimbang dalam reka bentuk dan pembinaan."}
+    ]
+  },
+
   "decisionBrief": {
     "purpose": "Menyokong Mesyuarat Reka Bentuk Geoteknik JKR pada 8 Jun 2026 dengan menukar data siasatan tapak Sri Aman kepada bukti keputusan untuk penerimaan platform, enapan, cerun, cerucuk dan kawalan pembinaan.",
     "meeting": {
@@ -203,6 +226,12 @@ const APP_CONFIG = {
         "status": "Boleh diterima dengan perlindungan hakisan"
       },
       {
+        "label": "Keadaan seismik",
+        "question": "Adakah hazard gempa menjadi pemacu reka bentuk utama untuk tapak Sri Aman?",
+        "evidence": "Laporan ICE menyatakan kawasan seismik rendah; PGA 0.06g bersamaan MMI IV–V. Semakan cerun seismik menggunakan 5.9% PGA menghasilkan FOS 1.316 melebihi minimum 1.3.",
+        "status": "Bukan pemacu utama; kekalkan sebagai semakan bukti, bukan isu keputusan dominan"
+      },
+      {
         "label": "Pilihan asas",
         "question": "Adakah panjang dan kapasiti cerucuk konsisten dengan bukti borehole?",
         "evidence": "Bangunan utama: spun 250mm, 21m, 200kN. Jalan/parkir/ancillary: RC 150mm, 9m, 30kN. Utiliti/pagar: bakau 100mm, 6m, 5kN.",
@@ -220,6 +249,55 @@ const APP_CONFIG = {
       "Memo mesyuarat: Wekajaya Engineering Department Memo WSB/ENG/MBSA/DPIK/2026(008), 29 Mei 2026.",
       "Ekstrak teknikal: Independent Geotechnical Checker Report Rev 02, 7 Mei 2026.",
       "Koordinat: Projek Mahkamah Sri Aman.kmz, eksport Google Earth Pro."
+    ]
+  },
+
+  "reportBrief": {
+    "title": "Indeks Bukti Laporan",
+    "purpose": "Menjadikan webapp memadai untuk mesyuarat: JKR boleh melihat keputusan, bukti, implikasi reka bentuk dan tindakan susulan tanpa menatal PDF penuh.",
+    "sections": [
+      {
+        "name": "Kedudukan tapak & sempadan",
+        "decisionUse": "Mengesahkan keputusan geoteknik dibuat dalam lot sebenar yang akan dibangunkan.",
+        "evidence": "Lot 2000 ditentukur daripada KMZ dan disemak terhadap overlay eLASIS.",
+        "presentation": "Peta satelit + sempadan + kadaster + BH."
+      },
+      {
+        "name": "Siasatan tapak",
+        "decisionUse": "Menentukan sama ada data mencukupi untuk menerima model tanah.",
+        "evidence": "7 BH sehingga SPT 50×5, 32 Mackintosh Probe sehingga 15m, sampel undisturbed dan ujian makmal.",
+        "presentation": "Marker BH, log borehole, heatmap ketebalan peat."
+      },
+      {
+        "name": "Model tanah lembut",
+        "decisionUse": "Mengenal pasti zon risiko enapan dan sokongan asas.",
+        "evidence": "Peat 6–9m; lapisan N≤4 sehingga 16.5m maksimum di BH6.",
+        "presentation": "Kad BH mengikut lapisan dan carta profil SPT."
+      },
+      {
+        "name": "Enapan",
+        "decisionUse": "Memutuskan sama ada tempoh pembinaan, surcharge dan pemantauan mencukupi.",
+        "evidence": "Enapan jumlah ~391mm median Cc; pasca-binaan 266–272mm pada 36 bulan dan 209–231mm pada 48 bulan.",
+        "presentation": "Carta enapan vs masa + status had 250mm."
+      },
+      {
+        "name": "Cerun dan seismic check",
+        "decisionUse": "Mengesahkan cerun selamat dalam kes statik dan seismik.",
+        "evidence": "FOS 1.639 statik, 1.316 seismik, 4.83 untuk fill slope setempat.",
+        "presentation": "Kad FOS + layer keadaan seismik tapak."
+      },
+      {
+        "name": "Asas cerucuk",
+        "decisionUse": "Mengesahkan strategi asas untuk bangunan, jalan, parkir, utiliti dan pagar.",
+        "evidence": "Spun 250mm x 21m x 200kN; RC 150mm x 9m x 30kN; bakau 100mm x 6m x 5kN.",
+        "presentation": "Kad kapasiti dan graf perbandingan ICE."
+      },
+      {
+        "name": "Kawalan pembinaan",
+        "decisionUse": "Menukar risiko teknikal kepada syarat penerimaan JKR.",
+        "evidence": "TS 30 separator, perlindungan cerun, drain, pemantauan enapan, Static Load Test 1%, PDA / HSDT 3%.",
+        "presentation": "Evidence gates sebelum persetujuan."
+      }
     ]
   },
 
@@ -275,6 +353,7 @@ const APP_CONFIG = {
     {"parameter": "Aras Jalan Sedia Ada (Jln Bayu)","unit":"m RL", "value": "6.10"},
     {"parameter": "FOS Kecerunan — Statik",        "unit": "—",    "value": "≥ 1.5 (dicapai 1.639)"},
     {"parameter": "FOS Kecerunan — Seismik 5.9%",  "unit": "—",    "value": "≥ 1.3 (dicapai 1.316)"},
+    {"parameter": "Keadaan Seismik Tapak",          "unit": "—",    "value": "PGA 0.06g · MMI IV–V · rendah"},
     {"parameter": "Enapan Penuh Konsolidasi",       "unit": "mm",   "value": "~391 (Cc median) / ~334 (Cc purata)"},
     {"parameter": "Had Enapan Pasca-Binaan",        "unit": "mm",   "value": "≤ 250"},
     {"parameter": "Cerucuk Spun (Bangunan Utama)", "unit": "—",    "value": "250mm Ø · 21m · 200kN"},
@@ -354,6 +433,7 @@ const APP_CONFIG = {
   "legend": [
     {"color": "#27772C", "l": "Sempadan Tapak",               "s": "Lot 2000, 2003, 2004, 2008 — Jalan Bayu, Sri Aman"},
     {"color": "#F44336", "l": "Lokasi Lubang Gerudi (BH 1–7)", "s": "7 BH sehingga SPT 50×5 · Zon N≤4 sehingga 16.5m"},
+    {"color": "#FFB800", "l": "Keadaan Seismik Tapak",          "s": "PGA 0.06g · MMI IV–V · FOS seismik 1.316 > 1.3"},
     {"color": "#2196F3", "l": "Sistem Saliran",                "s": "600mm U-drain + OSD 4 kolam kering"},
     {"color": "#FF9800", "l": "Jalan Dalaman",                 "s": "7.2m lebar · AC 40mm + binder 60mm · cerucuk RC 150mm"},
     {"color": "#9C27B0", "l": "Bangunan & Kemudahan",          "s": "Mahkamah, pondok pengawal, tempat letak"}

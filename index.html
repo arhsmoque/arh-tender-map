@@ -278,6 +278,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--tx);background:
       <button class="mt-btn on" id="lyr-boundary" onclick="toggleLayer('boundary')">⬡ Sempadan</button>
       <button class="mt-btn on" id="lyr-fac" onclick="toggleLayer('fac')">🏢 Kemudahan</button>
       <button class="mt-btn" id="lyr-cadastre" onclick="toggleCadastre()">▦ Kadaster</button>
+      <button class="mt-btn" id="lyr-seismic" onclick="toggleLayer('seismic')">〰 Seismik</button>
       <button class="mt-btn" id="lyr-heat" onclick="toggleHeatmap()">🌡️ Heatmap</button>
     </div>
     <div id="coord-view">—</div>
@@ -422,7 +423,7 @@ function switchBm(name,btn){
   btn.classList.add('active');
 }
 
-const layers={bh:L.layerGroup().addTo(map), boundary:L.layerGroup().addTo(map), fac:L.layerGroup().addTo(map)};
+const layers={bh:L.layerGroup().addTo(map), boundary:L.layerGroup().addTo(map), fac:L.layerGroup().addTo(map), seismic:L.layerGroup()};
 let heatLayer=null;
 let cadastreLayer=null;
 let cadastreOn=false;
@@ -495,6 +496,30 @@ const poly=C.geo.poly;
 if(poly&&poly.length>2){
   L.polygon(poly,{color:T.accent||'#27772C',weight:3,fillColor:T.accent||'#27772C',fillOpacity:0.06,dashArray:'6 4'}).addTo(layers.boundary);
   L.polyline(poly.concat([poly[0]]),{color:T.accent||'#27772C',weight:2,opacity:0.4}).addTo(layers.boundary);
+}
+
+/* Site seismic condition layer */
+const seis=C.seismicCondition||{};
+if(seis.enabled&&seis.position){
+  const clr=T.amber||'#FFB800';
+  const loc=[seis.position.lat,seis.position.lon];
+  L.circle(loc,{
+    radius:seis.radiusM||500,
+    color:clr,
+    weight:2,
+    fillColor:clr,
+    fillOpacity:0.10,
+    dashArray:'7 5'
+  }).addTo(layers.seismic);
+  L.marker(loc,{icon:L.divIcon({className:'',html:`<div style="width:34px;height:34px;border-radius:50%;background:${clr};color:#241600;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;box-shadow:0 2px 10px rgba(0,0,0,0.22);border:2px solid #fff;">EQ</div>`,iconSize:[34,34],iconAnchor:[17,17]})})
+    .addTo(layers.seismic)
+    .bindPopup(`<div class="popup-inner"><div class="popup-lbl">${seis.label}</div><div class="popup-title">PGA ${seis.pgaG}g · MMI ${seis.mmi}</div><div class="popup-body">${seis.classification}<br>${seis.designMeaning}<br><br><strong>${seis.decision}</strong><br><br><span style="font-size:10px;">${seis.disclaimer}</span></div></div>`,{className:'lf-popup'});
+  if(seis.defaultOn){
+    layers.seismic.addTo(map);
+    const el=$('lyr-seismic'); if(el)el.classList.add('on');
+  }
+}else{
+  const el=$('lyr-seismic'); if(el)el.style.display='none';
 }
 
 /* GeoJSON Boreholes with interactive log modal */
@@ -594,6 +619,17 @@ if(db.evidenceGates&&db.evidenceGates.length){
   gateHtml+=`</div></div></div>`;
   qn.insertAdjacentHTML('beforeend',gateHtml);
 }
+const rb=C.reportBrief||{};
+if(rb.sections&&rb.sections.length){
+  let rbHtml=`<div class="card"><div class="card-hd"><div class="card-hd-t">${rb.title||'Indeks Bukti Laporan'}</div></div><div class="card-body">
+    <div class="decision-summary">${rb.purpose||''}</div>
+    <div class="gate-list" style="margin-top:9px;">`;
+  rb.sections.forEach((s,i)=>{
+    rbHtml+=`<div class="gate-item"><span class="gate-num">${i+1}</span><span><strong style="color:var(--tx);">${s.name}</strong><br><span style="color:var(--mu);">${s.decisionUse}</span><br><span style="font-size:10px;color:var(--ac);">${s.presentation}</span></span></div>`;
+  });
+  rbHtml+=`</div></div></div>`;
+  qn.insertAdjacentHTML('beforeend',rbHtml);
+}
 qn.insertAdjacentHTML('beforeend',`<div class="card"><div class="card-hd"><div class="card-hd-t">Navigasi Pantas</div></div><div class="card-body"><div class="qnav-row" id="qnav"></div></div></div>`);
 (C.quickNav||[]).forEach(q=>{
   const b=document.createElement('button');b.className='qbtn';b.textContent=q.label;
@@ -663,10 +699,20 @@ gp.insertAdjacentHTML('beforeend',`<div class="card"><div class="card-hd"><div c
   <div class="row"><span class="rk">Zon Seismik</span><span class="rv">${GT.seismic.zone}</span></div>
   <div class="row"><span class="rk">PGA</span><span class="rv">${GT.seismic.pga}</span></div>
   <div class="row"><span class="rk">MMI</span><span class="rv">${GT.seismic.mmi}</span></div>
+  ${seis.decision?`<div class="row"><span class="rk">Makna Keputusan</span><span class="rv ac">${seis.decision}</span></div>`:''}
   <div class="row"><span class="rk">Sulfat</span><span class="rv ac">${GT.chemical.sulphate.range} · ${GT.chemical.sulphate.class}</span></div>
   <div class="row"><span class="rk">pH Air Bumi</span><span class="rv ac">${GT.chemical.ph.range} · ${GT.chemical.ph.class}</span></div>
   <div class="row"><span class="rk">Klorida</span><span class="rv">${GT.chemical.chloride.range}</span></div>
 </div></div>`);
+
+if(seis.references&&seis.references.length){
+  let refHtml=`<div class="card"><div class="card-hd"><div class="card-hd-t">Rujukan Visualisasi Seismik</div></div><div class="card-body">`;
+  seis.references.forEach(r=>{
+    refHtml+=`<div class="row"><span class="rk">${r.name}</span><span class="rv">${r.use}</span></div>`;
+  });
+  refHtml+=`</div></div>`;
+  gp.insertAdjacentHTML('beforeend',refHtml);
+}
 
 /* Earthwork */
 const ew=GT.earthwork;
