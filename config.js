@@ -160,6 +160,21 @@ const APP_CONFIG = {
     ]
   },
 
+  "cadastre": {
+    "enabled": true,
+    "defaultOn": false,
+    "label": "Kadaster eLASIS",
+    "type": "arcgisExport",
+    "serviceUrl": "https://gislink.sarawak.gov.my/server/rest/services/eLASIS_M/Lot_Boundary/MapServer/export",
+    "proxyUrl": "https://gislink.sarawak.gov.my/DotNet/proxy.ashx?",
+    "layers": "show:0",
+    "format": "png32",
+    "opacity": 0.72,
+    "minZoom": 16,
+    "attribution": "eLASIS / Land and Survey Department Sarawak",
+    "note": "Live eLASIS cadastral boundary service is token-protected and is requested through the public eLASIS GIS proxy used by their own viewer. If access is blocked, replace this with an exported local GeoJSON/PDF-derived layer."
+  },
+
   "methodSegments": [],
   "methodBreakdown": [],
   "constructionMethods": [],

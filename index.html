@@ -264,6 +264,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;color:var(--tx);background:
       <button class="mt-btn on" id="lyr-bh" onclick="toggleLayer('bh')">🔍 BH</button>
       <button class="mt-btn on" id="lyr-boundary" onclick="toggleLayer('boundary')">⬡ Sempadan</button>
       <button class="mt-btn on" id="lyr-fac" onclick="toggleLayer('fac')">🏢 Kemudahan</button>
+      <button class="mt-btn" id="lyr-cadastre" onclick="toggleCadastre()">▦ Kadaster</button>
       <button class="mt-btn" id="lyr-heat" onclick="toggleHeatmap()">🌡️ Heatmap</button>
     </div>
     <div id="coord-view">—</div>
@@ -410,11 +411,71 @@ function switchBm(name,btn){
 
 const layers={bh:L.layerGroup().addTo(map), boundary:L.layerGroup().addTo(map), fac:L.layerGroup().addTo(map)};
 let heatLayer=null;
+let cadastreLayer=null;
+let cadastreOn=false;
 function toggleLayer(name){
   const el=document.getElementById('lyr-'+name);
   if(map.hasLayer(layers[name])){map.removeLayer(layers[name]);el.classList.remove('on');}
   else{layers[name].addTo(map);el.classList.add('on');}
 }
+
+function buildCadastreExportUrl(cfg){
+  const b=map.getBounds();
+  const s=map.getSize();
+  const params=new URLSearchParams({
+    f:'image',
+    bbox:[b.getWest(),b.getSouth(),b.getEast(),b.getNorth()].join(','),
+    bboxSR:'4326',
+    imageSR:'4326',
+    size:`${Math.max(1,s.x)},${Math.max(1,s.y)}`,
+    format:cfg.format||'png32',
+    transparent:'true'
+  });
+  if(cfg.layers)params.set('layers',cfg.layers);
+  const rawUrl=`${cfg.serviceUrl}?${params.toString()}`;
+  return cfg.proxyUrl?cfg.proxyUrl+rawUrl:rawUrl;
+}
+
+function refreshCadastre(){
+  const cfg=C.cadastre||{};
+  if(!cadastreOn||!cfg.enabled||!cfg.serviceUrl)return;
+  if((cfg.minZoom||0)>map.getZoom()){
+    if(cadastreLayer){map.removeLayer(cadastreLayer);cadastreLayer=null;}
+    return;
+  }
+  const imageUrl=buildCadastreExportUrl(cfg);
+  const bounds=map.getBounds();
+  const next=L.imageOverlay(imageUrl,bounds,{opacity:cfg.opacity??0.7,interactive:false,attribution:cfg.attribution||''});
+  next.on('load',()=>{
+    if(cadastreLayer)map.removeLayer(cadastreLayer);
+    cadastreLayer=next;
+  });
+  next.on('error',()=>{
+    if(cadastreLayer){map.removeLayer(cadastreLayer);cadastreLayer=null;}
+    const el=$('lyr-cadastre');
+    if(el)el.title='Kadaster eLASIS tidak dapat dimuatkan daripada servis semasa.';
+  });
+  next.addTo(map);
+}
+
+function toggleCadastre(){
+  const cfg=C.cadastre||{};
+  const el=$('lyr-cadastre');
+  if(!cfg.enabled){
+    if(el)el.title='Lapisan kadaster belum dikonfigurasi.';
+    return;
+  }
+  cadastreOn=!cadastreOn;
+  if(el)el.classList.toggle('on',cadastreOn);
+  if(cadastreOn)refreshCadastre();
+  else if(cadastreLayer){map.removeLayer(cadastreLayer);cadastreLayer=null;}
+}
+map.on('moveend zoomend resize',refreshCadastre);
+if(C.cadastre&&C.cadastre.enabled===false){
+  const el=$('lyr-cadastre');
+  if(el)el.style.display='none';
+}
+if(C.cadastre&&C.cadastre.defaultOn)toggleCadastre();
 
 /* Site boundary */
 const poly=C.geo.poly;

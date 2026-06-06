@@ -112,6 +112,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--tx);font-
     <div class="map-btns">
       <button class="mbtn active" id="base-osm" onclick="setBase('osm')">Peta</button>
       <button class="mbtn" id="base-sat" onclick="setBase('sat')">Satelit</button>
+      <button class="mbtn" id="m-cadastre" onclick="toggleCadastre()">Kadaster</button>
       <button class="mbtn" onclick="flyFull()">↔ Keseluruhan</button>
     </div>
   </div>
@@ -164,6 +165,64 @@ const SAT=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Worl
 OSM.addTo(map);
 
 const lg=L.layerGroup().addTo(map);
+let cadastreLayer=null;
+let cadastreOn=false;
+
+function buildCadastreExportUrl(cfg){
+  const b=map.getBounds();
+  const s=map.getSize();
+  const params=new URLSearchParams({
+    f:'image',
+    bbox:[b.getWest(),b.getSouth(),b.getEast(),b.getNorth()].join(','),
+    bboxSR:'4326',
+    imageSR:'4326',
+    size:`${Math.max(1,s.x)},${Math.max(1,s.y)}`,
+    format:cfg.format||'png32',
+    transparent:'true'
+  });
+  if(cfg.layers)params.set('layers',cfg.layers);
+  const rawUrl=`${cfg.serviceUrl}?${params.toString()}`;
+  return cfg.proxyUrl?cfg.proxyUrl+rawUrl:rawUrl;
+}
+
+function refreshCadastre(){
+  const cfg=C.cadastre||{};
+  if(!cadastreOn||!cfg.enabled||!cfg.serviceUrl)return;
+  if((cfg.minZoom||0)>map.getZoom()){
+    if(cadastreLayer){map.removeLayer(cadastreLayer);cadastreLayer=null;}
+    return;
+  }
+  const next=L.imageOverlay(buildCadastreExportUrl(cfg),map.getBounds(),{opacity:cfg.opacity??0.7,interactive:false,attribution:cfg.attribution||''});
+  next.on('load',()=>{
+    if(cadastreLayer)map.removeLayer(cadastreLayer);
+    cadastreLayer=next;
+  });
+  next.on('error',()=>{
+    if(cadastreLayer){map.removeLayer(cadastreLayer);cadastreLayer=null;}
+    const el=document.getElementById('m-cadastre');
+    if(el)el.title='Kadaster eLASIS tidak dapat dimuatkan daripada servis semasa.';
+  });
+  next.addTo(map);
+}
+
+function toggleCadastre(){
+  const cfg=C.cadastre||{};
+  const el=document.getElementById('m-cadastre');
+  if(!cfg.enabled){
+    if(el)el.title='Lapisan kadaster belum dikonfigurasi.';
+    return;
+  }
+  cadastreOn=!cadastreOn;
+  if(el)el.classList.toggle('active',cadastreOn);
+  if(cadastreOn)refreshCadastre();
+  else if(cadastreLayer){map.removeLayer(cadastreLayer);cadastreLayer=null;}
+}
+map.on('moveend zoomend resize',refreshCadastre);
+if(C.cadastre&&C.cadastre.enabled===false){
+  const el=document.getElementById('m-cadastre');
+  if(el)el.style.display='none';
+}
+if(C.cadastre&&C.cadastre.defaultOn)toggleCadastre();
 
 /* Boundary */
 if(geo.poly&&geo.poly.length>2){
