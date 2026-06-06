@@ -1,7 +1,7 @@
 /**
  * config.js — Project Brief Adapter
  * Project : Projek Pembangunan Kompleks Mahkamah Baharu Sri Aman, Sarawak
- * Contract: JKR/PER/IP/CKUB/170/2023
+ * Contract: JKR/PER/IP/CKUB/253/2025
  * Client  : Jabatan Kerja Raya Malaysia (JKR)
  * Manager : JKR Malaysia (Cawangan Kontrak dan Ukur Bahan)
  * D&B     : Wekajaya Sdn Bhd
@@ -14,13 +14,14 @@
 
 const APP_CONFIG = {
   "lang": "ms",
-  "pageTitle": "Mahkamah Baharu Sri Aman — Taklimat Projek",
+  "pageTitle": "Mesyuarat Reka Bentuk Geoteknik — Mahkamah Baharu Sri Aman",
 
   "project": {
     "title": "Projek Pembangunan Kompleks Mahkamah Baharu Sri Aman, Sarawak",
-    "subtitle": "Kompleks Mahkamah Baharu · Jalan Bayu, Sri Aman · Reka Bentuk & Bina",
+    "subtitle": "Memo WSB/ENG/MBSA/DPIK/2026(008) · 8 June 2026, 9.30 am · Menara PJD",
     "designStandard": "JKR Standard Specification · MS 1754:2004 · Eurocode 7 · BS 5930:2015 · MS 2038:2024",
-    "tenderNumber": "JKR/PER/IP/CKUB/170/2023",
+    "tenderNumber": "JKR/PER/IP/CKUB/253/2025",
+    "contractNumber": "JKR/PER/IP/CKUB/253/2025",
     "indicativePrice": "—",
     "durationMonths": "—",
     "cidbClass": "—",
@@ -30,7 +31,7 @@ const APP_CONFIG = {
 
   "client": {
     "name": "JABATAN KERJA RAYA MALAYSIA",
-    "subname": "Kementerian Kerja Raya · Cawangan Kontrak & Ukur Bahan (CKUB)",
+    "subname": "Kementerian Kerja Raya · Bahagian Reka Bentuk Geoteknik Bangunan",
     "url": "https://www.jkr.gov.my",
     "logo": "assets/logos/jkr-logo.svg"
   },
@@ -44,7 +45,7 @@ const APP_CONFIG = {
   "alerts": [
     {
       "title": "Mesyuarat Reka Bentuk Geoteknik — 8 Jun 2026",
-      "body": "Mesyuarat kompulsori bersama Wekajaya Sdn Bhd dan JKR pada 8 Jun 2026, jam 9:30 pagi, Aras 23A Menara PJD, Ibu Pejabat JKR KL. Kontrak pelantikan: JKR/PER/IP/CKUB/253/2025."
+      "body": "Berdasarkan memo Wekajaya Engineering Department WSB/ENG/MBSA/DPIK/2026(008) bertarikh 29/5/2026 kepada DPI Konsult Sdn Bhd. Mesyuarat ditetapkan pada 8 June 2026 (Monday), jam 9.30 am, Bilik Mesyuarat Bahagian Reka Bentuk Geoteknik Bangunan, Tingkat 23A, Menara PJD, Ibu Pejabat JKR Malaysia. Contract No: JKR/PER/IP/CKUB/253/2025. Kehadiran perunding adalah wajib."
     },
     {
       "title": "Tanah Lembut — Peat & Lempung Lembut (SPT N≤4)",
@@ -58,14 +59,17 @@ const APP_CONFIG = {
     {"color":"#FF9800","text":"Road Works — Jalan dalaman lebar 7.2m, AC 40mm + binder 60mm + base 300mm. Pintu masuk utama ke Jalan Bayu, pintu kedua ke Jalan Foocow. Cerucuk RC 150mm Ø di bawah turapan."},
     {"color":"#00BCD4","text":"External Water — Paip 160mm Ø HDPE PN12.5 dari Jalan Foocow (JBALBS). Tangki 60,000L (1 hari simpanan). 3 hydrant pillar. DI pipe 150mm Ø untuk lintasan jalan."},
     {"color":"#9C27B0","text":"Sewerage — Paip 225mm Ø HDPE berganding berganda. STP dalam tapak, 178 P.E. (5,800m² mahkamah + 2 pondok pengawal)."},
-    {"color":"#F44336","text":"Geotechnical — Cerucuk Spun 250mm Ø, 21m, 200kN (bangunan utama). Cerucuk RC 150mm, 9m, 30kN (jalan/tempat letak/bangunan ancilari). Bakau 6m, 5kN (utiliti/pagar)."}
+    {"color":"#F44336","text":"Geotechnical — Cerucuk Spun 250mm Ø, 21m, 200kN (bangunan utama). Cerucuk RC 150mm, 9m, 20kN (jalan/tempat letak/bangunan ancilari). Bakau 6m, 5kN (utiliti/pagar)."}
   ],
 
   "contacts": [
     {
       "label": "DPI Konsult — Civil & Structural",
       "members": [
-        {"name": "Ir. Hilmi Bin Omar",          "title": "Jurutera Profesional (Awam) C17478 — BEM", "email": "cns@dpik.com.my"},
+        {"name": "Ir. Hilmi Omar",              "title": "Attn memo Wekajaya · DPI Konsult",         "email": "hilmio@dpik.com.my"},
+        {"name": "Ir. Mohd Rawawi",             "title": "Attn memo Wekajaya · DPI Konsult",         "email": "—"},
+        {"name": "Ir. Ahmad Saifuddin",         "title": "Attn memo Wekajaya · DPI Konsult",         "email": "—"},
+        {"name": "Hazwani",                     "title": "Attn memo Wekajaya · DPI Konsult",         "email": "—"},
         {"name": "Ir. Saaidin Bin Abu Bakar",   "title": "Geotechnical Engineer — BEM 2615",         "email": "cns@dpik.com.my"}
       ]
     },
@@ -86,7 +90,7 @@ const APP_CONFIG = {
   "dates": {
     "advertisement": "—",
     "download":      "—",
-    "briefing":      "8 Jun 2026, 9:30am — Aras 23A Menara PJD, KL",
+    "briefing":      "8 June 2026 (Monday), 9.30 am — Tingkat 23A, Menara PJD, Ibu Pejabat JKR Malaysia",
     "closing":       "—",
     "active":        null
   },
@@ -125,7 +129,7 @@ const APP_CONFIG = {
       "abbr":   "Pengawal",
       "role":   "Kemudahan Sokongan",
       "tag":    "extended",
-      "detail": "Dua pondok pengawal — pintu masuk Jalan Bayu dan pintu masuk Jalan Foocow. Didirikan di atas cerucuk RC 150mm Ø, panjang 9m, beban kerja 30kN.",
+      "detail": "Dua pondok pengawal — pintu masuk Jalan Bayu dan pintu masuk Jalan Foocow. Didirikan di atas cerucuk RC 150mm Ø, panjang 9m, beban kerja 20kN.",
       "lat": 1.22980, "lon": 111.45720,
       "marker": "G"
     },
@@ -202,9 +206,14 @@ const APP_CONFIG = {
     "purpose": "Menyokong Mesyuarat Reka Bentuk Geoteknik JKR pada 8 Jun 2026 dengan menukar data siasatan tapak Sri Aman kepada bukti keputusan untuk penerimaan platform, enapan, cerun, cerucuk dan kawalan pembinaan.",
     "meeting": {
       "date": "8 June 2026",
-      "time": "9:30 am",
+      "time": "9.30 am",
       "venue": "Bilik Mesyuarat Bahagian Reka Bentuk Geoteknik Bangunan, Tingkat 23A, Menara PJD, Ibu Pejabat JKR Malaysia",
-      "attendance": "Kehadiran perunding adalah wajib berdasarkan memo Wekajaya WSB/ENG/MBSA/DPIK/2026(008), 29 Mei 2026."
+      "memoRef": "WSB/ENG/MBSA/DPIK/2026(008)",
+      "memoDate": "29/5/2026",
+      "contractNo": "JKR/PER/IP/CKUB/253/2025",
+      "from": "Akmal Bahri Bin Bakri, Wekajaya Sdn Bhd",
+      "to": "DPI Konsult Sdn Bhd",
+      "attendance": "Kehadiran perunding adalah wajib berdasarkan memo Wekajaya WSB/ENG/MBSA/DPIK/2026(008), 29/5/2026."
     },
     "decisionQuestions": [
       {
@@ -234,7 +243,7 @@ const APP_CONFIG = {
       {
         "label": "Pilihan asas",
         "question": "Adakah panjang dan kapasiti cerucuk konsisten dengan bukti borehole?",
-        "evidence": "Bangunan utama: spun 250mm, 21m, 200kN. Jalan/parkir/ancillary: RC 150mm, 9m, 30kN. Utiliti/pagar: bakau 100mm, 6m, 5kN.",
+        "evidence": "Cadangan perunding: spun 250mm, 21m, 200kN; RC 150mm, 9m, 20kN; bakau 100mm, 6m, 5kN. Semakan ICE Table 11: spun 20m/240kN, RC 15m/21kN, bakau 12m/5kN.",
         "status": "Sahkan rejim ujian dan semakan jurutera geoteknik untuk anomali"
       }
     ],
@@ -246,7 +255,7 @@ const APP_CONFIG = {
       "Jalankan Static Load Test pada 1% titik cerucuk dan PDA / High Strain Dynamic Test sekurang-kurangnya 3%."
     ],
     "sourceNotes": [
-      "Memo mesyuarat: Wekajaya Engineering Department Memo WSB/ENG/MBSA/DPIK/2026(008), 29 Mei 2026.",
+      "Memo mesyuarat: Wekajaya Engineering Department Memo WSB/ENG/MBSA/DPIK/2026(008), 29/5/2026; Contract No JKR/PER/IP/CKUB/253/2025.",
       "Ekstrak teknikal: Independent Geotechnical Checker Report Rev 02, 7 Mei 2026.",
       "Koordinat: Projek Mahkamah Sri Aman.kmz, eksport Google Earth Pro."
     ]
@@ -289,8 +298,8 @@ const APP_CONFIG = {
       {
         "name": "Asas cerucuk",
         "decisionUse": "Mengesahkan strategi asas untuk bangunan, jalan, parkir, utiliti dan pagar.",
-        "evidence": "Spun 250mm x 21m x 200kN; RC 150mm x 9m x 30kN; bakau 100mm x 6m x 5kN.",
-        "presentation": "Kad kapasiti dan graf perbandingan ICE."
+        "evidence": "Cadangan perunding: spun 250mm x 21m x 200kN; RC 150mm x 9m x 20kN; bakau 100mm x 6m x 5kN. Semakan ICE Table 11: spun 20m/240kN; RC 15m/21kN; bakau 12m/5kN.",
+        "presentation": "Kad kapasiti membezakan cadangan perunding dan graf perbandingan ICE."
       },
       {
         "name": "Kawalan pembinaan",
@@ -357,7 +366,7 @@ const APP_CONFIG = {
     {"parameter": "Enapan Penuh Konsolidasi",       "unit": "mm",   "value": "~391 (Cc median) / ~334 (Cc purata)"},
     {"parameter": "Had Enapan Pasca-Binaan",        "unit": "mm",   "value": "≤ 250"},
     {"parameter": "Cerucuk Spun (Bangunan Utama)", "unit": "—",    "value": "250mm Ø · 21m · 200kN"},
-    {"parameter": "Cerucuk RC (Jalan/Letak/Ancilari)","unit":"—",  "value": "150mm Ø · 9m · 30kN"},
+    {"parameter": "Cerucuk RC (Jalan/Letak/Ancilari)","unit":"—",  "value": "150mm Ø · 9m · 20kN"},
     {"parameter": "Bakau (Utiliti/Pagar)",          "unit": "—",    "value": "Ø100mm · 6m · 5kN"},
     {"parameter": "Simen — Kelas (Sulfat/pH)",      "unit": "—",    "value": "≥ 300 kg/m³ · w/c ≤ 0.5"},
     {"parameter": "Jalan Dalaman — Lebar Minimum",  "unit": "m",    "value": "7.2"},
@@ -511,8 +520,8 @@ const APP_CONFIG = {
 
     "pileDesign": {
       "mainBuilding": {"type": "Spun 250mm Ø Class B", "lengthM": 21, "workingLoadKn": 200, "bhs": ["BH4", "BH5"]},
-      "ancillary":    {"type": "RC 150mm Ø",           "lengthM": 9,  "workingLoadKn": 30,  "bhs": ["BH1","BH2","BH3","BH6","BH7"]},
-      "roadParking":  {"type": "RC 150mm Ø",           "lengthM": 9,  "workingLoadKn": 30,  "bhs": ["BH1","BH2","BH3","BH6","BH7"]},
+      "ancillary":    {"type": "RC 150mm Ø",           "lengthM": 9,  "workingLoadKn": 20,  "bhs": ["BH1","BH2","BH3","BH6","BH7"]},
+      "roadParking":  {"type": "RC 150mm Ø",           "lengthM": 9,  "workingLoadKn": 20,  "bhs": ["BH1","BH2","BH3","BH6","BH7"]},
       "utilityFence": {"type": "Bakau 100mm Ø",        "lengthM": 6,  "workingLoadKn": 5,   "bhs": ["BH1","BH2","BH3","BH6","BH7"]}
     },
 
@@ -651,7 +660,7 @@ const APP_CONFIG = {
     "prop": [],
     "cps": [
       {"id": "CP1", "ch": 0, "name": "Bangunan Utama Mahkamah",      "detail": "GFA ~5,800m². Cerucuk spun 250mm Ø, 21m, 200kN. Aras lantai RL 6.20m.",    "lat": 1.23090, "lon": 111.45740, "url": ""},
-      {"id": "CP2", "ch": 0, "name": "Pintu Masuk Utama — Jalan Bayu","detail": "Pintu masuk utama (RL 6.10m). Pondok pengawal pada cerucuk RC 150mm Ø, 9m, 30kN.", "lat": 1.22980, "lon": 111.45730, "url": ""},
+      {"id": "CP2", "ch": 0, "name": "Pintu Masuk Utama — Jalan Bayu","detail": "Pintu masuk utama (RL 6.10m). Pondok pengawal pada cerucuk RC 150mm Ø, 9m, 20kN.", "lat": 1.22980, "lon": 111.45730, "url": ""},
       {"id": "CP3", "ch": 0, "name": "OSD Pond & Kolam Kering",       "detail": "OSD + 4 kolam kering di belakang bangunan. Saliran ke Jalan Foocow.",        "lat": 1.23100, "lon": 111.45790, "url": ""},
       {"id": "CP4", "ch": 0, "name": "Tap-Off Air Bersih",            "detail": "Paip 160mm Ø HDPE PN12.5 dari Jalan Foocow. 3 hydrant pillar. JBALBS.",       "lat": 1.22970, "lon": 111.45760, "url": ""}
     ]

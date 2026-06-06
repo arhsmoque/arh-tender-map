@@ -1,0 +1,13 @@
+{
+  // Sri Aman report companion comparison worker.
+  // Does not overwrite: https://dpiktender-sriaman.arh-homelab.workers.dev
+  // Comparison URL: https://dpiktender-sriaman-companion.arh-homelab.workers.dev
+  "name": "dpiktender-sriaman-companion",
+  "compatibility_date": "2026-06-05",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "."
+  }
+}

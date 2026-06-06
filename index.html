@@ -1,884 +1,475 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ms">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Mahkamah Baharu Sri Aman — Taklimat Projek</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sri Aman Geotechnical Report Companion</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="config.js"></script>
 <style>
 :root{
-  --bg:#f0f6fc;--panel:#fff;--p2:#e8f2fa;--p3:#d4e9f7;
-  --bd:rgba(0,120,190,0.12);--bd2:rgba(0,120,190,0.25);
-  --tx:#0d2137;--mu:#4d7a9a;--ft:#b5d4ea;
-  --ac:#0099D4;--ac2:rgba(0,153,212,0.10);--ac3:rgba(0,153,212,0.05);
-  --am:#F5A623;--gn:#22aa66;--mg:#cc22aa;--or:#e07020;
-  --hdr:58px;
+  --bg:#eef3f6;
+  --panel:#ffffff;
+  --panel2:#f7faf9;
+  --line:#dce5e1;
+  --line2:#b9c9c1;
+  --text:#14201b;
+  --muted:#5d6f66;
+  --soft:#7a4f35;
+  --jkr-black:#101010;
+  --jkr-yellow:#ffd400;
+  --dpi-blue:#2369a7;
+  --green:#237036;
+  --green2:#e8f3ea;
+  --amber:#b97912;
+  --amber2:#fff3dc;
+  --red:#b93a30;
+  --red2:#fde8e5;
+  --blue:#2369a7;
+  --blue2:#e6f1fb;
+  --shadow:0 10px 28px rgba(28,48,31,.10);
 }
-[data-theme="dark"] {
-  --bg:#0b1524;--panel:#111d2e;--p2:#0f1d30;--p3:#14253e;
-  --bd:rgba(255,255,255,0.08);--bd2:rgba(255,255,255,0.15);
-  --tx:#ddeeff;--mu:#6a88a8;--ft:#3a5570;
-  --ac:#33ccff;--ac2:rgba(0,155,155,0.12);--ac3:rgba(0,155,155,0.05);
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+body{overflow:hidden}
+button{font-family:inherit}
+.app{height:100%;display:grid;grid-template-rows:84px 1fr}
+.topbar{background:rgba(255,255,255,.94);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:18px;padding:10px 18px;box-shadow:0 2px 18px rgba(20,40,25,.08);backdrop-filter:blur(14px);z-index:20}
+.brand{display:flex;align-items:center;gap:12px;min-width:330px}
+.authority-lockup{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.authority-logo{height:48px;width:auto;object-fit:contain;display:block}
+.authority-logo.jata{height:54px}
+.brand-text{min-width:0}
+.eyebrow{font-size:10px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:.04em}
+.project{font-size:14px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.federal-note{font-size:10px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.thesis{flex:1;border-left:1px solid var(--line);padding-left:18px;min-width:260px}
+.thesis-title{font-size:17px;font-weight:800;letter-spacing:0;line-height:1.18;margin:0}
+.thesis-sub{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.45}
+.source-rule{background:var(--blue2);border:1px solid #c7dff4;color:#173f62;border-radius:8px;padding:9px 11px;width:320px;font-size:11px;line-height:1.45}
+.main{display:grid;grid-template-columns:330px minmax(460px,1fr) 430px;min-height:0}
+.nav{background:var(--panel);border-right:1px solid var(--line);overflow:auto;padding:14px}
+.nav-title{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;margin:0 0 10px}
+.scene-btn{width:100%;display:grid;grid-template-columns:46px 1fr;gap:10px;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px;margin-bottom:8px;cursor:pointer;color:var(--text)}
+.scene-btn:hover{border-color:var(--green);background:var(--green2)}
+.scene-btn.active{border-color:var(--green);background:var(--green2);box-shadow:inset 3px 0 0 var(--green)}
+.sec-no{height:28px;min-width:36px;border-radius:7px;display:flex;align-items:center;justify-content:center;background:#111;color:var(--jkr-yellow);font-size:11px;font-weight:900}
+.sec-name{font-size:13px;font-weight:800;line-height:1.25}
+.sec-page{font-size:10px;color:var(--muted);margin-top:4px}
+.mapwrap{position:relative;min-width:0}
+#map{position:absolute;inset:0}
+.map-caption{position:absolute;left:14px;bottom:14px;z-index:500;background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:12px 14px;max-width:520px}
+.cap-kicker{font-size:10px;font-weight:800;text-transform:uppercase;color:var(--green)}
+.cap-title{font-size:14px;font-weight:800;margin-top:3px}
+.cap-body{font-size:11px;color:var(--muted);line-height:1.45;margin-top:4px}
+.map-tools{position:absolute;top:14px;left:14px;z-index:500;display:flex;gap:6px;flex-wrap:wrap}
+.tool{border:1px solid var(--line2);background:var(--panel);border-radius:7px;font-size:11px;font-weight:700;padding:7px 9px;color:var(--muted);box-shadow:0 2px 10px rgba(20,40,25,.10)}
+.tool.active{background:var(--green);border-color:var(--green);color:#fff}
+.inspector{background:var(--panel2);border-left:1px solid var(--line);overflow:auto;padding:14px}
+.panel-block{background:var(--panel);border:1px solid var(--line);border-radius:8px;margin-bottom:10px;overflow:hidden}
+.panel-hd{padding:10px 12px;border-bottom:1px solid var(--line);background:#fbfcfb}
+.panel-kicker{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase}
+.panel-title{font-size:16px;font-weight:800;margin-top:3px;line-height:1.25}
+.panel-body{padding:12px}
+.claim{font-size:13px;line-height:1.55;color:var(--text)}
+.certainty{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 9px;font-size:10px;font-weight:800;margin-top:10px}
+.certain{background:var(--green2);color:var(--green)}
+.verified{background:var(--blue2);color:var(--blue)}
+.interpretation{background:var(--amber2);color:var(--amber)}
+.risk{background:var(--red2);color:var(--red)}
+.fmav{display:grid;gap:8px}
+.fmav-row{display:grid;grid-template-columns:72px 1fr;gap:8px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.fmav-row:last-child{border-bottom:0;padding-bottom:0}
+.fmav-label{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase}
+.fmav-text{font-size:12px;line-height:1.45}
+.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.metric{border:1px solid var(--line);background:#fff;border-radius:8px;padding:10px}
+.metric-num{font-size:20px;font-weight:800;color:var(--green)}
+.metric-lbl{font-size:10px;color:var(--muted);margin-top:3px;line-height:1.25}
+.risk-row{display:grid;grid-template-columns:1fr auto;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.risk-row:last-child{border-bottom:0}
+.risk-name{font-size:12px;font-weight:800}
+.risk-ask{font-size:11px;color:var(--muted);line-height:1.4;margin-top:3px}
+.risk-tag{font-size:10px;font-weight:800;color:var(--red);background:var(--red2);border-radius:999px;padding:5px 8px;height:max-content}
+.agreement-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.agreement-item{border:1px solid var(--line);border-radius:8px;background:#fff;padding:9px}
+.agreement-k{font-size:9px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.agreement-v{font-size:12px;font-weight:800;margin-top:4px;line-height:1.3}
+.agreement-v.ok{color:var(--green)}
+.agreement-v.warn{color:var(--amber)}
+.bh-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#b93a30;color:#fff;border:2px solid #fff;box-shadow:0 3px 10px rgba(0,0,0,.24);font-size:11px;font-weight:900}
+.facility-dot{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:#2369a7;color:#fff;border:2px solid #fff;box-shadow:0 3px 10px rgba(0,0,0,.24);font-size:12px;font-weight:900}
+.soft-label{background:rgba(122,79,53,.92);border:1px solid #fff;color:#fff;border-radius:6px;padding:5px 7px;font-size:10px;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.legend span{display:inline-flex;align-items:center;gap:5px;font-size:10px;color:var(--muted)}
+.sw{width:14px;height:8px;border-radius:3px;display:inline-block}
+@media(max-width:1100px){
+  body{overflow:auto}
+  .app{height:auto;min-height:100%;grid-template-rows:auto auto}
+  .topbar{display:grid;grid-template-columns:1fr;gap:10px;height:auto;padding:14px}
+  .brand{min-width:0;width:100%;align-items:center}
+  .authority-logo{height:38px}
+  .authority-logo.jata{height:44px}
+  .thesis{border-left:0;padding-left:0;min-width:0}
+  .source-rule{width:100%;font-size:12px}
+  .main{grid-template-columns:1fr}
+  .nav{max-height:none;border-right:0;border-bottom:1px solid var(--line)}
+  .mapwrap{height:56vh;min-height:420px}
+  .inspector{border-left:0}
 }
-*{margin:0;padding:0;box-sizing:border-box;}
-html,body{height:100%;font-family:'Inter',sans-serif;color:var(--tx);background:var(--bg);overflow:hidden;}
-
-#hdr{height:var(--hdr);background:var(--panel);border-bottom:3px solid var(--ac);
-  display:flex;align-items:center;padding:0 16px;gap:12px;flex-shrink:0;
-  position:relative;z-index:200;box-shadow:0 2px 12px rgba(0,120,190,0.10);}
-.hdr-brand{display:flex;align-items:center;gap:9px;flex-shrink:0;}
-.hdr-brand img{height:34px;width:auto;}
-.hdr-brand-t .b1{font-size:11.5px;font-weight:700;color:var(--tx);}
-.hdr-brand-t .b2{font-size:9px;color:var(--mu);}
-.hdr-div{width:1px;height:30px;background:var(--bd2);flex-shrink:0;}
-.hdr-title{flex:1;min-width:0;}
-.hdr-proj{font-size:12px;font-weight:700;color:var(--tx);
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2;}
-.hdr-chips{display:flex;gap:6px;margin-top:4px;}
-.chip{font-size:9px;font-weight:600;padding:2px 8px;border-radius:10px;
-  background:var(--ac2);color:var(--ac);border:1px solid rgba(0,153,212,0.22);white-space:nowrap;}
-.chip.am{background:rgba(245,166,35,0.10);color:var(--am);border-color:rgba(245,166,35,0.25);}
-.hdr-actions{display:flex;gap:6px;align-items:center;}
-.hbtn{font-size:10px;font-weight:600;padding:5px 10px;border-radius:6px;background:var(--p2);color:var(--mu);border:1px solid var(--bd);cursor:pointer;font-family:'Inter',sans-serif;}
-.hbtn:hover{background:var(--ac2);color:var(--ac);}
-
-#main{display:flex;height:calc(100vh - var(--hdr));overflow:hidden;}
-#map-pane{flex:0 0 58%;position:relative;transition:flex .3s;}
-#map-pane.full{flex:0 0 100%;}
-#map{position:absolute;inset:0;}
-#sidebar{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg);border-left:1px solid var(--bd2);transition:flex .3s;}
-#sidebar.hidden{display:none;}
-
-#tabs{display:flex;background:var(--panel);border-bottom:1px solid var(--bd2);flex-shrink:0;overflow-x:auto;scrollbar-width:none;}
-#tabs::-webkit-scrollbar{display:none;}
-.tab{flex:1;padding:11px 6px;font-size:11px;font-weight:600;color:var(--mu);
-  background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;
-  transition:all .15s;font-family:'Inter',sans-serif;white-space:nowrap;min-width:70px;}
-.tab:hover{color:var(--ac);background:var(--ac3);}
-.tab.active{color:var(--ac);border-bottom-color:var(--ac);}
-
-.panel{display:none;flex:1;overflow-y:auto;flex-direction:column;}
-.panel.active{display:flex;}
-.pg{padding:14px;display:flex;flex-direction:column;gap:12px;}
-::-webkit-scrollbar{width:5px;}
-::-webkit-scrollbar-track{background:var(--bg);}
-::-webkit-scrollbar-thumb{background:var(--ft);border-radius:3px;}
-
-.card{background:var(--panel);border:1px solid var(--bd);border-radius:10px;overflow:hidden;}
-.card-hd{padding:9px 13px;border-bottom:1px solid var(--bd);background:var(--p2);display:flex;justify-content:space-between;align-items:center;}
-.card-hd-t{font-size:9.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--mu);}
-.card-body{padding:10px 13px;}
-.row{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid var(--bd);}
-.row:last-child{border-bottom:none;}
-.rk{font-size:11px;color:var(--mu);}
-.rv{font-size:12px;font-weight:600;color:var(--tx);text-align:right;flex:1;margin-left:8px;}
-.rv.ac{color:var(--ac);}
-
-.qnav-row{display:flex;flex-wrap:wrap;gap:6px;}
-.qbtn{font-size:10px;font-weight:600;padding:6px 10px;border-radius:6px;
-  background:var(--ac2);color:var(--ac);border:1px solid rgba(0,153,212,0.28);
-  cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
-.qbtn:hover{background:var(--ac);color:#fff;}
-
-.legend{display:flex;flex-direction:column;gap:7px;}
-.leg-item{display:flex;align-items:center;gap:9px;}
-.leg-swatch{width:30px;height:6px;border-radius:3px;flex-shrink:0;}
-.leg-label{font-size:11px;color:var(--tx);font-weight:500;}
-.leg-sub{font-size:9.5px;color:var(--mu);margin-left:39px;margin-top:-3px;}
-
-.fac-card{background:var(--panel);border:1px solid var(--bd);border-radius:10px;padding:12px;display:flex;gap:11px;align-items:flex-start;}
-.fac-marker{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;}
-.fac-name{font-size:12.5px;font-weight:700;line-height:1.2;}
-.fac-role{font-size:8.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:2px 7px;border-radius:4px;margin:4px 0 6px;display:inline-block;}
-.fac-role.primary{background:rgba(0,153,212,0.12);color:var(--ac);}
-.fac-role.extended{background:rgba(245,166,35,0.12);color:var(--am);}
-.fac-detail{font-size:11px;line-height:1.65;color:var(--mu);}
-
-.team-card{background:var(--panel);border:1px solid var(--bd);border-radius:10px;padding:14px;display:flex;gap:13px;align-items:center;}
-.team-logo{height:38px;width:auto;max-width:90px;object-fit:contain;}
-.team-logo-ph{width:38px;height:38px;border-radius:9px;background:var(--p2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--ac);}
-.team-role{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--mu);margin-bottom:3px;}
-.team-name{font-size:13px;font-weight:700;}
-.team-detail{font-size:10.5px;color:var(--mu);margin-top:3px;}
-
-.sec-title{font-size:9.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--mu);padding:2px 0;}
-
-.auth-table{width:100%;border-collapse:collapse;font-size:11px;background:var(--panel);border-radius:10px;overflow:hidden;border:1px solid var(--bd);}
-.auth-table th{text-align:left;font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--mu);padding:7px 10px;background:var(--p2);border-bottom:1px solid var(--bd2);}
-.auth-table td{padding:8px 10px;border-bottom:1px solid var(--bd);vertical-align:top;}
-.auth-table tr:last-child td{border-bottom:none;}
-.auth-table td:first-child{font-weight:600;font-size:11.5px;}
-.auth-badge{font-size:8.5px;font-weight:700;padding:2px 7px;border-radius:4px;background:var(--ac2);color:var(--ac);display:inline-block;margin-bottom:3px;}
-.auth-sub{font-size:9.5px;color:var(--mu);margin-top:2px;}
-
-.lf-popup .leaflet-popup-content-wrapper{background:var(--panel);border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,0.13);border:1px solid var(--bd2);padding:0;}
-.lf-popup .leaflet-popup-content{margin:0;font-family:'Inter',sans-serif;}
-.lf-popup .leaflet-popup-tip{background:var(--panel);}
-.popup-inner{padding:13px 15px;min-width:210px;max-width:290px;}
-.popup-lbl{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--mu);margin-bottom:4px;}
-.popup-title{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:6px;}
-.popup-body{font-size:11px;line-height:1.65;color:var(--mu);}
-.popup-ch{font-size:10px;font-weight:600;color:var(--ac);margin-top:7px;}
-
-#basemap-sw{position:absolute;top:10px;right:10px;z-index:500;display:flex;gap:3px;background:var(--panel);border-radius:8px;padding:4px;box-shadow:0 2px 10px rgba(0,0,0,0.15);border:1px solid var(--bd2);}
-.bm-btn{font-size:10px;font-weight:600;padding:5px 10px;border-radius:5px;background:none;border:none;cursor:pointer;color:var(--mu);font-family:'Inter',sans-serif;transition:all .15s;white-space:nowrap;}
-.bm-btn:hover{background:var(--ac2);color:var(--ac);}
-.bm-btn.active{background:var(--ac);color:#fff;}
-
-#map-tools{position:absolute;top:10px;left:10px;z-index:500;display:flex;flex-direction:column;gap:4px;}
-.mt-btn{font-size:10px;font-weight:600;padding:5px 10px;border-radius:5px;background:var(--panel);border:1px solid var(--bd2);cursor:pointer;color:var(--mu);font-family:'Inter',sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.10);}
-.mt-btn:hover{background:var(--ac2);color:var(--ac);}
-.mt-btn.on{background:var(--ac);color:#fff;border-color:var(--ac);}
-
-#coord-view{position:absolute;bottom:24px;left:10px;z-index:500;background:rgba(13,33,55,0.78);color:#e0f0fa;font-size:10px;font-weight:600;font-family:'Inter',sans-serif;padding:4px 10px;border-radius:5px;letter-spacing:.3px;pointer-events:none;backdrop-filter:blur(2px);}
-#copy-toast{position:absolute;bottom:48px;left:10px;z-index:600;background:var(--gn);color:#fff;font-size:10px;font-weight:700;padding:4px 10px;border-radius:5px;opacity:0;transition:opacity .3s;pointer-events:none;}
-
-/* Borehole log styles */
-.bh-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
-.bh-card{background:var(--panel);border:1px solid var(--bd);border-radius:10px;overflow:hidden;cursor:pointer;transition:transform .15s,box-shadow .15s;}
-.bh-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.08);}
-.bh-hd{padding:9px 12px;background:var(--p2);border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;}
-.bh-id{font-size:13px;font-weight:800;color:var(--ac);}
-.bh-meta{font-size:9px;color:var(--mu);}
-.bh-body{padding:10px 12px;display:flex;flex-direction:column;gap:6px;}
-.bh-layer{display:flex;align-items:center;gap:8px;font-size:11px;}
-.bh-layer-bar{flex:1;height:18px;border-radius:4px;position:relative;overflow:hidden;}
-.bh-layer-text{white-space:nowrap;}
-.bh-spt{font-size:10px;font-weight:700;color:var(--tx);background:var(--p3);padding:1px 6px;border-radius:4px;}
-
-/* Chart containers */
-.chart-wrap{background:var(--panel);border:1px solid var(--bd);border-radius:10px;padding:12px;}
-.chart-title{font-size:11px;font-weight:700;color:var(--tx);margin-bottom:8px;}
-.chart-box{position:relative;height:220px;}
-.chart-box.tall{height:320px;}
-
-/* Alerts */
-.alert-box{background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.25);border-radius:8px;padding:10px 12px;}
-.alert-title{font-size:10px;font-weight:700;color:var(--am);margin-bottom:4px;}
-.alert-body{font-size:11px;color:var(--mu);line-height:1.6;}
-
-/* Stat pills */
-.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
-.stat-pill{background:var(--panel);border:1px solid var(--bd);border-radius:10px;padding:10px;text-align:center;}
-.stat-num{font-size:20px;font-weight:800;color:var(--ac);line-height:1;}
-.stat-unit{font-size:9px;color:var(--mu);margin-top:2px;}
-.stat-lbl{font-size:10px;color:var(--mu);margin-top:4px;font-weight:600;}
-
-/* Decision briefing */
-.decision-summary{font-size:11.5px;line-height:1.65;color:var(--mu);}
-.decision-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
-.decision-card{background:var(--panel);border:1px solid var(--bd);border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:6px;}
-.decision-tag{font-size:8.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--ac);}
-.decision-title{font-size:12px;font-weight:800;color:var(--tx);line-height:1.25;}
-.decision-body{font-size:10.5px;line-height:1.55;color:var(--mu);}
-.decision-status{font-size:10px;font-weight:700;color:var(--am);line-height:1.4;}
-.gate-list{display:flex;flex-direction:column;gap:7px;}
-.gate-item{display:flex;gap:8px;align-items:flex-start;font-size:11px;line-height:1.5;color:var(--tx);}
-.gate-num{width:20px;height:20px;border-radius:5px;background:var(--ac2);color:var(--ac);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;}
-
-/* Scope list */
-.scope-item{display:flex;align-items:flex-start;gap:9px;padding:8px 0;border-bottom:1px solid var(--bd);}
-.scope-item:last-child{border-bottom:none;padding-bottom:0;}
-.scope-dot{width:22px;height:22px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;}
-.scope-txt{font-size:11.5px;line-height:1.55;color:var(--tx);}
-
-/* Modal */
-#modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:9000;align-items:center;justify-content:center;padding:16px;}
-#modal-overlay.show{display:flex;}
-.modal-box{background:var(--panel);border-radius:12px;max-width:520px;width:100%;max-height:85vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 12px 48px rgba(0,0,0,0.35);}
-.modal-hd{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--bd);background:var(--p2);}
-.modal-tl{font-size:13px;font-weight:700;}
-.modal-cl{background:none;border:none;color:var(--mu);font-size:18px;cursor:pointer;}
-.modal-body{padding:14px;overflow-y:auto;}
-.bh-log-viz{display:flex;flex-direction:column;gap:4px;}
-.bh-log-row{display:flex;align-items:center;gap:8px;font-size:11px;}
-.bh-log-depth{width:60px;color:var(--mu);font-size:10px;text-align:right;}
-.bh-log-bar{flex:1;height:24px;border-radius:4px;display:flex;align-items:center;padding:0 8px;color:#fff;font-weight:700;font-size:10px;text-shadow:0 1px 2px rgba(0,0,0,0.5);position:relative;overflow:hidden;}
-.bh-log-spt{width:50px;text-align:right;font-weight:700;color:var(--tx);}
-.bh-log-note{color:var(--mu);font-size:10px;}
-
-/* PDF preview */
-#pdf-preview{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9001;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
-#pdf-preview.show{display:flex;}
-.pdf-box{background:var(--panel);border-radius:10px;padding:16px;max-width:400px;width:100%;text-align:center;}
-.pdf-spinner{width:32px;height:32px;border:3px solid var(--bd);border-top-color:var(--ac);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 12px;}
-@keyframes spin{to{transform:rotate(360deg);}}
-
-/* External link card */
-.ext-card{background:var(--panel);border:1px solid var(--bd);border-radius:10px;padding:12px;display:flex;gap:12px;align-items:center;cursor:pointer;transition:all .15s;text-decoration:none;color:inherit;}
-.ext-card:hover{border-color:var(--ac);background:var(--ac3);}
-.ext-icon{width:40px;height:40px;border-radius:8px;background:var(--p2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-.ext-title{font-size:12px;font-weight:700;}
-.ext-desc{font-size:10px;color:var(--mu);margin-top:2px;}
-
-/* Responsive */
-@media(max-width:960px){#map-pane{flex:0 0 50%;}}
-@media(max-width:780px){
-  #main{flex-direction:column;}
-  #map-pane{flex:0 0 45vh;}
-  #sidebar{flex:1;border-left:none;border-top:1px solid var(--bd2);}
-  .decision-grid{grid-template-columns:1fr;}
-}
-@media print{
-  #hdr-actions,.mt-btn,#basemap-sw,#map-tools,.tab,.hbtn{display:none!important;}
-  #sidebar{flex:1!important;display:flex!important;}
-  #map-pane{display:none!important;}
-  body{overflow:auto!important;}
+@media(max-width:560px){
+  .topbar{position:relative}
+  .brand{align-items:flex-start}
+  .authority-lockup{width:84px}
+  .authority-logo{height:30px}
+  .authority-logo.jata{height:34px}
+  .project{font-size:15px;white-space:normal;line-height:1.18}
+  .federal-note{white-space:normal;line-height:1.3}
+  .thesis-title{font-size:20px;line-height:1.12}
+  .thesis-sub{font-size:13px}
+  .nav{padding:10px 14px}
+  .scene-btn{grid-template-columns:42px 1fr;padding:12px}
+  .mapwrap{height:58vh;min-height:460px}
+  .map-tools{top:10px;left:10px;right:10px;gap:6px;overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px}
+  .tool{font-size:12px;padding:9px 10px;white-space:nowrap}
+  .map-caption{left:10px;right:10px;bottom:10px;max-width:none}
+  .metric-grid{grid-template-columns:1fr}
+  .fmav-row{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
-<header id="hdr">
-  <div class="hdr-brand">
-    <img id="client-logo" src="" alt="Client">
-    <div class="hdr-brand-t">
-      <div class="b1" id="client-name"></div>
-      <div class="b2" id="client-sub"></div>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="authority-lockup" aria-label="Jata Negara and JKR Malaysia">
+        <img class="authority-logo jata" src="assets/logos/jata-negara.png" alt="Jata Negara Malaysia">
+        <img class="authority-logo" src="assets/logos/jkr-malaysia.png" alt="Logo Jabatan Kerja Raya Malaysia">
+      </div>
+      <div class="brand-text">
+        <div class="eyebrow">Report Companion · Federal JKR Review</div>
+        <div class="project">Kompleks Mahkamah Baharu Sri Aman</div>
+        <div class="federal-note">Jata Negara + JKR Malaysia · Bahagian Reka Bentuk Geoteknik Bangunan</div>
+      </div>
     </div>
-  </div>
-  <div class="hdr-div"></div>
-  <div class="hdr-title">
-    <div class="hdr-proj" id="proj-title"></div>
-    <div class="hdr-chips" id="stat-chips"></div>
-  </div>
-  <div class="hdr-actions" id="hdr-actions">
-    <button class="hbtn" id="btn-pdf" title="Export PDF">📄 PDF</button>
-    <button class="hbtn" id="btn-print" title="Cetak">🖨️ Cetak</button>
-    <button class="hbtn" id="btn-theme" title="Tukar tema">🌙</button>
-    <button class="hbtn" id="btn-fullmap" title="Peta penuh">⛶</button>
-  </div>
-  <div class="hdr-div"></div>
-  <div class="hdr-brand" style="justify-content:flex-end;">
-    <div class="hdr-brand-t" style="text-align:right;">
-      <div class="b1" id="consult-name"></div>
-      <div class="b2" id="consult-sub"></div>
+    <div class="thesis">
+      <h1 class="thesis-title">Pile-supported building on a settling soft-soil platform</h1>
+      <div class="thesis-sub">The app follows the FACE report sequence so reviewers see each claim, its evidence, its meaning and the required JKR action in one place.</div>
     </div>
-    <img id="consult-logo" src="" alt="Consultant" style="height:28px;width:auto;" onerror="this.style.display='none'">
-  </div>
-</header>
+    <div class="source-rule"><strong>Source rule:</strong> FACE Independent Geotechnical Checker Report Rev 02 governs where it differs from the presentation summary. Presentation says 6 BH; FACE records 7 BH.</div>
+  </header>
 
-<div id="main">
-  <div id="map-pane">
-    <div id="map"></div>
-    <div id="basemap-sw">
-      <button class="bm-btn active" onclick="switchBm('street',this)">Street</button>
-      <button class="bm-btn" onclick="switchBm('sat',this)">Satellite</button>
-      <button class="bm-btn" onclick="switchBm('topo',this)">Topo</button>
-    </div>
-    <div id="map-tools">
-      <button class="mt-btn on" id="lyr-bh" onclick="toggleLayer('bh')">🔍 BH</button>
-      <button class="mt-btn on" id="lyr-boundary" onclick="toggleLayer('boundary')">⬡ Sempadan</button>
-      <button class="mt-btn on" id="lyr-fac" onclick="toggleLayer('fac')">🏢 Kemudahan</button>
-      <button class="mt-btn" id="lyr-cadastre" onclick="toggleCadastre()">▦ Kadaster</button>
-      <button class="mt-btn" id="lyr-seismic" onclick="toggleLayer('seismic')">〰 Seismik</button>
-      <button class="mt-btn" id="lyr-heat" onclick="toggleHeatmap()">🌡️ Heatmap</button>
-    </div>
-    <div id="coord-view">—</div>
-    <div id="copy-toast">Koordinat disalin</div>
-  </div>
-  <div id="sidebar">
-    <div id="tabs">
-      <button class="tab active" data-tab="t-overview">📋 Keputusan</button>
-      <button class="tab" data-tab="t-geo">🏗 Bukti</button>
-      <button class="tab" data-tab="t-charts">📊 Trend</button>
-      <button class="tab" data-tab="t-site">📐 Tapak</button>
-      <button class="tab" data-tab="t-team">👥 Peranan</button>
-    </div>
-    <div id="t-overview" class="panel active"><div class="pg" id="overview-panel"></div></div>
-    <div id="t-geo" class="panel"><div class="pg" id="geo-panel"></div></div>
-    <div id="t-charts" class="panel"><div class="pg" id="charts-panel"></div></div>
-    <div id="t-site" class="panel"><div class="pg" id="site-panel"></div></div>
-    <div id="t-team" class="panel"><div class="pg" id="team-panel"></div></div>
-  </div>
+  <main class="main">
+    <aside class="nav">
+      <h2 class="nav-title">Report Walkthrough</h2>
+      <div id="sceneList"></div>
+    </aside>
+
+    <section class="mapwrap">
+      <div id="map"></div>
+      <div class="map-tools">
+        <button class="tool active" id="tool-boundary">Boundary</button>
+        <button class="tool active" id="tool-bh">BH Evidence</button>
+        <button class="tool" id="tool-soft">Soft Layer</button>
+        <button class="tool" id="tool-facility">Facility Logic</button>
+      </div>
+      <div class="map-caption">
+        <div class="cap-kicker" id="capKicker"></div>
+        <div class="cap-title" id="capTitle"></div>
+        <div class="cap-body" id="capBody"></div>
+        <div class="legend" id="legend"></div>
+      </div>
+    </section>
+
+    <aside class="inspector">
+      <section class="panel-block">
+        <div class="panel-hd">
+          <div class="panel-kicker">Report Agreement Check</div>
+          <div class="panel-title">Governing source is explicit</div>
+        </div>
+        <div class="panel-body">
+          <div class="agreement-grid">
+            <div class="agreement-item"><div class="agreement-k">FACE Rev 02</div><div class="agreement-v ok">7 boreholes</div></div>
+            <div class="agreement-item"><div class="agreement-k">Presentation</div><div class="agreement-v warn">6 boreholes</div></div>
+            <div class="agreement-item"><div class="agreement-k">App uses</div><div class="agreement-v ok">BH1-BH7</div></div>
+            <div class="agreement-item"><div class="agreement-k">Authority rule</div><div class="agreement-v ok">FACE governs</div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel-block">
+        <div class="panel-hd">
+          <div class="panel-kicker" id="sectionRef"></div>
+          <div class="panel-title" id="claimTitle"></div>
+        </div>
+        <div class="panel-body">
+          <div class="claim" id="claimText"></div>
+          <div id="certainty" class="certainty"></div>
+        </div>
+      </section>
+
+      <section class="panel-block">
+        <div class="panel-hd">
+          <div class="panel-kicker">Fact · Meaning · Action · Value</div>
+          <div class="panel-title">How the visual should be read</div>
+        </div>
+        <div class="panel-body">
+          <div class="fmav" id="fmav"></div>
+        </div>
+      </section>
+
+      <section class="panel-block">
+        <div class="panel-hd">
+          <div class="panel-kicker">Decision Metrics</div>
+          <div class="panel-title">Numbers that carry the argument</div>
+        </div>
+        <div class="panel-body">
+          <div class="metric-grid" id="metrics"></div>
+        </div>
+      </section>
+
+      <section class="panel-block">
+        <div class="panel-hd">
+          <div class="panel-kicker">JKR Review Prompts</div>
+          <div class="panel-title">What should be asked next</div>
+        </div>
+        <div class="panel-body" id="risks"></div>
+      </section>
+    </aside>
+  </main>
 </div>
-
-<!-- Borehole Log Modal -->
-<div id="modal-overlay" onclick="if(event.target===this)closeModal()">
-  <div class="modal-box">
-    <div class="modal-hd"><span class="modal-tl" id="modal-title">Log Borehole</span><button class="modal-cl" onclick="closeModal()">✕</button></div>
-    <div class="modal-body" id="modal-body"></div>
-  </div>
-</div>
-
-<!-- PDF Export Preview -->
-<div id="pdf-preview"><div class="pdf-box"><div class="pdf-spinner"></div><div style="font-size:13px;font-weight:700;">Menjana PDF...</div><div style="font-size:11px;color:var(--mu);margin-top:6px;">Sila tunggu sebentar</div></div></div>
 
 <script>
-const C=APP_CONFIG, T=C.theme||{}, GT=C.geotechnical||{};
-
-/* Theme override */
-const tv={'--bg':T.bg,'--panel':T.panel,'--p2':T.panel2,'--p3':T.panel3,
-  '--bd':T.border,'--bd2':T.border2,'--tx':T.text,'--mu':T.muted,'--ft':T.faint,
-  '--ac':T.accent,'--ac2':T.accent2,'--am':T.amber,'--gn':T.green,'--mg':T.magenta,'--or':T.orange};
-Object.entries(tv).forEach(([k,v])=>v&&document.documentElement.style.setProperty(k,v));
-
-const $=id=>document.getElementById(id);
-document.title=C.pageTitle||'Project Brief';
-
-/* Dark mode */
-const themeBtn=$('btn-theme');
-function applyTheme(dark){
-  document.documentElement.setAttribute('data-theme', dark?'dark':'');
-  themeBtn.textContent=dark?'☀️':'🌙';
-  localStorage.setItem('dpik-theme', dark?'dark':'light');
-}
-applyTheme(localStorage.getItem('dpik-theme')==='dark');
-themeBtn.onclick=()=>applyTheme(!document.documentElement.getAttribute('data-theme'));
-
-/* Print */
-$('btn-print').onclick=()=>window.print();
-
-/* PDF Export */
-$('btn-pdf').onclick=async()=>{
-  const preview=$('pdf-preview');
-  preview.classList.add('show');
-  try{
-    const {jsPDF}=window.jspdf;
-    const pdf=new jsPDF('p','mm','a4');
-    pdf.setFont('helvetica');
-    pdf.setFontSize(16);
-    pdf.text(C.project.title,14,20);
-    pdf.setFontSize(10);
-    pdf.text(`No. Tender: ${C.project.tenderNumber} | Disediakan oleh: ${C.consultant.name}`,14,28);
-    pdf.setDrawColor(200);pdf.line(14,32,196,32);
-    const sections=[['overview-panel',20],['geo-panel',20],['site-panel',20]];
-    let y=40;
-    for(const [id,pad] of sections){
-      const el=$(id);
-      if(!el)continue;
-      const clone=el.cloneNode(true);
-      clone.style.background='#fff';clone.style.color='#000';
-      const wrap=document.createElement('div');
-      wrap.style.position='absolute';wrap.style.left='-9999px';
-      wrap.style.width='780px';wrap.appendChild(clone);document.body.appendChild(wrap);
-      const canvas=await html2canvas(clone,{scale:2,backgroundColor:'#ffffff'});
-      document.body.removeChild(wrap);
-      const imgData=canvas.toDataURL('image/png');
-      const imgW=180;const imgH=(canvas.height*imgW)/canvas.width;
-      if(y+imgH>280){pdf.addPage();y=20;}
-      pdf.addImage(imgData,'PNG',14,y,imgW,imgH);
-      y+=imgH+pad;
-    }
-    pdf.save(`Taklimat_${C.project.tenderNumber.replace(/\//g,'_')}.pdf`);
-  }catch(e){console.error(e);alert('Gagal menjana PDF: '+e.message);}
-  preview.classList.remove('show');
-};
-
-/* Fullscreen map */
-let mapFull=false;
-$('btn-fullmap').onclick=()=>{
-  mapFull=!mapFull;
-  $('map-pane').classList.toggle('full',mapFull);
-  $('sidebar').classList.toggle('hidden',mapFull);
-  $('btn-fullmap').textContent=mapFull?'⛶ Tutup':'⛶ Penuh';
-  setTimeout(()=>map.invalidateSize(),350);
-};
-
-/* Header */
-$('client-logo').src=C.client.logo;
-$('client-name').textContent=C.client.name;
-$('client-sub').textContent=C.client.subname||'';
-$('consult-logo').src=C.consultant.logo;
-$('consult-name').textContent=C.consultant.name;
-$('consult-sub').textContent=C.consultant.subname||'';
-$('proj-title').textContent=C.project.title;
-const chips=$('stat-chips');
-[['SPT 50×5 · 7 BH',''],['32 Probe JKR','am']].forEach(([t,c])=>{
-  const s=document.createElement('span');s.className='chip'+(c?' '+c:'');
-  s.textContent=t;chips.appendChild(s);
-});
-
-/* Tabs */
-document.querySelectorAll('.tab').forEach(b=>{
-  b.addEventListener('click',()=>{
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-    b.classList.add('active');
-    document.getElementById(b.dataset.tab).classList.add('active');
-  });
-});
-
-/* Map */
-const map=L.map('map',{zoomControl:true}).setView(C.map.center,C.map.zoom);
-const bm={
-  street:L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}),
-  sat:   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'© Esri World Imagery',maxZoom:19}),
-  shade: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}',{attribution:'© Esri',maxZoom:19,opacity:0.35}),
-  topo:  L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{attribution:'© OpenTopoMap',maxZoom:17})
-};
-bm.street.addTo(map);
-function switchBm(name,btn){
-  [bm.street,bm.sat,bm.shade,bm.topo].forEach(l=>map.removeLayer(l));
-  if(name==='sat'){bm.sat.addTo(map);bm.shade.addTo(map);}
-  else bm[name].addTo(map);
-  document.querySelectorAll('.bm-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-}
-
-const layers={bh:L.layerGroup().addTo(map), boundary:L.layerGroup().addTo(map), fac:L.layerGroup().addTo(map), seismic:L.layerGroup()};
-let heatLayer=null;
-let cadastreLayer=null;
-let cadastreOn=false;
-function toggleLayer(name){
-  const el=document.getElementById('lyr-'+name);
-  if(map.hasLayer(layers[name])){map.removeLayer(layers[name]);el.classList.remove('on');}
-  else{layers[name].addTo(map);el.classList.add('on');}
-}
-
-function buildCadastreExportUrl(cfg){
-  const b=map.getBounds();
-  const s=map.getSize();
-  const params=new URLSearchParams({
-    f:'image',
-    bbox:[b.getWest(),b.getSouth(),b.getEast(),b.getNorth()].join(','),
-    bboxSR:'4326',
-    imageSR:'4326',
-    size:`${Math.max(1,s.x)},${Math.max(1,s.y)}`,
-    format:cfg.format||'png32',
-    transparent:'true'
-  });
-  if(cfg.layers)params.set('layers',cfg.layers);
-  const rawUrl=`${cfg.serviceUrl}?${params.toString()}`;
-  return cfg.proxyUrl?cfg.proxyUrl+rawUrl:rawUrl;
-}
-
-function refreshCadastre(){
-  const cfg=C.cadastre||{};
-  if(!cadastreOn||!cfg.enabled||!cfg.serviceUrl)return;
-  if((cfg.minZoom||0)>map.getZoom()){
-    if(cadastreLayer){map.removeLayer(cadastreLayer);cadastreLayer=null;}
-    return;
-  }
-  const imageUrl=buildCadastreExportUrl(cfg);
-  const bounds=map.getBounds();
-  const next=L.imageOverlay(imageUrl,bounds,{opacity:cfg.opacity??0.7,interactive:false,attribution:cfg.attribution||''});
-  next.on('load',()=>{
-    if(cadastreLayer)map.removeLayer(cadastreLayer);
-    cadastreLayer=next;
-  });
-  next.on('error',()=>{
-    if(cadastreLayer){map.removeLayer(cadastreLayer);cadastreLayer=null;}
-    const el=$('lyr-cadastre');
-    if(el)el.title='Kadaster eLASIS tidak dapat dimuatkan daripada servis semasa.';
-  });
-  next.addTo(map);
-}
-
-function toggleCadastre(){
-  const cfg=C.cadastre||{};
-  const el=$('lyr-cadastre');
-  if(!cfg.enabled){
-    if(el)el.title='Lapisan kadaster belum dikonfigurasi.';
-    return;
-  }
-  cadastreOn=!cadastreOn;
-  if(el)el.classList.toggle('on',cadastreOn);
-  if(cadastreOn)refreshCadastre();
-  else if(cadastreLayer){map.removeLayer(cadastreLayer);cadastreLayer=null;}
-}
-map.on('moveend zoomend resize',refreshCadastre);
-if(C.cadastre&&C.cadastre.enabled===false){
-  const el=$('lyr-cadastre');
-  if(el)el.style.display='none';
-}
-if(C.cadastre&&C.cadastre.defaultOn)toggleCadastre();
-
-/* Site boundary */
-const poly=C.geo.poly;
-if(poly&&poly.length>2){
-  L.polygon(poly,{color:T.accent||'#27772C',weight:3,fillColor:T.accent||'#27772C',fillOpacity:0.06,dashArray:'6 4'}).addTo(layers.boundary);
-  L.polyline(poly.concat([poly[0]]),{color:T.accent||'#27772C',weight:2,opacity:0.4}).addTo(layers.boundary);
-}
-
-/* Site seismic condition layer */
-const seis=C.seismicCondition||{};
-if(seis.enabled&&seis.position){
-  const clr=T.amber||'#FFB800';
-  const loc=[seis.position.lat,seis.position.lon];
-  L.circle(loc,{
-    radius:seis.radiusM||500,
-    color:clr,
-    weight:2,
-    fillColor:clr,
-    fillOpacity:0.10,
-    dashArray:'7 5'
-  }).addTo(layers.seismic);
-  L.marker(loc,{icon:L.divIcon({className:'',html:`<div style="width:34px;height:34px;border-radius:50%;background:${clr};color:#241600;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;box-shadow:0 2px 10px rgba(0,0,0,0.22);border:2px solid #fff;">EQ</div>`,iconSize:[34,34],iconAnchor:[17,17]})})
-    .addTo(layers.seismic)
-    .bindPopup(`<div class="popup-inner"><div class="popup-lbl">${seis.label}</div><div class="popup-title">PGA ${seis.pgaG}g · MMI ${seis.mmi}</div><div class="popup-body">${seis.classification}<br>${seis.designMeaning}<br><br><strong>${seis.decision}</strong><br><br><span style="font-size:10px;">${seis.disclaimer}</span></div></div>`,{className:'lf-popup'});
-  if(seis.defaultOn){
-    layers.seismic.addTo(map);
-    const el=$('lyr-seismic'); if(el)el.classList.add('on');
-  }
-}else{
-  const el=$('lyr-seismic'); if(el)el.style.display='none';
-}
-
-/* GeoJSON Boreholes with interactive log modal */
-const bhFeatures={type:'FeatureCollection',features:(GT.boreholes||[]).map(bh=>({type:'Feature',geometry:{type:'Point',coordinates:[bh.lon,bh.lat]},properties:bh}))};
-const bhClr={'BH1':'#F44336','BH2':'#E91E63','BH3':'#9C27B0','BH4':'#673AB7','BH5':'#3F51B5','BH6':'#009688','BH7':'#FF5722'};
-L.geoJSON(bhFeatures,{
-  pointToLayer:(feature,latlng)=>{
-    const id=feature.properties.id;
-    const clr=bhClr[id]||'#0099D4';
-    return L.marker(latlng,{icon:L.divIcon({className:'',html:`<div style="width:30px;height:30px;border-radius:50%;background:${clr};color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,0.25);border:2px solid #fff;cursor:pointer;">${id}</div>`,iconSize:[30,30],iconAnchor:[15,15]})});
+const lot = [
+  [1.229498521188063,111.4574098079336],
+  [1.230446514601365,111.4585316598169],
+  [1.230369167465016,111.4582565607028],
+  [1.231722979978533,111.4574392550496],
+  [1.230873587566818,111.4563604495926],
+  [1.230057271916703,111.4569801122528]
+];
+const boreholes = [
+  {id:"BH1",lat:1.230844613982477,lon:111.4567190721134,soft:13.5,gwl:3.34,depth:25.615},
+  {id:"BH2",lat:1.231202385599171,lon:111.4572890642997,soft:15.0,gwl:2.58,depth:25.66},
+  {id:"BH3",lat:1.230382214306199,lon:111.4570586755615,soft:15.0,gwl:2.30,depth:28.66},
+  {id:"BH4",lat:1.230870433257311,lon:111.457249267201,soft:10.5,gwl:2.99,depth:30.085},
+  {id:"BH5",lat:1.230696016581852,lon:111.4577186724582,soft:10.5,gwl:2.36,depth:24.07},
+  {id:"BH6",lat:1.229859064507745,lon:111.4574453288203,soft:16.5,gwl:2.92,depth:30.16},
+  {id:"BH7",lat:1.230239735274369,lon:111.4579427722577,soft:10.5,gwl:1.76,depth:24.07}
+];
+const facilities = [
+  {id:"M",name:"Bangunan Mahkamah",lat:1.23090,lon:111.45740,pile:"Spun 250mm · 21m · 200kN",role:"Piled building"},
+  {id:"P",name:"Parkir / jalan dalaman",lat:1.23040,lon:111.45770,pile:"RC 150mm · 9m · 20kN",role:"Movement-sensitive platform"},
+  {id:"D",name:"OSD / drainage",lat:1.23100,lon:111.45790,pile:"Gradient-sensitive service",role:"Settlement watch"},
+  {id:"G",name:"Pondok pengawal",lat:1.22980,lon:111.45720,pile:"RC 150mm · 9m · 20kN",role:"Light structure"}
+];
+const scenes = [
+  {
+    id:"executive",
+    ref:"Executive Read",
+    page:"Synthesis section 0",
+    name:"Ground Story",
+    claimTitle:"The site is buildable but soft-ground-sensitive.",
+    claim:"The controlling interpretation is not ordinary building-ground approval. It is a pile-supported court building within a settling soft-soil platform.",
+    certainty:"Professional interpretation",
+    certaintyClass:"interpretation",
+    mapMode:"facility",
+    fact:"The site is recent alluvial ground with peat and very soft to soft fine-grained soil above deeper stiff-to-hard sandy silt.",
+    meaning:"The main building can be protected by piles, but external platform areas can continue to move.",
+    action:"Review transitions, drainage falls, utilities, pavements and monitoring as part of the geotechnical decision.",
+    value:"Prevents approval from focusing only on pile capacity while missing serviceability defects.",
+    metrics:[["7","FACE boreholes"],["32","Mackintosh probes"],["391 mm","Total settlement, median Cc"],["16.5 m","Deepest N<=4 soft layer"]],
+    risks:[["Differential settlement","Ask how piled and non-piled interfaces will tolerate long-term movement.","High"],["Utility gradients","Ask whether drainage and sewer falls remain functional after residual settlement.","High"]],
+    caption:"This scene states the thesis before the details: the map should help reviewers read every later section through soft-ground serviceability."
   },
-  onEachFeature:(feature,layer)=>{
-    const p=feature.properties;
-    layer.bindPopup(`<div class="popup-inner"><div class="popup-lbl">Borehole ${p.id}</div><div class="popup-title">${p.id} — ${p.layers[0].soil} ke ${p.layers[p.layers.length-1].soil}</div><div class="popup-body">RL ${p.rlM} · Kedalaman ${p.depthM}m · GWL ${p.gwlM}m<br>Klik ikon untuk log penuh.</div></div>`,{className:'lf-popup'});
-    layer.on('click',()=>openBoreholeModal(p));
+  {
+    id:"geology",
+    ref:"FACE p.4-5",
+    page:"3.0 Geology / 3.1 Seismic",
+    name:"Geology and Seismic Context",
+    claimTitle:"Seismic is a checked condition, not the governing driver.",
+    claim:"FACE records low seismicity and PGA about 0.06g. The stronger geotechnical signal is recent alluvial ground with peat and variable fine-grained deposits.",
+    certainty:"Confirmed by FACE report",
+    certaintyClass:"certain",
+    mapMode:"boundary",
+    fact:"PGA is about 0.06g and the site is mapped within recent coastal / riverine alluvium.",
+    meaning:"Slope and seismic checks still matter, but they do not explain the main project risk.",
+    action:"Keep seismic as a bounded check and move review attention to settlement-sensitive platform behavior.",
+    value:"Prevents over-weighting a visually dramatic hazard layer over the report's actual controlling issue.",
+    metrics:[["0.06g","PGA"],["IV-V","MMI range"],["1.316","Seismic FOS"],["Low","Seismicity area"]],
+    risks:[["Overclaiming seismic","Do not draw national hazard contours unless official GIS data is imported.","Medium"],["Wrong emphasis","Do not let seismic visuals distract from settlement controls.","Medium"]],
+    caption:"The seismic layer should be modest and clearly bounded; it supports the report rather than becoming the report."
+  },
+  {
+    id:"si",
+    ref:"FACE p.6-10",
+    page:"4.0 Site Investigation",
+    name:"SI Evidence",
+    claimTitle:"The governing checker source relies on 7 BH and 32 MP tests.",
+    claim:"The FACE report records 7 boreholes, 32 Mackintosh probes and SPT at 1.5m intervals. The app should surface the 6 BH vs 7 BH discrepancy as a source-governance point.",
+    certainty:"Verified SI result",
+    certaintyClass:"verified",
+    mapMode:"bh",
+    fact:"BH depths range from about 24.07m to 30.16m bgl, with groundwater at 1.76m to 3.34m below OGL.",
+    meaning:"The ground model is based on distributed subsurface evidence, not one representative borehole.",
+    action:"Use FACE Rev 02 as the controlling source and keep BH1 to BH7 visible in the report walkthrough.",
+    value:"Reduces reprocessing burden and avoids presentation/report quantity conflict during review.",
+    metrics:[["7","BH in FACE Rev 02"],["6","BH stated in presentation"],["1.76-3.34m","Groundwater from OGL"],["24.07-30.16m","BH termination depths"]],
+    risks:[["Source mismatch","Record FACE as governing source where the presentation differs.","High"],["Data sufficiency","Ask if raw lab schedules are needed for independent recalculation.","Medium"]],
+    caption:"This scene makes document authority visible: the map uses BH1-BH7 because the checker report governs."
+  },
+  {
+    id:"profile",
+    ref:"FACE p.11-17",
+    page:"5.0 Subsurface Profile / 6.0 Lab Tests",
+    name:"Soft-Soil Model",
+    claimTitle:"BH6 controls the deepest soft-soil concern.",
+    claim:"Every borehole contains an SPT N<=4 zone. The deepest recorded soft layer reaches 16.5m at BH6, which is why shallow platform behavior cannot be treated as uniform or benign.",
+    certainty:"Measured SI result",
+    certaintyClass:"verified",
+    mapMode:"soft",
+    fact:"Soft soil depth varies from about 10.5m to 16.5m across BH1-BH7.",
+    meaning:"The platform has spatially variable settlement sensitivity, especially near the deeper soft layer zone.",
+    action:"Tie facility and utility detailing to nearby BH evidence instead of using one generic soft-soil assumption.",
+    value:"Improves review of differential settlement and local movement tolerance.",
+    metrics:[["16.5m","BH6 N<=4 depth"],["15.0m","BH2/BH3 N<=4 depth"],["10.5m","BH4/BH5/BH7 N<=4 depth"],["6-9m","Peat layer range"]],
+    risks:[["Uniform assumption","Ask whether facility-specific settlement checks reference nearby BH evidence.","High"],["Lab auditability","Charts are useful, but raw schedules may be needed for recalculation.","Medium"]],
+    caption:"Circle size follows soft-layer depth. The map should turn the subsurface table into spatial judgement."
+  },
+  {
+    id:"assessment",
+    ref:"FACE p.18-25",
+    page:"7.0 Geotechnical Assessment",
+    name:"Settlement Watch",
+    claimTitle:"Settlement is the governing serviceability risk.",
+    claim:"FACE settlement values are large enough to affect car parks, aprons, drainage, utility gradients and transitions even if the main building is piled.",
+    certainty:"Professional interpretation from measured analysis",
+    certaintyClass:"interpretation",
+    mapMode:"facility",
+    fact:"Estimated total settlement is about 334-391mm, with post-construction settlement about 209-272mm depending on construction duration and compression index assumption.",
+    meaning:"A structurally stable building can still sit beside a platform that ponds, cracks, rotates thresholds or disrupts service gradients.",
+    action:"Ask for transition details, movement-tolerant utility connections, monitoring triggers and residual settlement acceptance.",
+    value:"Moves review from calculation acceptance to operational serviceability.",
+    metrics:[["334-391mm","Total settlement"],["209-272mm","Post-construction settlement"],["250mm","Stated post-construction limit"],["48 months","Better residual settlement case"]],
+    risks:[["Ponding and pavement defects","Ask for falls and tolerance after residual settlement.","High"],["Threshold movement","Ask for adjustable or movement-tolerant interface details.","High"],["Ground treatment limits","Treat geotextile as constructability support, not full consolidation removal.","Medium"]],
+    caption:"This is the main replacement focus: settlement scenes should control the briefing more than generic charts."
+  },
+  {
+    id:"foundation",
+    ref:"FACE p.19-22",
+    page:"7.2 Pile Foundation Analysis",
+    name:"Foundation Logic",
+    claimTitle:"Pile choice aligns with the ground model, but capacity is not the only question.",
+    claim:"The main building pile strategy is technically aligned with deeper competent material. Smaller piles for external works are acceptable only if surrounding settlement and connection movement are accepted.",
+    certainty:"Supported design judgement",
+    certaintyClass:"interpretation",
+    mapMode:"facility",
+    fact:"Spun 250mm piles are proposed for the main building; RC 150mm and bakau piles support lighter works.",
+    meaning:"Different pile types solve different load problems but do not make the whole platform settlement-free.",
+    action:"Review pile tests and interface details together, not as separate checklists.",
+    value:"Protects both structural acceptance and operational performance.",
+    metrics:[["250mm","Spun pile"],["21m","Main building pile length"],["200kN","Main building working load"],["3%","Minimum PDA / HSDT"]],
+    risks:[["Pile variability","Ask for set criteria, PDA, SLT, pile records and abnormal pile review.","High"],["Small-pile misconception","Confirm movement tolerance around lightly piled structures.","Medium"]],
+    caption:"Facility markers show the design logic: heavy loads go deep, but platform movement still has to be managed."
+  },
+  {
+    id:"control",
+    ref:"FACE p.26-29",
+    page:"8.0 Construction Control / 9-10 Conclusion",
+    name:"Construction Proof",
+    claimTitle:"Construction controls are part of making the design assumptions true.",
+    claim:"FACE acceptance depends on construction verification: slope protection, compaction, pile installation, pile testing and monitoring. These are not paperwork items.",
+    certainty:"Confirmed report requirement",
+    certaintyClass:"certain",
+    mapMode:"facility",
+    fact:"FACE requires slope protection, controlled pile installation, Static Load Test at 1% and High Strain Dynamic / PDA tests at minimum 3%.",
+    meaning:"The design is acceptable only if site evidence confirms the assumptions used in assessment.",
+    action:"Treat construction control as a gate before acceptance, with records tied to location and affected facility.",
+    value:"Creates a traceable route from design report to site verification.",
+    metrics:[["1%","Static Load Test"],["3%","PDA / HSDT"],["1 week","Temporary slope exposure limit"],["TS 30","Geotextile separator"]],
+    risks:[["Paper compliance","Ask for location-based verification records, not only summary statements.","High"],["Wet weather softening","Ask for drainage and earthwork controls during construction.","Medium"]],
+    caption:"This final scene turns recommendations into review gates: what must be proven on site before assumptions are trusted."
   }
-}).addTo(layers.bh);
+];
 
-/* Borehole modal */
-function openBoreholeModal(bh){
-  $('modal-title').textContent=`Log Borehole ${bh.id}`;
-  let html=`<div style="font-size:11px;color:var(--mu);margin-bottom:10px;">RL ${bh.rlM}m · Kedalaman ${bh.depthM}m · GWL ${bh.gwlM}m bgl</div><div class="bh-log-viz">`;
-  bh.layers.forEach(L=>{
-    html+=`<div class="bh-log-row">
-      <div class="bh-log-depth">${L.depthFrom.toFixed(1)}–${L.depthTo.toFixed(1)}m</div>
-      <div class="bh-log-bar" style="background:${L.colour};">${L.soil}</div>
-      <div class="bh-log-spt">SPT ${L.spt}</div>
-    </div>`;
-  });
-  html+=`</div>`;
-  if(bh.lab){
-    html+=`<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--bd);"><div class="sec-title">Ujian Makmal</div>`;
-    if(bh.lab.cuKpa) html+=`<div class="bh-log-note">Cu: ${bh.lab.cuKpa.join('–')} kPa</div>`;
-    if(bh.lab.cc) html+=`<div class="bh-log-note">Cc: ${bh.lab.cc}</div>`;
-    if(bh.lab.ccRange) html+=`<div class="bh-log-note">Cc: ${bh.lab.ccRange.join(' – ')}</div>`;
-    if(bh.lab.eo) html+=`<div class="bh-log-note">eo: ${bh.lab.eo}</div>`;
-    if(bh.lab.eoRange) html+=`<div class="bh-log-note">eo: ${bh.lab.eoRange.join(' – ')}</div>`;
-    if(bh.lab.cv) html+=`<div class="bh-log-note">cv: ${bh.lab.cv} m²/yr</div>`;
-    if(bh.lab.cvRange) html+=`<div class="bh-log-note">cv: ${bh.lab.cvRange.join(' – ')} m²/yr</div>`;
-    html+=`</div>`;
+const map = L.map("map",{zoomControl:true}).setView([1.23059,111.45736],18);
+L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{maxZoom:19,attribution:"Esri World Imagery"}).addTo(map);
+const base = L.layerGroup().addTo(map);
+const sceneLayer = L.layerGroup().addTo(map);
+L.polygon(lot,{color:"#27772c",weight:3,fillColor:"#27772c",fillOpacity:.08,dashArray:"6 4"}).addTo(base);
+
+function bhMarker(bh, color="#b93a30"){
+  return L.marker([bh.lat,bh.lon],{icon:L.divIcon({className:"",html:`<div class="bh-dot" style="background:${color}">${bh.id}</div>`,iconSize:[32,32],iconAnchor:[16,16]})})
+    .bindPopup(`<strong>${bh.id}</strong><br>Soft N<=4 depth: ${bh.soft}m<br>GWL: ${bh.gwl}m OGL<br>Termination: ${bh.depth}m`);
+}
+function facilityMarker(f, color="#2369a7"){
+  return L.marker([f.lat,f.lon],{icon:L.divIcon({className:"",html:`<div class="facility-dot" style="background:${color}">${f.id}</div>`,iconSize:[34,34],iconAnchor:[17,17]})})
+    .bindPopup(`<strong>${f.name}</strong><br>${f.role}<br>${f.pile}`);
+}
+function setTools(mode){
+  document.querySelectorAll(".tool").forEach(t=>t.classList.remove("active"));
+  document.getElementById("tool-boundary").classList.add("active");
+  if(mode==="bh")document.getElementById("tool-bh").classList.add("active");
+  if(mode==="soft")document.getElementById("tool-soft").classList.add("active");
+  if(mode==="facility")document.getElementById("tool-facility").classList.add("active");
+}
+function renderScene(index){
+  const s=scenes[index];
+  sceneLayer.clearLayers();
+  setTools(s.mapMode);
+  if(s.mapMode==="boundary"){
+    L.circle([1.23059,111.45736],{radius:520,color:"#b97912",weight:2,fillColor:"#b97912",fillOpacity:.12,dashArray:"7 5"}).addTo(sceneLayer);
   }
-  $('modal-body').innerHTML=html;
-  $('modal-overlay').classList.add('show');
-}
-function closeModal(){$('modal-overlay').classList.remove('show');}
-
-/* Facility markers */
-const fclr={primary:T.accent||'#0099D4',extended:T.amber||'#F5A623'};
-(C.facilities||[]).forEach(f=>{
-  const c=fclr[f.tag]||T.accent;
-  const icon=L.divIcon({className:'',html:`<div style="width:32px;height:32px;border-radius:8px;background:${c};color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,0.25);border:2px solid #fff;cursor:pointer;">${f.marker}</div>`,iconSize:[32,32],iconAnchor:[16,16]});
-  L.marker([f.lat,f.lon],{icon}).addTo(layers.fac)
-    .bindPopup(`<div class="popup-inner"><div class="popup-lbl">${f.role}</div><div class="popup-title">${f.name}</div><div class="popup-body">${f.detail}</div></div>`,{className:'lf-popup'});
-});
-
-/* Heatmap from borehole data */
-function buildHeatmapData(){
-  const pts=[];
-  (GT.boreholes||[]).forEach(bh=>{
-    let peatTh=0;bh.layers.forEach(L=>{if(L.soil.toLowerCase().includes('peat'))peatTh+=L.depthTo-L.depthFrom;});
-    pts.push([bh.lat,bh.lon,peatTh*2]); // intensity scaled
-  });
-  return pts;
-}
-function toggleHeatmap(){
-  const el=$('lyr-heat');
-  if(heatLayer){map.removeLayer(heatLayer);heatLayer=null;el.classList.remove('on');return;}
-  heatLayer=L.heatLayer(buildHeatmapData(),{radius:35,blur:25,maxZoom:17,max:20,gradient:{0.2:'#4CAF50',0.4:'#FFEB3B',0.6:'#FF9800',0.8:'#F44336'}}).addTo(map);
-  el.classList.add('on');
-}
-
-/* Quick nav */
-const qn=$('overview-panel');
-const db=C.decisionBrief||{};
-if(db.purpose){
-  qn.insertAdjacentHTML('beforeend',`<div class="card"><div class="card-hd"><div class="card-hd-t">Tujuan Mesyuarat</div></div><div class="card-body">
-    <div class="decision-summary">${db.purpose}</div>
-    ${db.meeting?`<div style="margin-top:9px;padding-top:8px;border-top:1px solid var(--bd);font-size:10.5px;line-height:1.6;color:var(--mu);"><strong style="color:var(--tx);">${db.meeting.date} · ${db.meeting.time}</strong><br>${db.meeting.venue}<br>${db.meeting.attendance}</div>`:''}
-  </div></div>`);
-}
-if(db.decisionQuestions&&db.decisionQuestions.length){
-  let decisionHtml=`<div class="card"><div class="card-hd"><div class="card-hd-t">Soalan Keputusan JKR</div></div><div class="card-body"><div class="decision-grid">`;
-  db.decisionQuestions.forEach(q=>{
-    decisionHtml+=`<div class="decision-card">
-      <div class="decision-tag">${q.label}</div>
-      <div class="decision-title">${q.question}</div>
-      <div class="decision-body">${q.evidence}</div>
-      <div class="decision-status">${q.status}</div>
-    </div>`;
-  });
-  decisionHtml+=`</div></div></div>`;
-  qn.insertAdjacentHTML('beforeend',decisionHtml);
-}
-if(db.evidenceGates&&db.evidenceGates.length){
-  let gateHtml=`<div class="card"><div class="card-hd"><div class="card-hd-t">Evidence Gates Sebelum Persetujuan</div></div><div class="card-body"><div class="gate-list">`;
-  db.evidenceGates.forEach((g,i)=>{gateHtml+=`<div class="gate-item"><span class="gate-num">${i+1}</span><span>${g}</span></div>`;});
-  gateHtml+=`</div></div></div>`;
-  qn.insertAdjacentHTML('beforeend',gateHtml);
-}
-const rb=C.reportBrief||{};
-if(rb.sections&&rb.sections.length){
-  let rbHtml=`<div class="card"><div class="card-hd"><div class="card-hd-t">${rb.title||'Indeks Bukti Laporan'}</div></div><div class="card-body">
-    <div class="decision-summary">${rb.purpose||''}</div>
-    <div class="gate-list" style="margin-top:9px;">`;
-  rb.sections.forEach((s,i)=>{
-    rbHtml+=`<div class="gate-item"><span class="gate-num">${i+1}</span><span><strong style="color:var(--tx);">${s.name}</strong><br><span style="color:var(--mu);">${s.decisionUse}</span><br><span style="font-size:10px;color:var(--ac);">${s.presentation}</span></span></div>`;
-  });
-  rbHtml+=`</div></div></div>`;
-  qn.insertAdjacentHTML('beforeend',rbHtml);
-}
-qn.insertAdjacentHTML('beforeend',`<div class="card"><div class="card-hd"><div class="card-hd-t">Navigasi Pantas</div></div><div class="card-body"><div class="qnav-row" id="qnav"></div></div></div>`);
-(C.quickNav||[]).forEach(q=>{
-  const b=document.createElement('button');b.className='qbtn';b.textContent=q.label;
-  b.onclick=()=>map.setView([q.lat,q.lon],q.zoom||17);
-  $('qnav').appendChild(b);
-});
-
-/* Legend */
-let legHtml=`<div class="card"><div class="card-hd"><div class="card-hd-t">Legend</div></div><div class="card-body"><div class="legend">`;
-(C.legend||[]).forEach(li=>{
-  legHtml+=`<div class="leg-item"><div class="leg-swatch" style="background:${li.color};"></div><div class="leg-label">${li.l}</div></div><div class="leg-sub">${li.s}</div>`;
-});
-legHtml+=`</div></div></div>`;
-qn.insertAdjacentHTML('beforeend',legHtml);
-
-/* Overview stats */
-qn.insertAdjacentHTML('beforeend',`
-<div class="stat-row">
-  <div class="stat-pill"><div class="stat-num">7</div><div class="stat-unit">BH</div><div class="stat-lbl">Lubang Gerudi</div></div>
-  <div class="stat-pill"><div class="stat-num">32</div><div class="stat-unit">Probe</div><div class="stat-lbl">Mackintosh</div></div>
-  <div class="stat-pill"><div class="stat-num">${GT.settlement?GT.settlement.totalSettlementMm:'370'}</div><div class="stat-unit">mm</div><div class="stat-lbl">Enapan Jumlah</div></div>
-  <div class="stat-pill"><div class="stat-num">1.639</div><div class="stat-unit">FOS</div><div class="stat-lbl">Kestabilan Statik</div></div>
-</div>`);
-
-/* Alerts */
-if(C.alerts&&C.alerts.length){
-  C.alerts.forEach(a=>{
-    qn.insertAdjacentHTML('beforeend',`<div class="alert-box"><div class="alert-title">${a.title}</div><div class="alert-body">${a.body}</div></div>`);
-  });
-}
-
-/* Scope */
-let scopeH=`<div class="card"><div class="card-hd"><div class="card-hd-t">Skop Kerja Utama</div></div><div class="card-body">`;
-(C.scope||[]).forEach((s,i)=>{
-  scopeH+=`<div class="scope-item"><div class="scope-dot" style="background:${s.color}1a;color:${s.color};border:1px solid ${s.color}40;">${i+1}</div><div class="scope-txt">${s.text}</div></div>`;
-});
-scopeH+=`</div></div>`;
-qn.insertAdjacentHTML('beforeend',scopeH);
-
-/* Design standards */
-let dsH=`<div class="card"><div class="card-hd"><div class="card-hd-t">Parameter Reka Bentuk</div></div><div class="card-body">`;
-(C.designStandards||[]).forEach(d=>{
-  dsH+=`<div class="row"><span class="rk">${d.parameter}${d.unit!=='—'?' ('+d.unit+')':''}</span><span class="rv ac">${d.value}</span></div>`;
-});
-dsH+=`</div></div>`;
-qn.insertAdjacentHTML('beforeend',dsH);
-
-/* Rationale */
-const rat=C.rationale||{};
-if(rat.problem){
-  qn.insertAdjacentHTML('beforeend',`<div class="card"><div class="card-hd"><div class="card-hd-t">Justifikasi Projek</div></div><div class="card-body"><div style="font-size:11px;line-height:1.7;color:var(--mu);"><strong style="color:var(--tx);">Masalah:</strong> ${rat.problem}<br><br><strong style="color:var(--tx);">Penyelesaian:</strong> ${rat.solution}<br><br><strong style="color:var(--tx);">Hasil:</strong> ${rat.outcome}</div></div></div>`);
-}
-
-/* ===================== GEOTECHNICAL TAB ===================== */
-const gp=$('geo-panel');
-
-/* SI Summary */
-gp.insertAdjacentHTML('beforeend',`<div class="card"><div class="card-hd"><div class="card-hd-t">Ringkasan Siasatan Tapak</div></div><div class="card-body">
-  <div class="row"><span class="rk">Boreholes</span><span class="rv">${GT.siSummary.boreholes} (SPT 50×5)</span></div>
-  <div class="row"><span class="rk">Mackintosh Probe</span><span class="rv">${GT.siSummary.probes} (15m)</span></div>
-  <div class="row"><span class="rk">Ujian Makmal</span><span class="rv">${GT.siSummary.labTests.join(', ')}</span></div>
-  <div class="row"><span class="rk">Sampel Undisturbed</span><span class="rv">Ya</span></div>
-</div></div>`);
-
-/* Seismic */
-gp.insertAdjacentHTML('beforeend',`<div class="card"><div class="card-hd"><div class="card-hd-t">Hazard Seismik & Kimia</div></div><div class="card-body">
-  <div class="row"><span class="rk">Zon Seismik</span><span class="rv">${GT.seismic.zone}</span></div>
-  <div class="row"><span class="rk">PGA</span><span class="rv">${GT.seismic.pga}</span></div>
-  <div class="row"><span class="rk">MMI</span><span class="rv">${GT.seismic.mmi}</span></div>
-  ${seis.decision?`<div class="row"><span class="rk">Makna Keputusan</span><span class="rv ac">${seis.decision}</span></div>`:''}
-  <div class="row"><span class="rk">Sulfat</span><span class="rv ac">${GT.chemical.sulphate.range} · ${GT.chemical.sulphate.class}</span></div>
-  <div class="row"><span class="rk">pH Air Bumi</span><span class="rv ac">${GT.chemical.ph.range} · ${GT.chemical.ph.class}</span></div>
-  <div class="row"><span class="rk">Klorida</span><span class="rv">${GT.chemical.chloride.range}</span></div>
-</div></div>`);
-
-if(seis.references&&seis.references.length){
-  let refHtml=`<div class="card"><div class="card-hd"><div class="card-hd-t">Rujukan Visualisasi Seismik</div></div><div class="card-body">`;
-  seis.references.forEach(r=>{
-    refHtml+=`<div class="row"><span class="rk">${r.name}</span><span class="rv">${r.use}</span></div>`;
-  });
-  refHtml+=`</div></div>`;
-  gp.insertAdjacentHTML('beforeend',refHtml);
-}
-
-/* Earthwork */
-const ew=GT.earthwork;
-gp.insertAdjacentHTML('beforeend',`<div class="card"><div class="card-hd"><div class="card-hd-t">Kerja Tanah</div></div><div class="card-body">
-  <div class="row"><span class="rk">Aras Sedia Ada</span><span class="rv">RL ${ew.existingRL}</span></div>
-  <div class="row"><span class="rk">Aras Platform</span><span class="rv">RL ${ew.platformRL}</span></div>
-  <div class="row"><span class="rk">Tebal Timbusan</span><span class="rv">${ew.fillHeight} m</span></div>
-  <div class="row"><span class="rk">Cerun Timbus</span><span class="rv">${ew.fillSlope}</span></div>
-  <div class="row"><span class="rk">Pengeras</span><span class="rv">${ew.geotextile}</span></div>
-  <div class="row"><span class="rk">Isipadu</span><span class="rv">${ew.volume}</span></div>
-</div></div>`);
-
-/* Slope stability */
-const ss=GT.slopeStability;
-gp.insertAdjacentHTML('beforeend',`<div class="card"><div class="card-hd"><div class="card-hd-t">Kestabilan Cerun</div></div><div class="card-body">
-  <div class="row"><span class="rk">Kaedah</span><span class="rv">${ss.method}</span></div>
-  <div class="row"><span class="rk">FOS Fill Slope</span><span class="rv" style="color:var(--gn);">${ss.fillSlopeFos}</span></div>
-  <div class="row"><span class="rk">FOS Statik (min 1.5)</span><span class="rv" style="color:var(--gn);">${ss.staticFos}</span></div>
-  <div class="row"><span class="rk">FOS Seismik 5.9% (min 1.3)</span><span class="rv" style="color:var(--gn);">${ss.seismicFos}</span></div>
-</div></div>`);
-
-/* Borehole cards */
-gp.insertAdjacentHTML('beforeend',`<div class="sec-title">Log Borehole (Klik untuk log penuh)</div>`);
-const bhGrid=document.createElement('div');bhGrid.className='bh-grid';
-(GT.boreholes||[]).forEach(bh=>{
-  const card=document.createElement('div');card.className='bh-card';
-  let layersHtml='';
-  bh.layers.forEach(L=>{
-    layersHtml+=`<div class="bh-layer">
-      <div class="bh-layer-bar" style="background:${L.colour};"><span style="position:absolute;left:4px;top:2px;font-size:9px;color:#fff;font-weight:700;text-shadow:0 1px 2px rgba(0,0,0,0.5);">${L.depthFrom}-${L.depthTo}m</span></div>
-      <div class="bh-layer-text">${L.soil}</div>
-      <div class="bh-spt">SPT ${L.spt}</div>
-    </div>`;
-  });
-  card.innerHTML=`<div class="bh-hd"><div><div class="bh-id">${bh.id}</div><div class="bh-meta">RL ${bh.rlM} · ${bh.depthM}m · GWL ${bh.gwlM}m</div></div></div><div class="bh-body">${layersHtml}</div>`;
-  card.onclick=()=>openBoreholeModal(bh);
-  bhGrid.appendChild(card);
-});
-gp.appendChild(bhGrid);
-
-/* Mackintosh probe */
-const mp=GT.mackintoshProbes;
-gp.insertAdjacentHTML('beforeend',`<div class="card"><div class="card-hd"><div class="card-hd-t">Mackintosh Probe (32 tests)</div></div><div class="card-body">
-  <div class="row"><span class="rk">Kedalaman Penamatan</span><span class="rv">${mp.terminationM} m</span></div>
-  <div class="row"><span class="rk">Bilangan Tumbukan (min–max)</span><span class="rv">${Math.min(...mp.blows)} – ${Math.max(...mp.blows)} / 300mm</span></div>
-  <div class="row"><span class="rk">Purata Tumbukan</span><span class="rv">${(mp.blows.reduce((a,b)=>a+b,0)/mp.blows.length).toFixed(0)}</span></div>
-</div></div>`);
-
-/* ===================== CHARTS TAB ===================== */
-const cp=$('charts-panel');
-cp.insertAdjacentHTML('beforeend',`<div class="chart-wrap"><div class="chart-title">📉 Enapan vs Masa (Consolidation Settlement)</div><div class="chart-box tall"><canvas id="chart-settlement"></canvas></div></div>`);
-cp.insertAdjacentHTML('beforeend',`<div class="chart-wrap"><div class="chart-title">🔨 Profil SPT N-Value (BH1–BH7)</div><div class="chart-box tall"><canvas id="chart-spt"></canvas></div></div>`);
-cp.insertAdjacentHTML('beforeend',`<div class="chart-wrap"><div class="chart-title">🏗 Kapasiti Cerucuk — Perbandingan ICE</div><div class="chart-box"><canvas id="chart-pile"></canvas></div></div>`);
-
-/* ===================== SITE TAB ===================== */
-const sp=$('site-panel');
-sp.insertAdjacentHTML('beforeend',`<div class="sec-title">Pelan Susun Atur Kemudahan</div>`);
-(C.facilities||[]).forEach(f=>{
-  const c=fclr[f.tag]||T.accent;
-  sp.insertAdjacentHTML('beforeend',`<div class="fac-card"><div class="fac-marker" style="background:${c};">${f.marker}</div><div><div class="fac-name">${f.name}</div><span class="fac-role ${f.tag}">${f.role}</span><div class="fac-detail">${f.detail}</div></div></div>`);
-});
-
-/* CoGSI Sarawak link */
-sp.insertAdjacentHTML('beforeend',`<div class="sec-title">Data Geoteknik Wilayah (Sarawak)</div>
-  <a class="ext-card" href="https://cogsi.sarawak.gov.my" target="_blank" rel="noopener">
-    <div class="ext-icon">🌏</div>
-    <div>
-      <div class="ext-title">CoGSI — Consolidated Geotechnical Site Investigation (Sarawak)</div>
-      <div class="ext-desc">Akses data geoteknik regional untuk tapak-tapak di Sarawak. Sistem web-based untuk carian, paparan dan muat turun maklumat borehole.</div>
-    </div>
-  </a>
-  <div style="font-size:10px;color:var(--mu);margin-top:6px;">Nota: Pautan ke pangkalan data geoteknik awam Sarawak untuk konteks regional tapak Jalan Bayu.</div>
-`);
-
-sp.insertAdjacentHTML('beforeend',`<div class="sec-title">Pihak Berkuasa & Kelulusan</div>`);
-let authH=`<table class="auth-table"><thead><tr><th>Pihak Berkuasa</th><th>Skop Kelulusan</th><th>Jalan / Rujukan</th></tr></thead><tbody>`;
-(C.governingAuthorities||[]).forEach(a=>{
-  authH+=`<tr><td><div class="auth-badge">${a.abbr}</div>${a.name}<br><span style="font-size:9.5px;color:var(--mu);">${a.type}</span></td><td><span style="font-weight:600;font-size:11px;">${a.chainageLabel}</span></td><td>${a.roads}<div class="auth-sub">${a.landmarks}</div></td></tr>`;
-});
-authH+=`</tbody></table>`;
-sp.insertAdjacentHTML('beforeend',authH);
-
-/* ===================== TEAM TAB ===================== */
-const tp=$('team-panel');
-(C.projectTeam||[]).forEach(t=>{
-  const logo=t.logo?`<img class="team-logo" src="${t.logo}" alt="${t.abbr}" onerror="this.parentNode.innerHTML='<div class=team-logo-ph>${(t.abbr||t.name).slice(0,3)}</div>'">`:`<div class="team-logo-ph">${(t.abbr||t.name).slice(0,3)}</div>`;
-  tp.insertAdjacentHTML('beforeend',`<div class="team-card">${logo}<div><div class="team-role">${t.role}</div><div class="team-name">${t.name}</div><div class="team-detail">${t.detail||''}</div></div></div>`);
-});
-
-/* Contacts */
-if(C.contacts&&C.contacts.length){
-  tp.insertAdjacentHTML('beforeend',`<div class="sec-title">Hubungi</div>`);
-  C.contacts.forEach(g=>{
-    tp.insertAdjacentHTML('beforeend',`<div class="card" style="margin-bottom:8px;"><div class="card-hd"><div class="card-hd-t">${g.label}</div></div><div class="card-body">`+
-      g.members.map(m=>`<div class="row"><span class="rk">${m.name}<br><span style="font-size:9.5px;color:var(--mu);">${m.title}</span></span><span class="rv" style="font-size:10px;">${m.email}</span></div>`).join('')+`</div></div>`);
-  });
-}
-
-/* Coordinate viewer + copy */
-const coordEl=$('coord-view'), toast=$('copy-toast');
-map.on('mousemove',e=>{
-  const la=e.latlng.lat,lo=e.latlng.lng;
-  coordEl.textContent=Math.abs(la).toFixed(5)+'° '+(la>=0?'N':'S')+'  '+Math.abs(lo).toFixed(5)+'° '+(lo>=0?'E':'W');
-});
-map.on('mouseout',()=>{coordEl.textContent='—';});
-map.on('click',e=>{
-  const la=e.latlng.lat,lo=e.latlng.lng;
-  const txt=la.toFixed(6)+','+lo.toFixed(6);
-  navigator.clipboard&&navigator.clipboard.writeText(txt).then(()=>{toast.style.opacity=1;setTimeout(()=>toast.style.opacity=0,1500);});
-});
-
-/* ===================== CHART.JS ===================== */
-function initCharts(){
-  Chart.defaults.font.family="'Inter',sans-serif";
-  Chart.defaults.color=getComputedStyle(document.body).getPropertyValue('--mu').trim()||'#4d7a9a';
-
-  const sc=GT.settlement.curves;
-  new Chart(document.getElementById('chart-settlement'),{
-    type:'line',
-    data:{labels:sc.map(d=>d.months+' bln'),datasets:[
-      {label:'Enapan (mm)',data:sc.map(d=>d.mm),borderColor:'#0099D4',backgroundColor:'rgba(0,153,212,0.1)',tension:0.3,fill:true,pointRadius:3}
-    ]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-      scales:{x:{title:{display:true,text:'Masa (bulan)'}},y:{title:{display:true,text:'Enapan (mm)'},beginAtZero:true}}}
-  });
-
-  const bhs=GT.boreholes;
-  const sptData={peat:[],soft:[],hard:[]};
-  bhs.forEach(bh=>{
-    let peat=0,soft=0,hard=0;
-    bh.layers.forEach(L=>{
-      const th=L.depthTo-L.depthFrom;
-      if(L.soil.toLowerCase().includes('peat'))peat+=th;
-      else if(L.spt==='50'||(L.spt&&L.spt.includes&&L.spt.includes('50')))hard+=th;
-      else soft+=th;
+  if(s.mapMode==="bh"){
+    boreholes.forEach(bh=>bhMarker(bh).addTo(sceneLayer));
+  }
+  if(s.mapMode==="soft"){
+    boreholes.forEach(bh=>{
+      const intensity = bh.soft >= 16 ? "#8c2f24" : bh.soft >= 15 ? "#b97912" : "#7a4f35";
+      L.circle([bh.lat,bh.lon],{radius:bh.soft*11,color:intensity,weight:2,fillColor:intensity,fillOpacity:.20}).addTo(sceneLayer);
+      L.marker([bh.lat,bh.lon],{icon:L.divIcon({className:"",html:`<div class="soft-label">${bh.id} · ${bh.soft}m</div>`,iconSize:[82,24],iconAnchor:[41,12]})}).addTo(sceneLayer);
     });
-    sptData.peat.push(peat);sptData.soft.push(soft);sptData.hard.push(hard);
-  });
-  new Chart(document.getElementById('chart-spt'),{
-    type:'bar',
-    data:{labels:bhs.map(b=>b.id),datasets:[
-      {label:'Peat',data:sptData.peat,backgroundColor:'#5D4037'},
-      {label:'Soft Soil (SPT<4)',data:sptData.soft,backgroundColor:'#A1887F'},
-      {label:'Hard/Dense (SPT 50)',data:sptData.hard,backgroundColor:'#FFF176'}
-    ]},
-    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{title:{display:false}},
-      scales:{x:{stacked:true,title:{display:true,text:'Kedalaman (m)'}},y:{stacked:true}},
-      interaction:{mode:'index',intersect:false}}
-  });
-
-  const pc=GT.pileCapacityIce;
-  new Chart(document.getElementById('chart-pile'),{
-    type:'bar',
-    data:{labels:['Bakau 100mm','RC 150mm','Spun 250mm'],datasets:[
-      {label:'Purata Kapasiti (kN)',data:[
-        pc.bakau100.reduce((a,b)=>a+b.capacityKn,0)/pc.bakau100.length,
-        pc.rc150.reduce((a,b)=>a+b.capacityKn,0)/pc.rc150.length,
-        pc.spun250.reduce((a,b)=>a+b.capacityKn,0)/pc.spun250.length
-      ],backgroundColor:['#8D6E63','#2196F3','#F44336']}
-    ]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-      scales:{y:{title:{display:true,text:'Kapasiti (kN)'},beginAtZero:true}}}
-  });
+  }
+  if(s.mapMode==="facility"){
+    boreholes.forEach(bh=>bhMarker(bh,"#6f7d6b").addTo(sceneLayer));
+    facilities.forEach(f=>{
+      const color = f.id==="M" ? "#2369a7" : f.id==="D" ? "#b97912" : "#27772c";
+      facilityMarker(f,color).addTo(sceneLayer);
+    });
+    L.polyline([[1.23090,111.45740],[1.23040,111.45770],[1.23100,111.45790]],{color:"#b97912",weight:4,opacity:.70,dashArray:"8 8"}).addTo(sceneLayer)
+      .bindPopup("Settlement-sensitive interfaces: piled building, platform, drainage and external works.");
+  }
+  document.querySelectorAll(".scene-btn").forEach((b,i)=>b.classList.toggle("active",i===index));
+  document.getElementById("capKicker").textContent=s.ref;
+  document.getElementById("capTitle").textContent=s.name;
+  document.getElementById("capBody").textContent=s.caption;
+  document.getElementById("sectionRef").textContent=`${s.ref} · ${s.page}`;
+  document.getElementById("claimTitle").textContent=s.claimTitle;
+  document.getElementById("claimText").textContent=s.claim;
+  const certainty=document.getElementById("certainty");
+  certainty.className=`certainty ${s.certaintyClass}`;
+  certainty.textContent=s.certainty;
+  document.getElementById("fmav").innerHTML=[
+    ["Fact",s.fact],["Meaning",s.meaning],["Action",s.action],["Value",s.value]
+  ].map(([a,b])=>`<div class="fmav-row"><div class="fmav-label">${a}</div><div class="fmav-text">${b}</div></div>`).join("");
+  document.getElementById("metrics").innerHTML=s.metrics.map(m=>`<div class="metric"><div class="metric-num">${m[0]}</div><div class="metric-lbl">${m[1]}</div></div>`).join("");
+  document.getElementById("risks").innerHTML=s.risks.map(r=>`<div class="risk-row"><div><div class="risk-name">${r[0]}</div><div class="risk-ask">${r[1]}</div></div><div class="risk-tag">${r[2]}</div></div>`).join("");
+  document.getElementById("legend").innerHTML = [
+    ["#27772c","Lot boundary"],
+    [s.mapMode==="soft" ? "#8c2f24" : "#b93a30","Report evidence"],
+    [s.mapMode==="facility" ? "#b97912" : "#2369a7","Decision focus"]
+  ].map(l=>`<span><i class="sw" style="background:${l[0]}"></i>${l[1]}</span>`).join("");
 }
-
-setTimeout(initCharts,400);
+document.getElementById("sceneList").innerHTML=scenes.map((s,i)=>`
+  <button class="scene-btn ${i===0?"active":""}" onclick="renderScene(${i})">
+    <div class="sec-no">${s.ref.startsWith("Executive") ? "0" : s.ref.split(" ")[0]}</div>
+    <div><div class="sec-name">${s.name}</div><div class="sec-page">${s.page}</div></div>
+  </button>
+`).join("");
+renderScene(0);
+map.fitBounds(lot,{padding:[50,50]});
 </script>
 </body>
 </html>
